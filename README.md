@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/erisui/brand/main/logo/svg/eris-lockup-dark.svg" alt="Eris UI" height="48">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./.github/assets/eris-lockup-dark.svg">
+    <img src="./.github/assets/eris-lockup.svg" alt="Eris UI" height="48">
+  </picture>
 </p>
 
 # Eris UI
