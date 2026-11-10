@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-// Brand rule (brand/visual-language/README.md): focus is always visible, a 2px ring in
+// Brand rule: focus is always visible, a 2px ring in
 // #628AF7 with a 2px gap, on every keyboard focus. Moving focus is not enough; the ring
 // has to be drawn. Tailwind v4's `outline-none` once left it at `outline-style: none`.
 const RING = "rgb(98, 138, 247)";
