@@ -1,0 +1,13 @@
+{
+  "extends": "@eris-ui/tsconfig/base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/lib/eris/*": ["../components/src/lib/eris/*"]
+    },
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "../components/src/registry.ts", "../components/src/**/meta.ts"]
+}

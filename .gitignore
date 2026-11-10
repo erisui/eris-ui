@@ -5,6 +5,7 @@ dist/
 test-results/
 playwright-report/
 apps/docs/public/r/
+*.tgz
 .env
 .env.*
 !.env.example

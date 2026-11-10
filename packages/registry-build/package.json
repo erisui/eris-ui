@@ -1,0 +1,20 @@
+{
+  "name": "@eris-ui/registry-build",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Turns packages/components into shadcn-compatible registry JSON.",
+  "scripts": {
+    "build": "tsx src/build.ts",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@eris-ui/components": "workspace:*"
+  },
+  "devDependencies": {
+    "@eris-ui/tsconfig": "workspace:*",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}

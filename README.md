@@ -18,8 +18,8 @@ Accessible UI components you can drop into any Astro project. Plain `.astro` fil
 | `packages/components`     | Source of truth for every free component, plus `eris-core` (mount lifecycle, helpers, theme) |
 | `apps/playground`         | Bare Astro app for trying components; Playwright and axe tests run against it                |
 | `apps/docs`               | erisui.dev (planned)                                                                         |
-| `packages/registry-build` | Turns component source into registry JSON (planned)                                          |
-| `packages/cli`            | `eris-ui` CLI: `init`, `add`, `diff` (planned)                                               |
+| `packages/registry-build` | Turns component source into shadcn-compatible registry JSON                                  |
+| `packages/cli`            | The `eris-ui` CLI: `init`, `add`, `diff`                                                     |
 | `tooling/tsconfig`        | Shared TypeScript config                                                                     |
 
 ## Develop
@@ -31,11 +31,23 @@ pnpm install
 pnpm dev                       # playground at http://localhost:4321
 pnpm build
 pnpm check                     # astro check + tsc
+pnpm test                      # CLI unit tests
 pnpm --filter playground exec playwright install chromium
 pnpm test:e2e                  # Playwright + axe
 ```
 
 To test against an installed Chrome instead of Playwright's download, set `CHROME_PATH`.
+
+## Try the CLI locally
+
+The registry is not online yet, so point the CLI at a local build:
+
+```sh
+pnpm build                                      # also writes apps/docs/public/r/*.json
+cd path/to/your-astro-site
+node path/to/eris-ui/packages/cli/dist/index.js init --registry path/to/eris-ui/apps/docs/public/r
+node path/to/eris-ui/packages/cli/dist/index.js add dialog tabs
+```
 
 ## How a component works
 

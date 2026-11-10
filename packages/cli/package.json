@@ -1,0 +1,36 @@
+{
+  "name": "eris-ui",
+  "version": "0.0.0",
+  "description": "Add Eris UI components to an Astro project.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "eris-ui": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "homepage": "https://erisui.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erisui/eris-ui.git",
+    "directory": "packages/cli"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && chmod +x dist/index.js",
+    "check": "tsc --noEmit",
+    "test": "node --test --experimental-strip-types test/*.test.ts"
+  },
+  "dependencies": {
+    "diff": "^9.0.0"
+  },
+  "devDependencies": {
+    "@eris-ui/tsconfig": "workspace:*",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.0",
+    "@eris-ui/registry-build": "workspace:*"
+  }
+}
