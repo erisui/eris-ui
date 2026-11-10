@@ -1,6 +1,6 @@
 # eris-ui
 
-Add [Eris UI](https://erisui.dev) components to an Astro project. Components are copied into your project as plain `.astro` and `.ts` files, so you own and can edit them.
+Add [Eris UI](https://erisui.dev) components to an Astro project. It copies components into your project as plain `.astro` and `.ts` files, which you can then edit like your own code.
 
 ```sh
 npx eris-ui init          # Tailwind v4, the Eris theme, the @/ alias and eris.json
