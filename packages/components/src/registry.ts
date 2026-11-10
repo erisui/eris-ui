@@ -1,6 +1,7 @@
 import type { RegistryMeta } from "./lib/eris/meta";
 import button from "./components/button/meta";
 import dialog from "./components/dialog/meta";
+import tabs from "./components/tabs/meta";
 
 /** Every free registry item. Input to packages/registry-build. */
 export const core: RegistryMeta = {
@@ -13,4 +14,4 @@ export const core: RegistryMeta = {
   status: "beta",
 };
 
-export const registry: RegistryMeta[] = [core, button, dialog];
+export const registry: RegistryMeta[] = [core, button, dialog, tabs];

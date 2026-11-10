@@ -1,0 +1,68 @@
+---
+import Base from "../layouts/Base.astro";
+import Tabs from "@eris/components/tabs/Tabs.astro";
+import TabsList from "@eris/components/tabs/TabsList.astro";
+import TabsTrigger from "@eris/components/tabs/TabsTrigger.astro";
+import TabsContent from "@eris/components/tabs/TabsContent.astro";
+---
+
+<Base title="Tabs">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Tabs</h1>
+    <p class="text-muted">
+      Arrow keys move between tabs, Home and End jump to the ends, and the indicator slides.
+    </p>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Automatic</h2>
+    <Tabs id="settings">
+      <TabsList aria-label="Settings">
+        <TabsTrigger value="account">Account</TabsTrigger>
+        <TabsTrigger value="password">Password</TabsTrigger>
+        <TabsTrigger value="billing" disabled>
+          Billing
+        </TabsTrigger>
+        <TabsTrigger value="notifications">Notifications</TabsTrigger>
+      </TabsList>
+      <TabsContent value="account">Change your name and avatar.</TabsContent>
+      <TabsContent value="password">Change your password.</TabsContent>
+      <TabsContent value="billing">Billing is coming soon.</TabsContent>
+      <TabsContent value="notifications">Choose what we email you about.</TabsContent>
+    </Tabs>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Manual activation</h2>
+    <Tabs id="code" activationMode="manual" defaultValue="pnpm">
+      <TabsList>
+        <TabsTrigger value="npm">npm</TabsTrigger>
+        <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+        <TabsTrigger value="bun">bun</TabsTrigger>
+      </TabsList>
+      <TabsContent value="npm">
+        <code class="text-muted">npx eris-ui add tabs</code>
+      </TabsContent>
+      <TabsContent value="pnpm">
+        <code class="text-muted">pnpm dlx eris-ui add tabs</code>
+      </TabsContent>
+      <TabsContent value="bun">
+        <code class="text-muted">bunx eris-ui add tabs</code>
+      </TabsContent>
+    </Tabs>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Vertical</h2>
+    <Tabs id="vertical" orientation="vertical" class="items-start">
+      <TabsList>
+        <TabsTrigger value="general">General</TabsTrigger>
+        <TabsTrigger value="members">Members</TabsTrigger>
+        <TabsTrigger value="danger">Danger zone</TabsTrigger>
+      </TabsList>
+      <TabsContent value="general">Workspace name and URL.</TabsContent>
+      <TabsContent value="members">Invite and remove people.</TabsContent>
+      <TabsContent value="danger">Delete this workspace.</TabsContent>
+    </Tabs>
+  </section>
+</Base>

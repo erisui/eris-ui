@@ -32,9 +32,10 @@ export function createDialog(root: HTMLElement): Cleanup {
     root.dataset.state = api.open ? "open" : "closed";
   };
 
+  // Render once before start so every part has the id Zag looks it up by.
+  render();
   const unsubscribe = machine.subscribe(render);
   machine.start();
-  render();
 
   return () => {
     unsubscribe();

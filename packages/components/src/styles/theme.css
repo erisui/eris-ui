@@ -4,17 +4,17 @@
 :root {
   /* Surfaces */
   --eris-background: #141414;
-  --eris-surface: #191919;   /* cards, dialogs */
-  --eris-field: #1c1c1c;     /* inputs, selects */
-  --eris-raised: #1f1f1f;    /* secondary buttons */
+  --eris-surface: #191919; /* cards, dialogs */
+  --eris-field: #1c1c1c; /* inputs, selects */
+  --eris-raised: #1f1f1f; /* secondary buttons */
   --eris-border: #2a2a2a;
   --eris-border-strong: #363636;
 
   /* Text */
   --eris-foreground: #f5f5f5;
-  --eris-muted: #8c8c8c;       /* helper text, descriptions */
+  --eris-muted: #8c8c8c; /* helper text, descriptions */
   --eris-placeholder: #6b6b6b;
-  --eris-ghost: #b4b4b4;       /* ghost button text */
+  --eris-ghost: #b4b4b4; /* ghost button text */
   --eris-disabled: #5a5a5a;
 
   /* Status */
@@ -31,9 +31,9 @@
 
   /* Radius (every radius also gets the Eris curve, below) */
   --eris-radius-pill: 9999px; /* buttons, badges, switches */
-  --eris-radius-field: 12px;  /* inputs, selects */
-  --eris-radius-menu: 16px;   /* menus, popovers */
-  --eris-radius-card: 24px;   /* cards, dialogs */
+  --eris-radius-field: 12px; /* inputs, selects */
+  --eris-radius-menu: 16px; /* menus, popovers */
+  --eris-radius-card: 24px; /* cards, dialogs */
 
   /* Motion */
   --eris-ease: cubic-bezier(0.2, 0, 0, 1);
@@ -78,13 +78,25 @@
 .eris-accent {
   background: linear-gradient(180deg, var(--eris-accent-top), var(--eris-accent-bottom));
   border: 1px solid var(--eris-accent-border);
-  box-shadow: inset 0 1px 0 var(--eris-accent-highlight), 0 1px 2px rgb(0 0 0 / 0.55);
+  box-shadow:
+    inset 0 1px 0 var(--eris-accent-highlight),
+    0 1px 2px rgb(0 0 0 / 0.55);
   color: #fff;
 }
 
 @keyframes eris-pop-in {
-  from { opacity: 0; transform: translateY(4px) scale(0.98); }
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
 }
 @keyframes eris-fade-in {
-  from { opacity: 0; }
+  from {
+    opacity: 0;
+  }
+}
+
+/* Before a machine mounts, show only the first tab panel so nothing flashes. */
+[data-eris="tabs"]:not([data-ready]) [data-part="content"] ~ [data-part="content"] {
+  display: none;
 }

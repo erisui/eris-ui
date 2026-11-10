@@ -1,0 +1,21 @@
+---
+import { cn } from "@/lib/eris/utils";
+const { class: className } = Astro.props as { class?: string };
+---
+
+<div
+  data-part="list"
+  role="tablist"
+  class={cn(
+    "eris-curve relative isolate inline-flex w-fit gap-1 rounded-pill border border-border bg-field p-1",
+    "data-[orientation=vertical]:flex-col data-[orientation=vertical]:rounded-[20px]",
+    className,
+  )}
+>
+  <div
+    data-part="indicator"
+    aria-hidden="true"
+    class="eris-curve absolute -z-10 h-(--height) w-(--width) rounded-pill bg-raised shadow-[0_0_0_1px_var(--eris-border-strong)] [--transition-duration:var(--eris-duration-open)] [--transition-timing-function:var(--eris-ease)] data-[orientation=horizontal]:top-(--top) data-[orientation=vertical]:left-(--left)"
+  ></div>
+  <slot />
+</div>

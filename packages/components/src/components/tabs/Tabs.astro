@@ -1,0 +1,41 @@
+---
+import { cn, uid } from "@/lib/eris/utils";
+
+interface Props {
+  id?: string;
+  /** Value of the tab selected on load. Defaults to the first trigger. */
+  defaultValue?: string;
+  orientation?: "horizontal" | "vertical";
+  /** "manual" moves focus with the arrow keys but waits for Enter or Space to select. */
+  activationMode?: "automatic" | "manual";
+  loopFocus?: boolean;
+  class?: string;
+}
+
+const {
+  id = uid("tabs"),
+  defaultValue,
+  orientation = "horizontal",
+  activationMode = "automatic",
+  loopFocus = true,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  data-eris="tabs"
+  data-eris-id={id}
+  data-default-value={defaultValue}
+  data-orientation={orientation}
+  data-activation-mode={activationMode}
+  data-loop-focus={String(loopFocus)}
+  class={cn("flex gap-5 data-[orientation=horizontal]:flex-col", className)}
+>
+  <slot />
+</div>
+
+<script>
+  import { mountAll } from "@/lib/eris/mount";
+  import { createTabs } from "./tabs";
+  mountAll("tabs", createTabs);
+</script>
