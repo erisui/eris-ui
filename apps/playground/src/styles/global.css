@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@import "@eris-ui/components/theme.css";
+
+/* Let Tailwind see the classes used inside the component source. */
+@source "../../../../packages/components/src";
+
+@layer base {
+  html {
+    background: var(--eris-background);
+    color: var(--eris-foreground);
+    font-family: var(--eris-font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}

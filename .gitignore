@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.turbo/
+test-results/
+playwright-report/
+apps/docs/public/r/
+.env
+.env.*
+!.env.example
+.DS_Store

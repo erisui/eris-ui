@@ -1,0 +1,21 @@
+{
+  "name": "eris-ui-monorepo",
+  "private": true,
+  "packageManager": "pnpm@10.34.9",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "pnpm --filter playground dev",
+    "build": "turbo run build",
+    "check": "turbo run check",
+    "test:e2e": "turbo run test:e2e",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
+    "turbo": "^2.11.10",
+    "typescript": "^5.9.0"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@eris-ui/components",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Source of truth for every free Eris UI component. Copied into user projects through the registry.",
+  "exports": {
+    "./theme.css": "./src/styles/theme.css",
+    "./lib/*": "./src/lib/eris/*.ts",
+    "./*": "./src/components/*"
+  },
+  "scripts": {
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@zag-js/dialog": "^1.47.0",
+    "@zag-js/vanilla": "^1.47.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@eris-ui/tsconfig": "workspace:*",
+    "typescript": "^5.9.0",
+    "astro": "^7.4.8"
+  },
+  "peerDependencies": {
+    "astro": ">=5.2.0",
+    "tailwindcss": "^4.0.0"
+  }
+}

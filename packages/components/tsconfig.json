@@ -1,0 +1,8 @@
+{
+  "extends": "@eris-ui/tsconfig/base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "@/lib/eris/*": ["./src/lib/eris/*"] }
+  },
+  "include": ["src/**/*.ts"]
+}

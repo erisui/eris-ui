@@ -1,0 +1,72 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "@eris/components/button/Button.astro";
+import Dialog from "@eris/components/dialog/Dialog.astro";
+import DialogTrigger from "@eris/components/dialog/DialogTrigger.astro";
+import DialogContent from "@eris/components/dialog/DialogContent.astro";
+import DialogTitle from "@eris/components/dialog/DialogTitle.astro";
+import DialogDescription from "@eris/components/dialog/DialogDescription.astro";
+import DialogClose from "@eris/components/dialog/DialogClose.astro";
+---
+
+<Base title="Dialog">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Dialog spike</h1>
+    <p class="text-muted">Zag's dialog machine through @zag-js/vanilla, with no framework island.</p>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Buttons</h2>
+    <div class="flex flex-wrap items-center gap-3">
+      <Button>Save changes</Button>
+      <Button variant="accent">Get All-Access</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="danger">Delete</Button>
+      <Button variant="secondary" disabled>
+        Disabled
+      </Button>
+    </div>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Dialogs</h2>
+    <div class="flex flex-wrap gap-3">
+      <Dialog id="create-project">
+        <DialogTrigger variant="primary">Create project</DialogTrigger>
+        <DialogContent>
+          <div class="flex flex-col gap-1.5">
+            <DialogTitle>Create project</DialogTitle>
+            <DialogDescription>Deploy your new project in one click.</DialogDescription>
+          </div>
+          <label class="flex flex-col gap-2 text-[15px] font-medium">
+            Name
+            <input
+              name="name"
+              placeholder="Name of your project"
+              class="eris-curve h-11 rounded-field border border-border bg-field px-3.5 font-normal text-foreground placeholder:text-placeholder focus-visible:border-ring focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/25"
+            />
+          </label>
+          <div class="flex justify-end gap-2">
+            <DialogClose>Cancel</DialogClose>
+            <DialogClose variant="primary">Deploy</DialogClose>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog id="delete-project" role="alertdialog" closeOnInteractOutside={false}>
+        <DialogTrigger variant="danger">Delete project</DialogTrigger>
+        <DialogContent>
+          <div class="flex flex-col gap-1.5">
+            <DialogTitle>Delete this project?</DialogTitle>
+            <DialogDescription>This removes every deployment. It cannot be undone.</DialogDescription>
+          </div>
+          <div class="flex justify-end gap-2">
+            <DialogClose variant="secondary">Keep it</DialogClose>
+            <DialogClose variant="danger">Delete</DialogClose>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  </section>
+</Base>

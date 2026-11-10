@@ -1,0 +1,15 @@
+---
+import { buttonVariants, type ButtonSize, type ButtonVariant } from "../button/variants";
+
+interface Props {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  class?: string;
+}
+
+const { variant = "ghost", size, class: className } = Astro.props;
+---
+
+<button type="button" data-part="close" class={buttonVariants({ variant, size, class: className })}>
+  <slot />
+</button>

@@ -1,0 +1,35 @@
+---
+import { cn } from "@/lib/eris/utils";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div
+  data-part="backdrop"
+  data-state="closed"
+  hidden
+  class="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] data-[state=open]:animate-[eris-fade-in_var(--eris-duration-open)_var(--eris-ease)]"
+></div>
+<div
+  data-part="positioner"
+  class="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4"
+>
+  <div
+    data-part="content"
+    data-state="closed"
+    hidden
+    role="dialog"
+    class={cn(
+      "eris-curve pointer-events-auto flex w-full max-w-md flex-col gap-5 rounded-card border border-[#262626] bg-surface p-8 text-foreground",
+      "shadow-[0_24px_64px_-16px_rgb(0_0_0/0.7)] outline-none",
+      "data-[state=open]:animate-[eris-pop-in_var(--eris-duration-open)_var(--eris-ease)]",
+      className,
+    )}
+  >
+    <slot />
+  </div>
+</div>

@@ -1,0 +1,37 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Eris playground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <ClientRouter />
+  </head>
+  <body class="min-h-screen">
+    <nav class="flex gap-6 border-b border-border px-10 py-5 text-sm text-muted">
+      <a href="/" class="hover:text-foreground">
+        Dialog
+      </a>
+      <a href="/second" class="hover:text-foreground">
+        Second page
+      </a>
+    </nav>
+    <main class="mx-auto flex max-w-3xl flex-col gap-12 px-10 py-14">
+      <slot />
+    </main>
+  </body>
+</html>

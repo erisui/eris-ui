@@ -1,0 +1,38 @@
+---
+import { cn, uid } from "@/lib/eris/utils";
+
+interface Props {
+  id?: string;
+  defaultOpen?: boolean;
+  /** "alertdialog" for confirmations that need a decision. */
+  role?: "dialog" | "alertdialog";
+  closeOnInteractOutside?: boolean;
+  class?: string;
+}
+
+const {
+  id = uid("dialog"),
+  defaultOpen = false,
+  role = "dialog",
+  closeOnInteractOutside = true,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  data-eris="dialog"
+  data-eris-id={id}
+  data-default-open={String(defaultOpen)}
+  data-role={role}
+  data-close-on-interact-outside={String(closeOnInteractOutside)}
+  data-state={defaultOpen ? "open" : "closed"}
+  class={cn("contents", className)}
+>
+  <slot />
+</div>
+
+<script>
+  import { mountAll } from "@/lib/eris/mount";
+  import { createDialog } from "./dialog";
+  mountAll("dialog", createDialog);
+</script>

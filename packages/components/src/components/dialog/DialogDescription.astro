@@ -1,0 +1,8 @@
+---
+import { cn } from "@/lib/eris/utils";
+const { class: className } = Astro.props as { class?: string };
+---
+
+<p data-part="description" class={cn("text-[15px] text-muted", className)}>
+  <slot />
+</p>

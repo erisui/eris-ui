@@ -1,0 +1,29 @@
+---
+import Base from "../layouts/Base.astro";
+import Dialog from "@eris/components/dialog/Dialog.astro";
+import DialogTrigger from "@eris/components/dialog/DialogTrigger.astro";
+import DialogContent from "@eris/components/dialog/DialogContent.astro";
+import DialogTitle from "@eris/components/dialog/DialogTitle.astro";
+import DialogDescription from "@eris/components/dialog/DialogDescription.astro";
+import DialogClose from "@eris/components/dialog/DialogClose.astro";
+---
+
+<Base title="Second page">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Second page</h1>
+    <p class="text-muted">
+      Reached through a view transition. The dialog here must mount fresh, and the first page's machines must
+      be gone.
+    </p>
+  </section>
+  <Dialog id="second-dialog">
+    <DialogTrigger>Open on page two</DialogTrigger>
+    <DialogContent>
+      <DialogTitle>Still works</DialogTitle>
+      <DialogDescription>Mounted after astro:page-load.</DialogDescription>
+      <div class="flex justify-end">
+        <DialogClose variant="primary">Done</DialogClose>
+      </div>
+    </DialogContent>
+  </Dialog>
+</Base>
