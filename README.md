@@ -41,8 +41,6 @@ To test against an installed Chrome instead of Playwright's download, set `CHROM
 
 Each component is `.astro` markup with `data-part` attributes, plus one `.ts` file that starts a Zag machine on the client and spreads its props onto those parts. `mountAll()` starts machines on page load and stops them before a view transition swaps the page. See [`packages/components/src/components/dialog`](./packages/components/src/components/dialog).
 
-Architecture: [erisui/docs](https://github.com/erisui/docs/blob/main/architecture.md). Visual language: [erisui/brand](https://github.com/erisui/brand/tree/main/visual-language).
-
 ## License
 
 MIT
