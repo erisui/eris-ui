@@ -6,7 +6,7 @@ export type ButtonSize = "sm" | "md" | "lg" | "icon";
 const base =
   "eris-curve inline-flex cursor-pointer select-none items-center justify-center gap-2 whitespace-nowrap rounded-pill border border-transparent font-medium tracking-[-0.01em] " +
   "transition-[background-color,color,filter,opacity] duration-(--eris-duration-state) ease-eris " +
-  "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring " +
+  "outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring " +
   "disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0";
 
 const variants: Record<ButtonVariant, string> = {
