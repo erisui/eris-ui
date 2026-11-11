@@ -10,3 +10,5 @@ apps/www/public/r/
 .env.*
 !.env.example
 .DS_Store
+.playwright-cli/
+output/playwright/
