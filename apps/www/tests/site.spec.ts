@@ -79,3 +79,14 @@ test("install commands come from the registry", async ({ page }) => {
   );
   await expect(page.getByText("@zag-js/tabs").first()).toBeVisible();
 });
+
+test("install note lists npm deps and added registry items", async ({ page }) => {
+  await page.goto("/docs/components/tabs");
+  const tabsNote = page.locator('[data-eris-id="install-tabs"] + p');
+  await expect(tabsNote).toHaveText("Installs @zag-js/tabs, @zag-js/vanilla.");
+
+  await page.goto("/docs/components/dialog");
+  const dialogNote = page.locator('[data-eris-id="install-dialog"] + p');
+  await expect(dialogNote).toHaveText("Installs @zag-js/dialog, @zag-js/vanilla. Also adds button.");
+});
+
