@@ -1,0 +1,113 @@
+---
+// Contours stay at the edge of the card, outside the main reading area.
+const contours = Array.from({ length: 16 }, (_, i) => {
+  const x = 210 + i * 23;
+  return `M ${x} -80 C ${x - 170} 60, ${x + 130} 160, ${x + 30} 290 S ${x - 110} 390, ${x - 40} 510`;
+});
+---
+
+<eris-pro-backdrop aria-hidden="true">
+  <div class="light"></div>
+  <svg class="contours" viewBox="0 0 600 430" fill="none" preserveAspectRatio="xMidYMid slice">
+    {contours.map((d) => (
+      <path d={d} />
+    ))}
+  </svg>
+  <div class="edge"></div>
+</eris-pro-backdrop>
+
+<style>
+  eris-pro-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    /* A narrow pool of light along the upper seam, not behind the copy. */
+    background: radial-gradient(ellipse 45% 45% at 50% -18%, rgb(98 138 247 / 0.15), transparent);
+  }
+
+  .light {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 35% 65% at 105% 70%, rgb(98 138 247 / 0.1), transparent),
+      radial-gradient(ellipse 20% 45% at 0% 100%, rgb(98 138 247 / 0.045), transparent);
+  }
+
+  .contours {
+    position: absolute;
+    right: -10%;
+    top: -10%;
+    width: 58%;
+    height: 120%;
+    stroke: #8ba9f5;
+    stroke-width: 0.7;
+    opacity: 0.16;
+    mask-image: linear-gradient(90deg, transparent 10%, #000 85%);
+  }
+
+  .contours path {
+    vector-effect: non-scaling-stroke;
+  }
+
+  .edge {
+    position: absolute;
+    inset: 0 20% auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(147 174 255 / 0.35), transparent);
+  }
+
+  /* A single settling movement, under five seconds. No perpetual motion or player UI. */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-revealed] .contours {
+      animation: settle 4s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+  }
+
+  @keyframes settle {
+    from {
+      transform: translate(20px, -12px);
+      opacity: 0;
+    }
+    to {
+      transform: translate(0, 0);
+      opacity: 0.16;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .contours {
+      right: -35%;
+      width: 90%;
+      opacity: 0.1;
+    }
+    [data-revealed] .contours {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  class ProBackdrop extends HTMLElement {
+    private observer?: IntersectionObserver;
+
+    connectedCallback() {
+      if (this.hasAttribute("data-revealed")) return;
+      this.observer = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) return;
+        this.setAttribute("data-revealed", "");
+        this.observer?.disconnect();
+      });
+      this.observer.observe(this);
+    }
+
+    disconnectedCallback() {
+      this.observer?.disconnect();
+    }
+  }
+
+  if (!customElements.get("eris-pro-backdrop")) {
+    customElements.define("eris-pro-backdrop", ProBackdrop);
+  }
+</script>

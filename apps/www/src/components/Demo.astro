@@ -20,7 +20,7 @@ const code = source.replace(/^---\s*---\s*/, "");
 
 <div class="not-prose my-6">
   {hideCode ? (
-    <div class="eris-curve flex min-h-56 items-center justify-center rounded-card border border-border bg-[#111] p-10">
+    <div class="eris-curve flex min-h-56 items-center justify-center rounded-card border border-border bg-tile p-10">
       <slot />
     </div>
   ) : (
@@ -30,7 +30,7 @@ const code = source.replace(/^---\s*---\s*/, "");
         <TabsTrigger value="code">Code</TabsTrigger>
       </TabsList>
       <TabsContent value="preview">
-        <div class="eris-curve flex min-h-56 flex-wrap items-center justify-center gap-3 rounded-card border border-border bg-[#111] p-10">
+        <div class="eris-curve flex min-h-56 flex-wrap items-center justify-center gap-3 rounded-card border border-border bg-tile p-10">
           <slot />
         </div>
       </TabsContent>

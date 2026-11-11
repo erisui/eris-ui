@@ -23,6 +23,15 @@
 :root {
   --eris-font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --eris-font-mono: "JetBrainsMono Nerd Font Mono", ui-monospace, monospace;
+  /* Docs-site surfaces. The page sits darker than the component tiles, so demos read as lifted panels.
+     Site-only: the library's --eris-background (#141414) is untouched, so components keep their default theme. */
+  --site-page: #111;
+  --site-tile: var(--eris-background);
+}
+
+@theme inline {
+  --color-page: var(--site-page);
+  --color-tile: var(--site-tile);
 }
 
 @theme inline {
@@ -31,7 +40,7 @@
 
 @layer base {
   html {
-    background: var(--eris-background);
+    background: var(--site-page);
     color: var(--eris-foreground);
     font-family: var(--eris-font-sans);
     -webkit-font-smoothing: antialiased;
@@ -39,6 +48,20 @@
   }
   ::selection {
     background: rgb(98 138 247 / 0.35);
+  }
+
+  /* Film grain over the page background. Fixed and behind content (z -1 sits above the html background but below
+     everything in flow), so text, cards and focus rings stay clean and it never intercepts input. Tiled
+     feTurbulence noise, desaturated, so there is no image to download. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
   }
 }
 
