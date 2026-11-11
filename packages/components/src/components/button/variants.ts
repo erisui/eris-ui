@@ -4,7 +4,7 @@ export type ButtonVariant = "primary" | "accent" | "secondary" | "ghost" | "dang
 export type ButtonSize = "sm" | "md" | "lg" | "icon";
 
 const base =
-  "eris-curve inline-flex cursor-pointer select-none items-center justify-center gap-2 whitespace-nowrap rounded-pill border border-transparent font-medium tracking-[-0.01em] " +
+  "eris-curve inline-flex cursor-pointer select-none items-center justify-center gap-2 max-w-full rounded-pill border border-transparent font-medium tracking-[-0.01em] no-underline " +
   "transition-[background-color,color,filter,opacity] duration-(--eris-duration-state) ease-eris " +
   "outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring " +
   "disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0";
@@ -19,9 +19,9 @@ const variants: Record<ButtonVariant, string> = {
 };
 
 const sizes: Record<ButtonSize, string> = {
-  sm: "h-8 px-3.5 text-sm",
-  md: "h-10 px-[18px] text-[15px]",
-  lg: "h-12 px-6 text-base",
+  sm: "min-h-8 px-3.5 text-sm",
+  md: "min-h-10 px-[18px] text-[15px]",
+  lg: "min-h-12 px-6 text-base",
   icon: "size-10",
 };
 
