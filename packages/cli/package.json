@@ -13,6 +13,11 @@
   "engines": {
     "node": ">=20"
   },
+  "author": {
+    "name": "Eris UI",
+    "email": "hello@erisui.dev",
+    "url": "https://erisui.dev"
+  },
   "homepage": "https://erisui.dev",
   "repository": {
     "type": "git",

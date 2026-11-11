@@ -8,6 +8,11 @@ import { LINKS, SITE } from "../const";
       {SITE.name}. Made with <span aria-hidden="true">♥</span><span class="sr-only">love</span> for Astro.
     </p>
     <p>
+      <a href={`mailto:${SITE.email}`} class="text-ghost hover:text-foreground">
+        {SITE.email}
+      </a>
+    </p>
+    <p>
       Built on{" "}
       <a href={LINKS.zag} class="text-ghost hover:text-foreground">
         Zag
