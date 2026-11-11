@@ -20,6 +20,10 @@
   /* Status */
   --eris-danger: #e07a90;
 
+  /* Code: the runner (npx, pnpm) and the arguments in a snippet */
+  --eris-code-runner: #e9a25c;
+  --eris-code-args: #a9c8f5;
+
   /* Accent: rare, one per screen at most */
   --eris-accent-top: #628af7;
   --eris-accent-bottom: #3a65df;
@@ -55,6 +59,8 @@
   --color-muted: var(--eris-muted);
   --color-placeholder: var(--eris-placeholder);
   --color-danger: var(--eris-danger);
+  --color-code-runner: var(--eris-code-runner);
+  --color-code-args: var(--eris-code-args);
   --color-ghost: var(--eris-ghost);
   --color-accent: var(--eris-accent-bottom);
   --color-ring: var(--eris-ring);

@@ -1,0 +1,56 @@
+---
+import { cn, uid } from "@/lib/eris/utils";
+import Button from "../button/Button.astro";
+
+interface Props {
+  id?: string;
+  /** One shell command, such as `npx eris-ui@latest init`. The copy button copies all of it. */
+  code: string;
+  /** Copy button text before a copy. */
+  copyLabel?: string;
+  /** Copy button text after a copy, for two seconds. */
+  copiedLabel?: string;
+  class?: string;
+}
+
+const {
+  id = uid("snippet"),
+  code,
+  copyLabel = "Copy",
+  copiedLabel = "Copied",
+  class: className,
+} = Astro.props;
+
+// The runner (npx, pnpm, bunx) takes one colour, the arguments take another.
+const space = code.indexOf(" ");
+const runner = space === -1 ? code : code.slice(0, space);
+const args = space === -1 ? "" : code.slice(space);
+---
+
+<!-- A command stays left to right in an RTL page, so the snippet opts out of mirroring. -->
+<div
+  data-eris="snippet"
+  data-eris-id={id}
+  data-value={code}
+  data-copy-label={copyLabel}
+  data-copied-label={copiedLabel}
+  dir="ltr"
+  class={cn(
+    "eris-curve flex flex-wrap items-center gap-3 rounded-field border border-border bg-background p-4",
+    className,
+  )}
+>
+  <code class="min-w-0 grow font-mono text-sm leading-6 break-words">
+    <span class="text-code-runner">{runner}</span><span class="text-code-args">{args}</span>
+  </code>
+  <Button variant="secondary" size="sm" data-part="trigger" class="shrink-0">
+    <span data-part="label">{copyLabel}</span>
+  </Button>
+  <span data-part="status" role="status" class="sr-only"></span>
+</div>
+
+<script>
+  import { mountAll } from "@/lib/eris/mount";
+  import { createSnippet } from "./snippet";
+  mountAll("snippet", createSnippet);
+</script>

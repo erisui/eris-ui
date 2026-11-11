@@ -1,0 +1,36 @@
+---
+import Base from "../layouts/Base.astro";
+import Snippet from "@eris/components/snippet/Snippet.astro";
+---
+
+<Base title="Snippet">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Snippet</h1>
+    <p class="text-muted">A shell command with a copy button. The button reads Copied for two seconds.</p>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Default</h2>
+    <Snippet id="install" code="npx eris-ui@latest init" />
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Short command</h2>
+    <Snippet id="short" code="pnpm dev" />
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Long command</h2>
+    <Snippet id="long" code="pnpm dlx eris-ui@latest add button dialog tabs snippet" />
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Long translated labels</h2>
+    <Snippet
+      id="german"
+      code="npx eris-ui@latest init"
+      copyLabel="In die Zwischenablage kopieren"
+      copiedLabel="In die Zwischenablage kopiert"
+    />
+  </section>
+</Base>

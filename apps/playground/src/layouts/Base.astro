@@ -13,7 +13,7 @@ const { title } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} · Eris playground</title>
+    <title>{title} - Eris playground</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap"
@@ -22,18 +22,21 @@ const { title } = Astro.props;
     <ClientRouter />
   </head>
   <body class="min-h-screen">
-    <nav class="flex gap-6 border-b border-border px-10 py-5 text-sm text-muted">
+    <nav class="flex flex-wrap gap-x-6 gap-y-3 border-b border-border px-6 py-5 text-sm text-muted sm:px-10">
       <a href="/" class="hover:text-foreground">
         Dialog
       </a>
       <a href="/tabs" class="hover:text-foreground">
         Tabs
       </a>
+      <a href="/snippet" class="hover:text-foreground">
+        Snippet
+      </a>
       <a href="/second" class="hover:text-foreground">
         Second page
       </a>
     </nav>
-    <main class="mx-auto flex max-w-3xl flex-col gap-12 px-10 py-14">
+    <main class="mx-auto flex max-w-3xl flex-col gap-12 px-6 py-14 sm:px-10">
       <slot />
     </main>
   </body>

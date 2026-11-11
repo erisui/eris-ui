@@ -116,6 +116,9 @@ importers:
 
   packages/components:
     dependencies:
+      '@zag-js/clipboard':
+        specifier: ^1.47.0
+        version: 1.47.0
       '@zag-js/dialog':
         specifier: ^1.47.0
         version: 1.47.0
@@ -1119,6 +1122,9 @@ packages:
 
   '@zag-js/aria-hidden@1.47.0':
     resolution: {integrity: sha512-UVnk+Ge7YvS873dSBzLE6lihHz8jcnaAS6aRxg4O5Gj3NaazW5jWb3dCiSgSGQaG0lxJCdIZysafHy/mIeSbhw==}
+
+  '@zag-js/clipboard@1.47.0':
+    resolution: {integrity: sha512-bOoZQ2Me/k3iiFIUjhMhjs5bnAAoDB1GQB+lliZHOgVQTGM9QaTD0ZFeMEduJXir7OBPdBiqFKoz/vqCiZOfRQ==}
 
   '@zag-js/core@1.47.0':
     resolution: {integrity: sha512-VOlDoXvB43DoHsSJHrBTXBP0gQRPA8nTZY2dIG328iL+U70vu2cYNUDMTBBxHlexJPE3JDAt9kFIoEmfZCNPew==}
@@ -2932,6 +2938,14 @@ snapshots:
   '@zag-js/aria-hidden@1.47.0':
     dependencies:
       '@zag-js/dom-query': 1.47.0
+
+  '@zag-js/clipboard@1.47.0':
+    dependencies:
+      '@zag-js/anatomy': 1.47.0
+      '@zag-js/core': 1.47.0
+      '@zag-js/dom-query': 1.47.0
+      '@zag-js/types': 1.47.0
+      '@zag-js/utils': 1.47.0
 
   '@zag-js/core@1.47.0':
     dependencies:
