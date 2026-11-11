@@ -90,3 +90,44 @@ test("install note lists npm deps and added registry items", async ({ page }) =>
   await expect(dialogNote).toHaveText("Installs @zag-js/dialog, @zag-js/vanilla. Also adds button.");
 });
 
+test("⌘K opens search, finds a heading and goes to it", async ({ page }) => {
+  await page.goto("/");
+  await page.keyboard.press("ControlOrMeta+k");
+  const dialog = page.getByRole("dialog", { name: "Search docs" });
+  await expect(dialog).toBeVisible();
+  const input = dialog.getByRole("combobox", { name: "Search docs" });
+  await expect(input).toBeFocused();
+  await expect(dialog.getByRole("option")).toHaveCount(6);
+
+  await input.fill("activation");
+  const first = dialog.getByRole("option").first();
+  await expect(first).toContainText("Manual activation");
+  await expect(first).toHaveAttribute("aria-selected", "true");
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/docs\/components\/tabs#manual-activation$/);
+  await expect(dialog).toBeHidden();
+
+  await page.keyboard.press("ControlOrMeta+k");
+  await expect(dialog).toBeVisible();
+  await expect(input).toHaveValue("");
+  await input.fill("zzzz");
+  await expect(dialog.getByText("No results for “zzzz”")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole("button", { name: "Search docs" })).toBeFocused();
+});
+
+test("search arrow keys move the selection and clicking a result navigates", async ({ page }) => {
+  await page.goto("/docs");
+  await page.getByRole("button", { name: "Search docs" }).click();
+  const dialog = page.getByRole("dialog", { name: "Search docs" });
+  await dialog.getByRole("combobox").fill("dialog");
+  const options = dialog.getByRole("option");
+  await page.keyboard.press("ArrowDown");
+  await expect(options.nth(1)).toHaveAttribute("aria-selected", "true");
+  await page.keyboard.press("ArrowUp");
+  await expect(options.first()).toHaveAttribute("aria-selected", "true");
+  await options.first().click();
+  await expect(page).toHaveURL(/\/docs\/components\/dialog$/);
+  await expect(page.locator("h1")).toHaveText("Dialog");
+});

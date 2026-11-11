@@ -1,0 +1,347 @@
+---
+import Dialog from "@/components/ui/dialog/Dialog.astro";
+import DialogTrigger from "@/components/ui/dialog/DialogTrigger.astro";
+import DialogContent from "@/components/ui/dialog/DialogContent.astro";
+import DialogTitle from "@/components/ui/dialog/DialogTitle.astro";
+import DialogClose from "@/components/ui/dialog/DialogClose.astro";
+import { cn } from "@/lib/eris/utils";
+
+// A keycap: 20px tall, glyphs centred, at least square so single arrows line up.
+const kbd =
+  "inline-flex h-5 min-w-5 items-center justify-center rounded-[6px] border border-border-strong bg-raised px-1.5 font-mono text-[11px] leading-none text-muted";
+---
+
+<Dialog id="site-search">
+  <span data-search-open class="contents">
+    <DialogTrigger
+      variant="ghost"
+      size="sm"
+      class="size-8 gap-2.5 rounded-pill border-border bg-field p-0 text-muted hover:bg-raised md:h-8 md:w-auto md:min-w-52 md:justify-start md:ps-3 md:pe-[5px]"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5"></path>
+      </svg>
+      <span class="sr-only md:not-sr-only md:font-normal">Search docs</span>
+      <kbd
+        aria-hidden="true"
+        class={cn(kbd, "ms-auto hidden gap-0.5 rounded-pill px-2 font-sans text-xs md:inline-flex")}
+      >
+        <span data-search-modifier>⌘</span>
+        <span>K</span>
+      </kbd>
+    </DialogTrigger>
+  </span>
+  <DialogContent class="max-w-xl gap-0 self-start overflow-hidden p-0 sm:mt-[12vh]">
+    <DialogTitle class="sr-only">Search docs</DialogTitle>
+    <div class="flex items-center gap-3 border-b border-border px-5">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+        class="size-4 shrink-0 text-muted"
+      >
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-3.5-3.5"></path>
+      </svg>
+      <input
+        data-search-input
+        type="search"
+        role="combobox"
+        aria-label="Search docs"
+        aria-autocomplete="list"
+        aria-expanded="true"
+        aria-controls="site-search-results"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="Search docs"
+        class="h-14 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-placeholder [&::-webkit-search-cancel-button]:hidden"
+      />
+      <span data-search-close class="contents">
+        <DialogClose size="sm" class={`${kbd} min-h-0 font-normal`}>
+          <span aria-hidden="true">Esc</span>
+          <span class="sr-only">Close search</span>
+        </DialogClose>
+      </span>
+    </div>
+    <div
+      id="site-search-results"
+      data-search-results
+      role="listbox"
+      aria-label="Results"
+      class="flex max-h-[min(60vh,420px)] flex-col gap-0.5 overflow-y-auto overscroll-contain p-2"
+    ></div>
+    <p data-search-empty hidden class="px-5 pt-6 pb-8 text-center text-sm text-muted"></p>
+    <p data-search-status role="status" class="sr-only"></p>
+    <div class="hidden items-center gap-4 border-t border-border px-5 py-2.5 text-xs text-muted sm:flex">
+      <span class="flex items-center gap-1.5">
+        <kbd class={kbd}>↑</kbd>
+        <kbd class={kbd}>↓</kbd> to move
+      </span>
+      <span class="flex items-center gap-1.5">
+        <kbd class={kbd}>↵</kbd> to open
+      </span>
+      <span class="flex items-center gap-1.5">
+        <kbd class={kbd}>Esc</kbd> to close
+      </span>
+    </div>
+  </DialogContent>
+</Dialog>
+
+<script>
+  import type { SearchRecord } from "../search";
+
+  let index: Promise<SearchRecord[]> | undefined;
+  const load = () =>
+    (index ??= fetch("/search.json")
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .catch(() => {
+        index = undefined;
+        return [];
+      }));
+
+  const terms = (q: string) => q.toLowerCase().split(/\s+/).filter(Boolean);
+
+  function score(r: SearchRecord, words: string[]) {
+    const title = r.title.toLowerCase();
+    const parent = r.parent.toLowerCase();
+    const text = r.text.toLowerCase();
+    let total = 0;
+    let direct = false;
+    for (const w of words) {
+      if (title.startsWith(w)) total += 12;
+      else if (title.includes(w)) total += 8;
+      else if (text.includes(w)) total += 1;
+      else if (parent.includes(w)) {
+        total += 3;
+        continue;
+      } else return 0;
+      direct = true;
+    }
+    // A heading that matches only through its page name repeats the page result.
+    if (!direct) return 0;
+    return total + (r.kind === "page" ? 2 : 0);
+  }
+
+  function search(records: SearchRecord[], q: string) {
+    const words = terms(q);
+    if (!words.length) return records.filter((r) => r.kind === "page");
+    return records
+      .map((r, i) => ({ r, i, s: score(r, words) }))
+      .filter((x) => x.s > 0)
+      .sort((a, b) => b.s - a.s || a.i - b.i)
+      .slice(0, 12)
+      .map((x) => x.r);
+  }
+
+  /** Text with every query word wrapped in <mark>, built as nodes so nothing is parsed as HTML. */
+  function highlight(text: string, words: string[]) {
+    const frag = document.createDocumentFragment();
+    if (!words.length) {
+      frag.append(text);
+      return frag;
+    }
+    const escaped = words.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    const parts = text.split(new RegExp(`(${escaped.join("|")})`, "gi"));
+    parts.forEach((p, i) => {
+      if (i % 2) {
+        const m = document.createElement("mark");
+        m.className = "bg-transparent text-foreground";
+        m.textContent = p;
+        frag.append(m);
+      } else if (p) frag.append(p);
+    });
+    return frag;
+  }
+
+  /** A few words of the text around the first matching word, or "" when the title already matched. */
+  function snippet(r: SearchRecord, words: string[]) {
+    const title = r.title.toLowerCase();
+    if (!words.length || words.every((w) => title.includes(w))) return "";
+    const lower = r.text.toLowerCase();
+    const at = Math.min(...words.map((w) => lower.indexOf(w)).filter((i) => i >= 0));
+    if (!Number.isFinite(at)) return "";
+    const start = at < 12 ? 0 : r.text.lastIndexOf(" ", at - 10) + 1;
+    const end = r.text.indexOf(" ", start + 40);
+    const out = r.text.slice(start, end === -1 ? undefined : end);
+    return (start > 0 ? "…" : "") + (end === -1 ? out : out.replace(/[.,;:]+$/, "") + "…");
+  }
+
+  // 16px stroke icons: a page, a component page, and a heading on a page.
+  const icons = {
+    page: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
+    component: '<path d="m21 8-9-5-9 5v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/>',
+    section: '<path d="M5 9h14M5 15h14M10 4 8 20M16 4l-2 16"/>',
+  };
+  const iconFor = (r: SearchRecord) =>
+    r.kind === "section"
+      ? icons.section
+      : r.href.startsWith("/docs/components/")
+        ? icons.component
+        : icons.page;
+
+  const plural = new Intl.PluralRules("en");
+  const countLabel = (n: number) => `${n} ${plural.select(n) === "one" ? "result" : "results"}`;
+
+  function setup() {
+    const root = document.querySelector<HTMLElement>('[data-eris-id="site-search"]');
+    const input = root?.querySelector<HTMLInputElement>("[data-search-input]");
+    const list = root?.querySelector<HTMLElement>("[data-search-results]");
+    const empty = root?.querySelector<HTMLElement>("[data-search-empty]");
+    const status = root?.querySelector<HTMLElement>("[data-search-status]");
+    // Zag renames data-part on mount, so the buttons are found through wrappers we own.
+    const trigger = root?.querySelector<HTMLElement>("[data-search-open] > button");
+    const close = root?.querySelector<HTMLElement>("[data-search-close] > button");
+    if (!root || !input || !list || !empty || !status || !trigger || !close || root.dataset.searchReady)
+      return;
+    root.dataset.searchReady = "";
+
+    const isMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
+    root.querySelector("[data-search-modifier]")!.textContent = isMac ? "⌘" : "Ctrl";
+    trigger.setAttribute("aria-keyshortcuts", isMac ? "Meta+K" : "Control+K");
+
+    let options: HTMLAnchorElement[] = [];
+    let active = -1;
+
+    const activate = (i: number, scroll = true) => {
+      options[active]?.setAttribute("aria-selected", "false");
+      active = options.length ? (i + options.length) % options.length : -1;
+      const el = options[active];
+      if (!el) return input.removeAttribute("aria-activedescendant");
+      el.setAttribute("aria-selected", "true");
+      input.setAttribute("aria-activedescendant", el.id);
+      if (scroll) el.scrollIntoView({ block: "nearest" });
+    };
+
+    let run = 0;
+    const update = async () => {
+      const q = input.value.trim();
+      const id = ++run;
+      const records = await load();
+      if (id !== run) return;
+      const results = search(records, q);
+      const words = terms(q);
+
+      list.replaceChildren();
+      options = results.map((r, i) => {
+        const a = document.createElement("a");
+        a.id = `site-search-option-${i}`;
+        a.href = r.href;
+        a.tabIndex = -1;
+        a.setAttribute("role", "option");
+        a.setAttribute("aria-selected", "false");
+        a.className =
+          "group eris-curve flex items-center gap-3 rounded-field px-3 py-2 text-sm text-foreground no-underline outline-none aria-selected:bg-raised";
+
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("fill", "none");
+        svg.setAttribute("stroke", "currentColor");
+        svg.setAttribute("stroke-width", "1.75");
+        svg.setAttribute("stroke-linecap", "round");
+        svg.setAttribute("stroke-linejoin", "round");
+        svg.setAttribute("aria-hidden", "true");
+        svg.setAttribute("class", "size-4 shrink-0 text-muted group-aria-selected:text-foreground");
+        svg.innerHTML = iconFor(r);
+
+        const body = document.createElement("span");
+        body.className = "flex min-w-0 flex-1 flex-col";
+        const t = document.createElement("span");
+        t.className = "truncate";
+        t.append(highlight(r.title, words));
+        body.append(t);
+        const s = snippet(r, words);
+        if (s) {
+          const d = document.createElement("span");
+          d.className = "truncate text-[13px] text-muted";
+          d.append(highlight(s, words));
+          body.append(d);
+        }
+        a.append(svg, body);
+
+        // Grouped under nav headings when browsing, so the page's section is only shown for matches.
+        if (words.length) {
+          const p = document.createElement("span");
+          p.className = "shrink-0 text-xs text-muted";
+          p.textContent = r.parent;
+          a.append(p);
+        }
+        a.addEventListener("pointermove", () => active !== i && activate(i, false));
+        a.addEventListener("click", () => close.click());
+        return a;
+      });
+
+      if (words.length) list.append(...options);
+      else {
+        // No query: list every page under its nav heading.
+        const groups = new Map<string, HTMLAnchorElement[]>();
+        results.forEach((r, i) => groups.set(r.parent, [...(groups.get(r.parent) ?? []), options[i]!]));
+        [...groups].forEach(([name, items], g) => {
+          const group = document.createElement("div");
+          group.setAttribute("role", "group");
+          group.setAttribute("aria-labelledby", `site-search-group-${g}`);
+          group.className = "flex flex-col gap-0.5";
+          const label = document.createElement("div");
+          label.id = `site-search-group-${g}`;
+          label.className = `px-3 pb-1 text-xs font-medium text-muted ${g ? "pt-3" : "pt-1"}`;
+          label.textContent = name;
+          group.append(label, ...items);
+          list.append(group);
+        });
+      }
+      list.hidden = !options.length;
+      empty.hidden = !!options.length;
+      empty.textContent = records.length
+        ? `No results for “${q}”`
+        : "Unable to load search. Check your connection and try again.";
+      status.textContent = q ? countLabel(options.length) : "";
+      active = -1;
+      activate(0, false);
+      list.scrollTop = 0;
+    };
+
+    input.addEventListener("input", update);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        activate(active + (e.key === "ArrowDown" ? 1 : -1));
+      } else if (e.key === "Enter" && options[active]) {
+        e.preventDefault();
+        const el = options[active];
+        if (e.metaKey || e.ctrlKey) window.open(el.href, "_blank", "noopener");
+        else el.click();
+      }
+    });
+    trigger.addEventListener("pointerenter", load, { once: true });
+    trigger.addEventListener("click", () => {
+      input.value = "";
+      update();
+    });
+  }
+
+  // Module scripts can run after the first astro:page-load, so set up now as well.
+  document.addEventListener("astro:page-load", setup);
+  setup();
+
+  // One listener for the whole session; the header is replaced on every navigation.
+  document.addEventListener("keydown", (e) => {
+    if (e.key.toLowerCase() !== "k" || !(e.metaKey || e.ctrlKey) || e.altKey || e.shiftKey) return;
+    const root = document.querySelector<HTMLElement>('[data-eris-id="site-search"]');
+    if (!root) return;
+    e.preventDefault();
+    const open = root.dataset.state === "open";
+    root
+      .querySelector<HTMLElement>(open ? "[data-search-close] > button" : "[data-search-open] > button")
+      ?.click();
+  });
+</script>

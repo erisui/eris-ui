@@ -40,6 +40,8 @@
 
 @layer base {
   html {
+    /* The sticky header is 68px tall; anchored headings land below it with room to spare. */
+    scroll-padding-block-start: 5.5rem;
     background: var(--site-page);
     color: var(--eris-foreground);
     font-family: var(--eris-font-sans);
