@@ -3,6 +3,7 @@
 export const SITE = {
   name: "Eris UI",
   url: "https://erisui.dev",
+  email: "hello@erisui.dev",
   title: "Eris UI - Accessible components for Astro",
   description:
     "Accessible UI components you can drop into any Astro project. Plain .astro files, Zag state machines, Tailwind v4.",
