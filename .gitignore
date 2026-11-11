@@ -4,7 +4,7 @@ dist/
 .turbo/
 test-results/
 playwright-report/
-apps/docs/public/r/
+apps/www/public/r/
 *.tgz
 .env
 .env.*

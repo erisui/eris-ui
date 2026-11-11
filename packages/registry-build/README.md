@@ -1,6 +1,6 @@
 # @eris-ui/registry-build
 
-Reads `packages/components/src/registry.ts` and writes the registry to `apps/docs/public/r/`: one `<name>.json` per item in shadcn's registry-item format, plus `registry.json`.
+Reads `packages/components/src/registry.ts` and writes the registry to `apps/www/public/r/`: one `<name>.json` per item in shadcn's registry-item format, plus `registry.json`.
 
 ```sh
 pnpm --filter @eris-ui/registry-build build

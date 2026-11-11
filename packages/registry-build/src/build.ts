@@ -1,7 +1,7 @@
 /**
  * Build the free registry.
  *
- * Reads packages/components/src/registry.ts and writes, into apps/docs/public/r:
+ * Reads packages/components/src/registry.ts and writes, into apps/www/public/r:
  *   <name>.json     one shadcn-shaped registry item per component, file contents inlined
  *   registry.json   the index of every item
  *
@@ -16,7 +16,7 @@ import type { RegistryMeta } from "../../components/src/lib/eris/meta.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const SRC = resolve(here, "../../components/src");
-const OUT = resolve(here, "../../../apps/docs/public/r");
+const OUT = resolve(here, "../../../apps/www/public/r");
 const SCHEMA = "https://ui.shadcn.com/schema/registry-item.json";
 
 export interface RegistryFile {

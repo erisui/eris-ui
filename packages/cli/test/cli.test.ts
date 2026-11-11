@@ -6,7 +6,7 @@ import { addThemeImport, rewrite, targetPath } from "../src/files.ts";
 import { resolveItems } from "../src/registry.ts";
 
 const config = defaultConfig();
-const REGISTRY = fileURLToPath(new URL("../../../apps/docs/public/r", import.meta.url));
+const REGISTRY = fileURLToPath(new URL("../../../apps/www/public/r", import.meta.url));
 
 test("maps registry paths into the project", () => {
   assert.equal(
