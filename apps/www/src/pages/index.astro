@@ -6,6 +6,7 @@ import CodeBlock from "../components/CodeBlock.astro";
 import ShowcaseTile from "../components/ShowcaseTile.astro";
 import ProBackdrop from "../components/ProBackdrop.astro";
 import { LINKS, cliCommand } from "../const";
+import { docsNav } from "../nav";
 import Button from "@/components/ui/button/Button.astro";
 import Dialog from "@/components/ui/dialog/Dialog.astro";
 import DialogTrigger from "@/components/ui/dialog/DialogTrigger.astro";
@@ -20,6 +21,9 @@ import TabsContent from "@/components/ui/tabs/TabsContent.astro";
 import Kbd from "@/components/ui/kbd/Kbd.astro";
 import KbdGroup from "@/components/ui/kbd/KbdGroup.astro";
 import FactIcon, { type FactIconName } from "../components/FactIcon.astro";
+
+/** Documented components, so the hero badge count follows the docs nav. */
+const componentCount = docsNav.find((s) => s.title === "Components")?.items.length ?? 0;
 
 const facts: { title: string; body: string; icon: FactIconName }[] = [
   {
@@ -50,7 +54,7 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
   <main id="main">
     <section class="mx-auto flex max-w-6xl flex-col items-start gap-8 px-6 pt-24 pb-20">
       <span class="eris-curve rounded-pill border border-border px-3 py-1 text-xs text-muted">
-        Early preview · 4 components
+        Beta · {componentCount} components
       </span>
       <h1 class="max-w-3xl text-5xl leading-[1.05] font-semibold tracking-[-0.04em] text-balance md:text-6xl">
         Accessible UI components you can drop into any Astro project.
