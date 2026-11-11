@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import Docs from "../../layouts/Docs.astro";
+import TableCell from "../../components/TableCell.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("docs");
@@ -27,5 +28,5 @@ const { title, description, status } = entry.data;
     </div>
     <p class="text-[17px] leading-relaxed text-muted">{description}</p>
   </div>
-  <Content />
+  <Content components={{ td: TableCell }} />
 </Docs>

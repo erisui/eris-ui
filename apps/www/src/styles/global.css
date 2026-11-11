@@ -51,56 +51,59 @@
 .prose > * + * {
   margin-top: 1em;
 }
-.prose h1 {
+.prose h1:not(:where(.not-prose *)) {
   font-size: 32px;
   line-height: 1.2;
   font-weight: 600;
   letter-spacing: -0.03em;
   color: var(--eris-foreground);
 }
-.prose h2 {
+.prose h2:not(:where(.not-prose *)) {
   margin-top: 2.4em;
   font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--eris-foreground);
 }
-.prose h3 {
+.prose h3:not(:where(.not-prose *)) {
   margin-top: 1.8em;
   font-size: 16px;
   font-weight: 600;
   color: var(--eris-foreground);
 }
-.prose a {
-  color: var(--eris-foreground);
-  text-decoration: underline;
-  text-decoration-color: var(--eris-border-strong);
-  text-underline-offset: 3px;
+/* Layered so Tailwind utilities on components inside prose (e.g. Button) still win. Unlayered rules beat every utility. */
+@layer components {
+  .prose a:not(:where(.not-prose *)) {
+    color: var(--eris-foreground);
+    text-decoration: underline;
+    text-decoration-color: var(--eris-border-strong);
+    text-underline-offset: 3px;
+  }
+  .prose a:hover:not(:where(.not-prose *)) {
+    text-decoration-color: var(--eris-foreground);
+  }
 }
-.prose a:hover {
-  text-decoration-color: var(--eris-foreground);
-}
-.prose strong {
+.prose strong:not(:where(.not-prose *)) {
   color: var(--eris-foreground);
   font-weight: 600;
 }
-.prose ul,
-.prose ol {
+.prose ul:not(:where(.not-prose *)),
+.prose ol:not(:where(.not-prose *)) {
   padding-left: 1.25em;
 }
-.prose ul {
+.prose ul:not(:where(.not-prose *)) {
   list-style: disc;
 }
-.prose ol {
+.prose ol:not(:where(.not-prose *)) {
   list-style: decimal;
 }
-.prose li + li {
+.prose li + li:not(:where(.not-prose *)) {
   margin-top: 0.35em;
 }
-.prose li::marker {
+.prose li:not(:where(.not-prose *))::marker {
   color: var(--eris-placeholder);
 }
-.prose :not(pre) > code {
+.prose :not(pre) > code:not(:where(.not-prose *)) {
   font-family: var(--eris-font-mono);
   font-size: 0.86em;
   color: var(--eris-foreground);
@@ -109,7 +112,7 @@
   border-radius: 6px;
   padding: 0.1em 0.35em;
 }
-.prose pre {
+.prose pre:not(:where(.not-prose *)) {
   font-family: var(--eris-font-mono);
   font-size: 13px;
   line-height: 1.65;
@@ -119,24 +122,31 @@
   background: #0f0f0f !important;
   overflow-x: auto;
 }
-.prose table {
+.prose table:not(:where(.not-prose *)) {
   width: 100%;
   font-size: 14px;
   border-collapse: collapse;
 }
-.prose th {
-  text-align: left;
+.prose th:not(:where(.not-prose *)) {
+  text-align: start;
   font-weight: 500;
   color: var(--eris-muted);
-  padding: 8px 12px 8px 0;
+  padding-block: 8px;
+  padding-inline: 0 12px;
   border-bottom: 1px solid var(--eris-border);
 }
-.prose td {
-  padding: 10px 12px 10px 0;
+.prose td:not(:where(.not-prose *)) {
+  padding-block: 10px;
+  padding-inline: 0 12px;
   border-bottom: 1px solid #202020;
   vertical-align: top;
 }
-.prose kbd {
+/* Table code can wrap at camelCase humps (see components/TableCell.astro); each line keeps its pill. */
+.prose td code:not(:where(.not-prose *)) {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.prose kbd:not(:where(.not-prose *)) {
   font-family: var(--eris-font-mono);
   font-size: 12px;
   color: var(--eris-foreground);

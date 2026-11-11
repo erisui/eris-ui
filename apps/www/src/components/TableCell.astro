@@ -1,0 +1,15 @@
+---
+/**
+ * A docs table cell. Long identifiers in its inline code may wrap at camelCase humps on
+ * narrow screens, so `closeOnInteractOutside` wraps as closeOn·Interact·Outside instead of
+ * pushing the table past the screen, and `"primary"` never splits. <wbr> adds no text,
+ * so copying the code still gives the original identifier.
+ */
+const html = await Astro.slots.render("default");
+const withBreaks = html.replace(
+  /(<code[^>]*>)([^<]*)(<\/code>)/g,
+  (_, open, text, close) => open + text.replace(/([a-z0-9])(?=[A-Z])/g, "$1<wbr>") + close,
+);
+---
+
+<td {...Astro.props} set:html={withBreaks} />
