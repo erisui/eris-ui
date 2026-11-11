@@ -8,6 +8,11 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    # Chromium and its system libraries come preinstalled, so CI never hits the apt mirrors.
+    # Keep the tag in step with the @playwright/test version in pnpm-lock.yaml.
+    container:
+      image: mcr.microsoft.com/playwright:v1.65.0-noble
+      options: --user 1001
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -19,10 +24,11 @@ jobs:
       - run: pnpm check
       - run: pnpm build
       - run: pnpm test
-      - run: pnpm --filter playground exec playwright install --with-deps chromium
       - run: pnpm test:e2e
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-report
-          path: apps/playground/test-results
+          path: |
+            apps/playground/test-results
+            apps/www/test-results

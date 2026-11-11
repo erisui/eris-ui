@@ -8,7 +8,7 @@ export default defineConfig({
   fullyParallel: true,
   reporter: process.env.CI ? "github" : "list",
   use: {
-    baseURL: "http://localhost:4321",
+    baseURL: "http://localhost:4330",
     trace: "retain-on-failure",
   },
   projects: [
@@ -18,8 +18,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm exec astro preview --port 4321 --ignore-lock",
-    url: "http://localhost:4321",
+    command: "pnpm exec astro preview --port 4330 --ignore-lock",
+    url: "http://localhost:4330",
     reuseExistingServer: !process.env.CI,
   },
 });
