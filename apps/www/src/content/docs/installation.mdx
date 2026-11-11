@@ -1,0 +1,64 @@
+---
+title: Installation
+description: Set up Eris UI in an Astro 5.2+ project.
+---
+
+import Install from "../../components/Install.astro";
+import CodeBlock from "../../components/CodeBlock.astro";
+
+## 1. Run init
+
+In the root of your Astro project:
+
+<Install />
+
+`init` does four things:
+
+1. Runs `astro add tailwind` if Tailwind CSS v4 is not set up yet.
+2. Imports `eris-theme.css` right after `@import "tailwindcss"` in `src/styles/global.css`.
+3. Adds the `@/*` path alias to `tsconfig.json`, which the components import from.
+4. Writes `eris.json` and copies `eris-core` into `src/lib/eris`.
+
+## 2. Import the stylesheet
+
+Make sure a layout imports your global CSS, and load the Geist font if you want the default look:
+
+<CodeBlock
+  lang="astro"
+  title="src/layouts/Layout.astro"
+  code={`---
+import "../styles/global.css";
+---
+
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-background text-foreground">
+    <slot />
+  </body>
+</html>`}
+/>
+
+## 3. Add components
+
+<Install name="dialog" />
+
+Components land in `src/components/ui`. Import them like any other Astro component:
+
+<CodeBlock
+  lang="astro"
+  code={`---
+import Dialog from "@/components/ui/dialog/Dialog.astro";
+import DialogTrigger from "@/components/ui/dialog/DialogTrigger.astro";
+---`}
+/>
+
+## Updating
+
+Copied code does not update itself. To see what changed upstream since you added a component:
+
+<CodeBlock lang="sh" code="npx eris-ui@latest diff dialog" />
+
+Run `add` again with `--overwrite` to take the new version. Without it, `add` keeps any file you have changed.

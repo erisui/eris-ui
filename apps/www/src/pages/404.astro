@@ -1,0 +1,14 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Button from "@/components/ui/button/Button.astro";
+---
+
+<Base title="Page not found">
+  <Header />
+  <main id="main" class="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-32">
+    <p class="font-mono text-sm text-muted">404</p>
+    <h1 class="text-4xl font-semibold tracking-[-0.03em]">This page does not exist.</h1>
+    <Button href="/docs">Go to the docs</Button>
+  </main>
+</Base>

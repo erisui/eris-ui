@@ -1,0 +1,23 @@
+---
+import Tabs from "@/components/ui/tabs/Tabs.astro";
+import TabsList from "@/components/ui/tabs/TabsList.astro";
+import TabsTrigger from "@/components/ui/tabs/TabsTrigger.astro";
+import TabsContent from "@/components/ui/tabs/TabsContent.astro";
+---
+
+<Tabs id="runner" activationMode="manual" class="w-full max-w-md">
+  <TabsList aria-label="Runner">
+    <TabsTrigger value="npm">npm</TabsTrigger>
+    <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+    <TabsTrigger value="bun">bun</TabsTrigger>
+  </TabsList>
+  <TabsContent value="npm">
+    <code>npx eris-ui add tabs</code>
+  </TabsContent>
+  <TabsContent value="pnpm">
+    <code>pnpm dlx eris-ui add tabs</code>
+  </TabsContent>
+  <TabsContent value="bun">
+    <code>bunx eris-ui add tabs</code>
+  </TabsContent>
+</Tabs>

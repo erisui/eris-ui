@@ -1,0 +1,17 @@
+---
+import Tabs from "@/components/ui/tabs/Tabs.astro";
+import TabsList from "@/components/ui/tabs/TabsList.astro";
+import TabsTrigger from "@/components/ui/tabs/TabsTrigger.astro";
+import TabsContent from "@/components/ui/tabs/TabsContent.astro";
+---
+
+<Tabs id="workspace" orientation="vertical" class="w-full max-w-md items-start">
+  <TabsList aria-label="Workspace">
+    <TabsTrigger value="general">General</TabsTrigger>
+    <TabsTrigger value="members">Members</TabsTrigger>
+    <TabsTrigger value="danger">Danger zone</TabsTrigger>
+  </TabsList>
+  <TabsContent value="general">Workspace name and URL.</TabsContent>
+  <TabsContent value="members">Invite and remove people.</TabsContent>
+  <TabsContent value="danger">Delete this workspace.</TabsContent>
+</Tabs>

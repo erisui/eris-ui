@@ -1,0 +1,133 @@
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "tailwindcss";
+@import "@eris-ui/components/theme.css";
+
+@source "../../../../packages/components/src";
+
+:root {
+  --eris-font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --eris-font-mono: "Geist Mono Variable", ui-monospace, monospace;
+}
+
+@theme inline {
+  --font-mono: var(--eris-font-mono);
+}
+
+@layer base {
+  html {
+    background: var(--eris-background);
+    color: var(--eris-foreground);
+    font-family: var(--eris-font-sans);
+    -webkit-font-smoothing: antialiased;
+    color-scheme: dark;
+  }
+  ::selection {
+    background: rgb(98 138 247 / 0.35);
+  }
+}
+
+/* Docs prose. Kept small on purpose: headings, paragraphs, lists, tables, code. */
+.prose {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--eris-ghost);
+}
+.prose > * + * {
+  margin-top: 1em;
+}
+.prose h1 {
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--eris-foreground);
+}
+.prose h2 {
+  margin-top: 2.4em;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--eris-foreground);
+}
+.prose h3 {
+  margin-top: 1.8em;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--eris-foreground);
+}
+.prose a {
+  color: var(--eris-foreground);
+  text-decoration: underline;
+  text-decoration-color: var(--eris-border-strong);
+  text-underline-offset: 3px;
+}
+.prose a:hover {
+  text-decoration-color: var(--eris-foreground);
+}
+.prose strong {
+  color: var(--eris-foreground);
+  font-weight: 600;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.25em;
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose li + li {
+  margin-top: 0.35em;
+}
+.prose li::marker {
+  color: var(--eris-placeholder);
+}
+.prose :not(pre) > code {
+  font-family: var(--eris-font-mono);
+  font-size: 0.86em;
+  color: var(--eris-foreground);
+  background: var(--eris-raised);
+  border: 1px solid var(--eris-border);
+  border-radius: 6px;
+  padding: 0.1em 0.35em;
+}
+.prose pre {
+  font-family: var(--eris-font-mono);
+  font-size: 13px;
+  line-height: 1.65;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--eris-border);
+  background: #0f0f0f !important;
+  overflow-x: auto;
+}
+.prose table {
+  width: 100%;
+  font-size: 14px;
+  border-collapse: collapse;
+}
+.prose th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--eris-muted);
+  padding: 8px 12px 8px 0;
+  border-bottom: 1px solid var(--eris-border);
+}
+.prose td {
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid #202020;
+  vertical-align: top;
+}
+.prose kbd {
+  font-family: var(--eris-font-mono);
+  font-size: 12px;
+  color: var(--eris-foreground);
+  background: var(--eris-raised);
+  border: 1px solid var(--eris-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 1px 6px;
+}

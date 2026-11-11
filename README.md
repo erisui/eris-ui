@@ -17,7 +17,7 @@ Accessible UI components you can drop into any Astro project. Plain `.astro` fil
 | ------------------------- | -------------------------------------------------------------------------------------------- |
 | `packages/components`     | Source of truth for every free component, plus `eris-core` (mount lifecycle, helpers, theme) |
 | `apps/playground`         | Bare Astro app for trying components; Playwright and axe tests run against it                |
-| `apps/www`                | erisui.dev: landing page, docs and the hosted registry (planned)                             |
+| `apps/www`                | erisui.dev: landing page, docs with live demos, and the hosted registry at `/r`              |
 | `packages/registry-build` | Turns component source into shadcn-compatible registry JSON                                  |
 | `packages/cli`            | The `eris-ui` CLI: `init`, `add`, `diff`                                                     |
 | `tooling/tsconfig`        | Shared TypeScript config                                                                     |
@@ -29,6 +29,7 @@ Requires Node 22.12+ and pnpm 10.
 ```sh
 pnpm install
 pnpm dev                       # playground at http://localhost:4321
+pnpm --filter www dev          # the website
 pnpm build
 pnpm check                     # astro check + tsc
 pnpm test                      # CLI unit tests

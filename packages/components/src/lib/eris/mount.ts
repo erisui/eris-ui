@@ -40,19 +40,21 @@ export function mountAll(name: string, factory: Factory) {
   mountName(name, factory);
 }
 
-/** Find a part that belongs to this root, not to a nested component of the same kind. */
+/**
+ * A part belongs to its nearest Eris root of any kind. A Dialog inside a Tabs panel
+ * has its own "trigger" and "content" parts, and Tabs must not claim them.
+ */
+const ownedBy = (el: HTMLElement, root: HTMLElement) => el.parentElement?.closest("[data-eris]") === root;
+
+/** Find a part that belongs to this root, not to a component nested inside it. */
 export function part<T extends HTMLElement = HTMLElement>(root: HTMLElement, name: string): T | null {
-  const kind = root.dataset.eris;
   for (const el of root.querySelectorAll<T>(`[data-part="${name}"]`)) {
-    if (el.closest(`[data-eris="${kind}"]`) === root) return el;
+    if (ownedBy(el, root)) return el;
   }
   return null;
 }
 
 /** Same as part(), for parts that can appear more than once (several triggers). */
 export function parts<T extends HTMLElement = HTMLElement>(root: HTMLElement, name: string): T[] {
-  const kind = root.dataset.eris;
-  return [...root.querySelectorAll<T>(`[data-part="${name}"]`)].filter(
-    (el) => el.closest(`[data-eris="${kind}"]`) === root,
-  );
+  return [...root.querySelectorAll<T>(`[data-part="${name}"]`)].filter((el) => ownedBy(el, root));
 }

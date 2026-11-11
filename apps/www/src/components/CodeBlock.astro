@@ -1,0 +1,64 @@
+---
+import { Code } from "astro:components";
+
+interface Props {
+  code: string;
+  lang?: "astro" | "ts" | "sh" | "css" | "json";
+  title?: string;
+}
+
+const { code, lang = "astro", title } = Astro.props;
+---
+
+<div class="eris-code not-prose relative" data-copy-root>
+  {title && <div class="mb-2 font-mono text-xs text-muted">{title}</div>}
+  <Code code={code.trim()} lang={lang} theme="github-dark-default" class="eris-pre" />
+  <button
+    type="button"
+    data-copy
+    class="eris-curve absolute top-2.5 right-2.5 rounded-pill border border-border bg-raised px-2.5 py-1 text-xs text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+    aria-label="Copy code"
+  >
+    Copy
+  </button>
+</div>
+
+<style is:global>
+  .eris-pre {
+    font-family: var(--eris-font-mono);
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 16px 18px;
+    padding-right: 72px;
+    border-radius: 16px;
+    border: 1px solid var(--eris-border);
+    background: #0f0f0f !important;
+    overflow-x: auto;
+  }
+  @supports (corner-shape: superellipse(1.25)) {
+    .eris-pre {
+      corner-shape: superellipse(1.25);
+    }
+  }
+</style>
+
+<script>
+  function wire() {
+    document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
+      if (btn.dataset.wired) return;
+      btn.dataset.wired = "";
+      btn.addEventListener("click", async () => {
+        const code = btn.closest("[data-copy-root]")?.querySelector("pre")?.innerText ?? "";
+        try {
+          await navigator.clipboard.writeText(code);
+          btn.textContent = "Copied";
+        } catch {
+          btn.textContent = "Press Ctrl+C";
+        }
+        setTimeout(() => (btn.textContent = "Copy"), 1500);
+      });
+    });
+  }
+  document.addEventListener("astro:page-load", wire);
+  wire();
+</script>

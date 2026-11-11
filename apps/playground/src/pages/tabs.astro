@@ -4,6 +4,11 @@ import Tabs from "@eris/components/tabs/Tabs.astro";
 import TabsList from "@eris/components/tabs/TabsList.astro";
 import TabsTrigger from "@eris/components/tabs/TabsTrigger.astro";
 import TabsContent from "@eris/components/tabs/TabsContent.astro";
+import Dialog from "@eris/components/dialog/Dialog.astro";
+import DialogTrigger from "@eris/components/dialog/DialogTrigger.astro";
+import DialogContent from "@eris/components/dialog/DialogContent.astro";
+import DialogTitle from "@eris/components/dialog/DialogTitle.astro";
+import DialogClose from "@eris/components/dialog/DialogClose.astro";
 ---
 
 <Base title="Tabs">
@@ -63,6 +68,25 @@ import TabsContent from "@eris/components/tabs/TabsContent.astro";
       <TabsContent value="general">Workspace name and URL.</TabsContent>
       <TabsContent value="members">Invite and remove people.</TabsContent>
       <TabsContent value="danger">Delete this workspace.</TabsContent>
+    </Tabs>
+  </section>
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Dialog inside a tab panel</h2>
+    <Tabs id="nested">
+      <TabsList aria-label="Nested">
+        <TabsTrigger value="one">One</TabsTrigger>
+        <TabsTrigger value="two">Two</TabsTrigger>
+      </TabsList>
+      <TabsContent value="one">
+        <Dialog id="nested-dialog">
+          <DialogTrigger>Open nested dialog</DialogTrigger>
+          <DialogContent>
+            <DialogTitle>Nested dialog</DialogTitle>
+            <DialogClose>Close</DialogClose>
+          </DialogContent>
+        </Dialog>
+      </TabsContent>
+      <TabsContent value="two">Second panel</TabsContent>
     </Tabs>
   </section>
 </Base>

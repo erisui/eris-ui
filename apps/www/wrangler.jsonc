@@ -1,0 +1,10 @@
+{
+  // Static site on Cloudflare Workers. `pnpm deploy` after `pnpm build`.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "erisui-www",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}

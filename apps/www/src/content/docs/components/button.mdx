@@ -1,0 +1,52 @@
+---
+title: Button
+description: A pill button with five variants and four sizes.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Variants from "../../../demos/button/Variants.astro";
+import variantsSrc from "../../../demos/button/Variants.astro?raw";
+import Sizes from "../../../demos/button/Sizes.astro";
+import sizesSrc from "../../../demos/button/Sizes.astro?raw";
+import AsLink from "../../../demos/button/Link.astro";
+import linkSrc from "../../../demos/button/Link.astro?raw";
+
+<Demo id="button-variants" source={variantsSrc}>
+  <Variants />
+</Demo>
+
+## Installation
+
+<Install name="button" />
+
+## Variants
+
+`primary` is the default. Use `accent` for the one action you most want people to take on a screen, such as buying or upgrading. `danger` is for destructive actions.
+
+## Sizes
+
+<Demo id="button-sizes" source={sizesSrc}>
+  <Sizes />
+</Demo>
+
+`icon` makes a square button. Give it an `aria-label`, since there is no visible text.
+
+## As a link
+
+Pass `href` and the button renders an `<a>`, so it navigates like a link and screen readers announce it as one.
+
+<Demo id="button-link" source={linkSrc}>
+  <AsLink />
+</Demo>
+
+## Props
+
+| Prop      | Type                                                          | Default                    |
+| --------- | ------------------------------------------------------------- | -------------------------- |
+| `variant` | `"primary" \| "accent" \| "secondary" \| "ghost" \| "danger"` | `"primary"`                |
+| `size`    | `"sm" \| "md" \| "lg" \| "icon"`                              | `"md"`                     |
+| `href`    | `string`                                                      | none; renders a `<button>` |
+
+Other attributes, such as `disabled` or `type`, go straight to the element.

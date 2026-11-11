@@ -1,0 +1,49 @@
+---
+title: Dialog
+description: A modal window that traps focus until it closes.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/dialog/Basic.astro";
+import basicSrc from "../../../demos/dialog/Basic.astro?raw";
+import Alert from "../../../demos/dialog/Alert.astro";
+import alertSrc from "../../../demos/dialog/Alert.astro?raw";
+
+<Demo id="dialog-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="dialog" />
+
+## Confirmations
+
+For a decision the user must make before going on, use `role="alertdialog"` and turn off closing on outside click. Escape still closes it.
+
+<Demo id="dialog-alert" source={alertSrc}>
+  <Alert />
+</Demo>
+
+## Keyboard
+
+| Key                                                 | Does                                                        |
+| --------------------------------------------------- | ----------------------------------------------------------- |
+| <kbd>Enter</kbd> or <kbd>Space</kbd> on the trigger | Opens the dialog and moves focus inside                     |
+| <kbd>Tab</kbd> / <kbd>Shift</kbd> <kbd>Tab</kbd>    | Moves between focusable elements, staying inside the dialog |
+| <kbd>Esc</kbd>                                      | Closes the dialog and returns focus to the trigger          |
+
+While the dialog is open, the page behind it does not scroll and screen readers only see the dialog.
+
+## Parts
+
+| Component           | Renders                                                                |
+| ------------------- | ---------------------------------------------------------------------- |
+| `Dialog`            | The root. Props: `id`, `defaultOpen`, `role`, `closeOnInteractOutside` |
+| `DialogTrigger`     | The button that opens it. Takes Button's `variant` and `size`          |
+| `DialogContent`     | The backdrop and the dialog panel                                      |
+| `DialogTitle`       | The heading; becomes the dialog's accessible name                      |
+| `DialogDescription` | Supporting text; becomes its accessible description                    |
+| `DialogClose`       | A button that closes it. Takes Button's `variant` and `size`           |

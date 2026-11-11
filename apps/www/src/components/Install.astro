@@ -1,0 +1,60 @@
+---
+import { registry } from "@eris/registry";
+import CodeBlock from "./CodeBlock.astro";
+import Tabs from "@/components/ui/tabs/Tabs.astro";
+import TabsList from "@/components/ui/tabs/TabsList.astro";
+import TabsTrigger from "@/components/ui/tabs/TabsTrigger.astro";
+import TabsContent from "@/components/ui/tabs/TabsContent.astro";
+
+interface Props {
+  /** Registry item name. Omit for the init command. */
+  name?: string;
+}
+
+const { name } = Astro.props;
+const item = name ? registry.find((i) => i.name === name) : undefined;
+if (name && !item) throw new Error(`Install: no registry item named "${name}"`);
+
+const args = name ? `add ${name}` : "init";
+const runners = [
+  { pm: "npm", cmd: `npx eris-ui@latest ${args}` },
+  { pm: "pnpm", cmd: `pnpm dlx eris-ui@latest ${args}` },
+  { pm: "bun", cmd: `bunx eris-ui@latest ${args}` },
+  { pm: "yarn", cmd: `yarn dlx eris-ui@latest ${args}` },
+];
+const id = `install-${name ?? "init"}`;
+const deps = item?.dependencies ?? [];
+const extra = (item?.registryDependencies ?? []).filter((d) => d !== "eris-core");
+---
+
+<div class="not-prose my-6 flex flex-col gap-3">
+  <Tabs id={id}>
+    <TabsList aria-label="Package manager">
+      {runners.map((r) => (
+        <TabsTrigger value={r.pm}>{r.pm}</TabsTrigger>
+      ))}
+    </TabsList>
+    {runners.map((r) => (
+      <TabsContent value={r.pm}>
+        <CodeBlock code={r.cmd} lang="sh" />
+      </TabsContent>
+    ))}
+  </Tabs>
+  {item && (deps.length > 0 || extra.length > 0) && (
+    <p class="text-[13px] text-muted">
+      {deps.length > 0 && (
+        <>
+          Installs{" "}
+          {deps.map((d, i) => (
+            <>
+              <code class="font-mono text-ghost">{d}</code>
+              {i < deps.length - 1 ? ", " : ""}
+            </>
+          ))}
+          .
+        </>
+      )}
+      {extra.length > 0 && <> Also adds {extra.join(", ")}.</>}
+    </p>
+  )}
+</div>

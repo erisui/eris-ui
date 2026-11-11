@@ -1,0 +1,56 @@
+---
+title: Tabs
+description: Panels of content shown one at a time, with arrow-key navigation.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/tabs/Basic.astro";
+import basicSrc from "../../../demos/tabs/Basic.astro?raw";
+import Vertical from "../../../demos/tabs/Vertical.astro";
+import verticalSrc from "../../../demos/tabs/Vertical.astro?raw";
+import Manual from "../../../demos/tabs/Manual.astro";
+import manualSrc from "../../../demos/tabs/Manual.astro?raw";
+
+<Demo id="tabs-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="tabs" />
+
+## Vertical
+
+<Demo id="tabs-vertical" source={verticalSrc}>
+  <Vertical />
+</Demo>
+
+## Manual activation
+
+By default, moving focus to a tab selects it. With `activationMode="manual"`, the arrow keys only move focus, and <kbd>Enter</kbd> or <kbd>Space</kbd> selects. Use it when showing a panel is slow or costly.
+
+<Demo id="tabs-manual" source={manualSrc}>
+  <Manual />
+</Demo>
+
+## Keyboard
+
+| Key                                  | Does                                                                                   |
+| ------------------------------------ | -------------------------------------------------------------------------------------- |
+| <kbd>Tab</kbd>                       | Moves focus to the selected tab, then into its panel                                   |
+| <kbd>→</kbd> / <kbd>←</kbd>          | Next or previous tab (<kbd>↓</kbd> / <kbd>↑</kbd> when vertical), wrapping at the ends |
+| <kbd>Home</kbd> / <kbd>End</kbd>     | First or last tab                                                                      |
+| <kbd>Enter</kbd> or <kbd>Space</kbd> | Selects the focused tab in manual mode                                                 |
+
+Disabled tabs are skipped.
+
+## Parts
+
+| Component     | Renders                                                                             |
+| ------------- | ----------------------------------------------------------------------------------- |
+| `Tabs`        | The root. Props: `id`, `defaultValue`, `orientation`, `activationMode`, `loopFocus` |
+| `TabsList`    | The row of tabs and the sliding indicator                                           |
+| `TabsTrigger` | One tab. Props: `value`, `disabled`                                                 |
+| `TabsContent` | The panel for a tab. Prop: `value`                                                  |

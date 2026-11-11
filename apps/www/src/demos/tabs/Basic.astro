@@ -1,0 +1,21 @@
+---
+import Tabs from "@/components/ui/tabs/Tabs.astro";
+import TabsList from "@/components/ui/tabs/TabsList.astro";
+import TabsTrigger from "@/components/ui/tabs/TabsTrigger.astro";
+import TabsContent from "@/components/ui/tabs/TabsContent.astro";
+---
+
+<Tabs id="settings" class="w-full max-w-md">
+  <TabsList aria-label="Settings">
+    <TabsTrigger value="account">Account</TabsTrigger>
+    <TabsTrigger value="password">Password</TabsTrigger>
+    <TabsTrigger value="billing" disabled>
+      Billing
+    </TabsTrigger>
+    <TabsTrigger value="notifications">Notifications</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">Change your name and avatar.</TabsContent>
+  <TabsContent value="password">Change your password.</TabsContent>
+  <TabsContent value="billing">Billing is coming soon.</TabsContent>
+  <TabsContent value="notifications">Choose what we email you about.</TabsContent>
+</Tabs>

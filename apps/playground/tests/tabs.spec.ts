@@ -96,6 +96,20 @@ test.describe("Tabs", () => {
     await expect(tab(page, "settings", "Password")).toHaveAttribute("aria-selected", "true");
   });
 
+  test("a Dialog inside a tab panel keeps its own parts", async ({ page }) => {
+    const nested = group(page, "nested");
+    await expect(nested.getByRole("tab")).toHaveCount(2);
+    const open = page.getByRole("button", { name: "Open nested dialog" });
+    await expect(open).not.toHaveAttribute("role", "tab");
+    await open.click();
+    await expect(page.getByRole("dialog", { name: "Nested dialog" })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(open).toBeFocused();
+    await tab(page, "nested", "One").click();
+    await page.keyboard.press("ArrowRight");
+    await expect(tab(page, "nested", "Two")).toHaveAttribute("aria-selected", "true");
+  });
+
   test("has no serious accessibility violations", async ({ page }) => {
     const results = await new AxeBuilder({ page }).analyze();
     const serious = results.violations.filter((v) => v.impact === "serious" || v.impact === "critical");

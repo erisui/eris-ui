@@ -1,0 +1,30 @@
+---
+import Dialog from "@/components/ui/dialog/Dialog.astro";
+import DialogTrigger from "@/components/ui/dialog/DialogTrigger.astro";
+import DialogContent from "@/components/ui/dialog/DialogContent.astro";
+import DialogTitle from "@/components/ui/dialog/DialogTitle.astro";
+import DialogDescription from "@/components/ui/dialog/DialogDescription.astro";
+import DialogClose from "@/components/ui/dialog/DialogClose.astro";
+---
+
+<Dialog id="create-project">
+  <DialogTrigger variant="primary">Create project</DialogTrigger>
+  <DialogContent>
+    <div class="flex flex-col gap-1.5">
+      <DialogTitle>Create project</DialogTitle>
+      <DialogDescription>Deploy your new project in one click.</DialogDescription>
+    </div>
+    <label class="flex flex-col gap-2 text-[15px] font-medium">
+      Name
+      <input
+        name="name"
+        placeholder="Name of your project"
+        class="eris-curve h-11 rounded-field border border-border bg-field px-3.5 font-normal text-foreground placeholder:text-placeholder focus-visible:border-ring focus-visible:outline-none"
+      />
+    </label>
+    <div class="flex justify-end gap-2">
+      <DialogClose>Cancel</DialogClose>
+      <DialogClose variant="primary">Deploy</DialogClose>
+    </div>
+  </DialogContent>
+</Dialog>

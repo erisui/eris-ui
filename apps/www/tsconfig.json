@@ -1,0 +1,12 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "paths": {
+      "@/lib/eris/*": ["../../packages/components/src/lib/eris/*"],
+      "@/components/ui/*": ["../../packages/components/src/components/*"],
+      "@eris/registry": ["../../packages/components/src/registry.ts"]
+    }
+  },
+  "include": [".astro/types.d.ts", "src/**/*", "../../packages/components/src/**/*"],
+  "exclude": ["dist"]
+}

@@ -1,0 +1,55 @@
+---
+title: Theming
+description: Every colour, radius and timing is a CSS variable in one file.
+---
+
+import CodeBlock from "../../components/CodeBlock.astro";
+
+`init` puts the theme in `src/styles/eris-theme.css`. It defines the tokens as CSS variables and maps them to Tailwind utilities like `bg-surface` and `rounded-card`. Change a variable and every component follows.
+
+<CodeBlock
+  lang="css"
+  title="src/styles/eris-theme.css"
+  code={`:root {
+  --eris-background: #141414;
+  --eris-surface: #191919;
+  --eris-foreground: #f5f5f5;
+  --eris-radius-card: 24px;
+  /* ... */
+}`}
+/>
+
+## Colour
+
+| Token               | Default   | Used for                             |
+| ------------------- | --------- | ------------------------------------ |
+| `--eris-background` | `#141414` | Page                                 |
+| `--eris-surface`    | `#191919` | Cards, dialogs                       |
+| `--eris-field`      | `#1C1C1C` | Inputs                               |
+| `--eris-raised`     | `#1F1F1F` | Secondary buttons, the tab indicator |
+| `--eris-border`     | `#2A2A2A` | Borders                              |
+| `--eris-foreground` | `#F5F5F5` | Text, the primary button             |
+| `--eris-muted`      | `#8C8C8C` | Descriptions, helper text            |
+| `--eris-danger`     | `#E07A90` | Destructive actions, errors          |
+| `--eris-ring`       | `#628AF7` | Focus rings                          |
+
+The accent button uses its own gradient tokens (`--eris-accent-top`, `--eris-accent-bottom`, `--eris-accent-highlight`, `--eris-accent-border`). Use it for the single most important action on a screen.
+
+## Radius and the Eris curve
+
+| Token                 | Default  | Used for              |
+| --------------------- | -------- | --------------------- |
+| `--eris-radius-pill`  | `9999px` | Buttons, tabs, badges |
+| `--eris-radius-field` | `12px`   | Inputs                |
+| `--eris-radius-menu`  | `16px`   | Menus, popovers       |
+| `--eris-radius-card`  | `24px`   | Cards, dialogs        |
+
+Elements with the `eris-curve` class get superellipse corners instead of circular ones, through `corner-shape: superellipse(1.25)`. The curve eases into the straight edge instead of meeting it at a seam. Browsers without `corner-shape` support show the normal radius, so nothing breaks. Remove the class to opt out.
+
+## Motion
+
+State changes take `--eris-duration-state` (150ms) and opening or closing takes `--eris-duration-open` (200ms), both on `--eris-ease`.
+
+## Font
+
+The theme asks for Geist through `--eris-font-sans`. Point it at another family to change the type everywhere.

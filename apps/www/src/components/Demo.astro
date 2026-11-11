@@ -1,0 +1,42 @@
+---
+import CodeBlock from "./CodeBlock.astro";
+import Tabs from "@/components/ui/tabs/Tabs.astro";
+import TabsList from "@/components/ui/tabs/TabsList.astro";
+import TabsTrigger from "@/components/ui/tabs/TabsTrigger.astro";
+import TabsContent from "@/components/ui/tabs/TabsContent.astro";
+
+interface Props {
+  /** Raw source of the demo file, from a `?raw` import. */
+  source: string;
+  id: string;
+  /** Pro demos show the preview only. */
+  hideCode?: boolean;
+}
+
+const { source, id, hideCode = false } = Astro.props;
+// Show the demo the way a user writes it: drop the leading frontmatter fence if empty.
+const code = source.replace(/^---\s*---\s*/, "");
+---
+
+<div class="not-prose my-6">
+  {hideCode ? (
+    <div class="eris-curve flex min-h-56 items-center justify-center rounded-card border border-border bg-[#111] p-10">
+      <slot />
+    </div>
+  ) : (
+    <Tabs id={`demo-${id}`}>
+      <TabsList aria-label="Demo view">
+        <TabsTrigger value="preview">Preview</TabsTrigger>
+        <TabsTrigger value="code">Code</TabsTrigger>
+      </TabsList>
+      <TabsContent value="preview">
+        <div class="eris-curve flex min-h-56 flex-wrap items-center justify-center gap-3 rounded-card border border-border bg-[#111] p-10">
+          <slot />
+        </div>
+      </TabsContent>
+      <TabsContent value="code">
+        <CodeBlock code={code} lang="astro" />
+      </TabsContent>
+    </Tabs>
+  )}
+</div>

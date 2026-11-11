@@ -1,0 +1,23 @@
+---
+title: Introduction
+description: Accessible UI components you can drop into any Astro project.
+---
+
+Eris UI is a set of components written as plain `.astro` files. You copy them into your project with a CLI and they become your code: change the markup, the classes or the behaviour however you like.
+
+Behaviour comes from [Zag](https://zagjs.com), a library of state machines that handle keyboard navigation, focus and ARIA attributes. Eris connects those machines to server-rendered HTML with a small script per component, so you never need a React, Vue or Svelte island to get an accessible dialog.
+
+## What you get
+
+- Components that follow the WAI-ARIA patterns, checked in a real browser with Playwright and axe on every change.
+- Tailwind CSS v4 styling, themed through CSS variables you can change in one file.
+- Support for Astro view transitions: components start on each page and clean up before the next one.
+- A CLI that installs the npm packages each component needs and leaves alone any file you have edited.
+
+## How it works
+
+Each component is a few `.astro` files that render the markup, plus one `.ts` file that runs in the browser. The script starts a Zag machine and keeps the right attributes and event listeners on each part of the component as its state changes. Astro bundles that script once per page, however many copies of the component you use.
+
+## Next
+
+Start with [installation](/docs/installation), then browse the [components](/docs/components/button).
