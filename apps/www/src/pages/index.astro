@@ -17,6 +17,8 @@ import Tabs from "@/components/ui/tabs/Tabs.astro";
 import TabsList from "@/components/ui/tabs/TabsList.astro";
 import TabsTrigger from "@/components/ui/tabs/TabsTrigger.astro";
 import TabsContent from "@/components/ui/tabs/TabsContent.astro";
+import Kbd from "@/components/ui/kbd/Kbd.astro";
+import KbdGroup from "@/components/ui/kbd/KbdGroup.astro";
 import FactIcon, { type FactIconName } from "../components/FactIcon.astro";
 
 const facts: { title: string; body: string; icon: FactIconName }[] = [
@@ -48,7 +50,7 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
   <main id="main">
     <section class="mx-auto flex max-w-6xl flex-col items-start gap-8 px-6 pt-24 pb-20">
       <span class="eris-curve rounded-pill border border-border px-3 py-1 text-xs text-muted">
-        Early preview · 3 components
+        Early preview · 4 components
       </span>
       <h1 class="max-w-3xl text-5xl leading-[1.05] font-semibold tracking-[-0.04em] text-balance md:text-6xl">
         Accessible UI components you can drop into any Astro project.
@@ -76,23 +78,7 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
           <Button>Button</Button>
         </ShowcaseTile>
 
-        <ShowcaseTile name="Dialog" href="/docs/components/dialog">
-          <Dialog id="home-dialog">
-            <DialogTrigger>Open dialog</DialogTrigger>
-            <DialogContent>
-              <div class="flex flex-col gap-1.5">
-                <DialogTitle>Create project</DialogTitle>
-                <DialogDescription>Focus stays inside until you close this.</DialogDescription>
-              </div>
-              <div class="flex justify-end gap-2">
-                <DialogClose>Cancel</DialogClose>
-                <DialogClose variant="primary">Create</DialogClose>
-              </div>
-            </DialogContent>
-          </Dialog>
-        </ShowcaseTile>
-
-        <ShowcaseTile name="Tabs" href="/docs/components/tabs" class="md:col-span-2 lg:col-span-1">
+        <ShowcaseTile name="Tabs" href="/docs/components/tabs" class="lg:col-span-2">
           <Tabs id="home-tabs" class="items-center text-center">
             <TabsList aria-label="Example">
               <TabsTrigger value="preview">Preview</TabsTrigger>
@@ -109,6 +95,37 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
               Home and End jump to the first and last tab.
             </TabsContent>
           </Tabs>
+        </ShowcaseTile>
+
+        <ShowcaseTile name="Kbd" href="/docs/components/kbd" class="lg:col-span-2">
+          <dl class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-5 gap-y-3 text-sm">
+            <dt><Kbd>Tab</Kbd></dt>
+            <dd class="text-muted">Moves focus</dd>
+            <dt>
+              <KbdGroup><Kbd>Shift</Kbd><Kbd>Tab</Kbd></KbdGroup>
+            </dt>
+            <dd class="text-muted">Moves focus back</dd>
+            <dt class="text-muted"><Kbd label="Right arrow">→</Kbd> / <Kbd label="Left arrow">←</Kbd></dt>
+            <dd class="text-muted">Next or previous tab</dd>
+            <dt><Kbd>Esc</Kbd></dt>
+            <dd class="text-muted">Closes the dialog</dd>
+          </dl>
+        </ShowcaseTile>
+
+        <ShowcaseTile name="Dialog" href="/docs/components/dialog">
+          <Dialog id="home-dialog">
+            <DialogTrigger>Open dialog</DialogTrigger>
+            <DialogContent>
+              <div class="flex flex-col gap-1.5">
+                <DialogTitle>Create project</DialogTitle>
+                <DialogDescription>Focus stays inside until you close this.</DialogDescription>
+              </div>
+              <div class="flex justify-end gap-2">
+                <DialogClose>Cancel</DialogClose>
+                <DialogClose variant="primary">Create</DialogClose>
+              </div>
+            </DialogContent>
+          </Dialog>
         </ShowcaseTile>
       </div>
     </section>

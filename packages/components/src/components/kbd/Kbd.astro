@@ -1,0 +1,24 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { kbdVariants, type KbdSize } from "./variants";
+
+type Props = HTMLAttributes<"kbd"> & {
+  size?: KbdSize;
+  /** What a screen reader says instead of the symbol, such as "Command" for ⌘. */
+  label?: string;
+};
+
+const { size, label, class: className, ...rest } = Astro.props;
+const classes = kbdVariants({ size, class: className as string | undefined });
+---
+
+{label ? (
+  <kbd class={classes} {...rest}>
+    <span aria-hidden="true"><slot /></span>
+    <span class="sr-only">{label}</span>
+  </kbd>
+) : (
+  <kbd class={classes} {...rest}>
+    <slot />
+  </kbd>
+)}

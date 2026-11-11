@@ -1,0 +1,15 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "@/lib/eris/utils";
+
+type Props = HTMLAttributes<"kbd">;
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<!-- Keys pressed together, such as ⌘ K. The HTML spec nests them in an outer <kbd>.
+     As one inline box, the group moves to the next line whole instead of splitting. It only wraps
+     between keys when the shortcut is wider than a full line, such as at 200% text on a phone. -->
+<kbd class={cn("inline-flex flex-wrap items-center gap-1 font-normal", className)} {...rest}>
+  <slot />
+</kbd>

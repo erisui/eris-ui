@@ -1,0 +1,53 @@
+---
+import Base from "../layouts/Base.astro";
+import Kbd from "@eris/components/kbd/Kbd.astro";
+import KbdGroup from "@eris/components/kbd/KbdGroup.astro";
+---
+
+<Base title="Kbd">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Kbd</h1>
+    <p class="text-muted">Keys and shortcuts drawn as keycaps.</p>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">In a sentence</h2>
+    <p id="sentence" class="text-[15px] leading-[1.7] text-ghost">
+      Press <Kbd id="enter">Enter</Kbd> or <Kbd>Space</Kbd> to select the focused tab.
+    </p>
+    <p id="plain" class="text-[15px] leading-[1.7] text-ghost">Press Enter or Space to select the focused tab.</p>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Keyboard table</h2>
+    <ul class="flex flex-col text-sm text-ghost">
+      <li class="border-b border-border py-2.5"><Kbd>Tab</Kbd></li>
+      <li class="border-b border-border py-2.5"><Kbd id="right">→</Kbd> / <Kbd>←</Kbd></li>
+      <li class="border-b border-border py-2.5"><Kbd>Home</Kbd> / <Kbd>End</Kbd></li>
+      <li class="border-b border-border py-2.5"><Kbd>Enter</Kbd> or <Kbd>Space</Kbd></li>
+    </ul>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Shortcuts</h2>
+    <div class="flex flex-wrap items-center gap-4">
+      <KbdGroup id="command-k"><Kbd id="command" label="Command">⌘</Kbd><Kbd>K</Kbd></KbdGroup>
+      <KbdGroup><Kbd>Shift</Kbd><Kbd>Tab</Kbd></KbdGroup>
+    </div>
+    <!-- A narrow column, so the group has to hold together against wrapping. -->
+    <p class="max-w-40 text-sm text-ghost">
+      Open the command menu with
+      <KbdGroup id="long-shortcut"><Kbd>Ctrl</Kbd><Kbd>Shift</Kbd><Kbd>P</Kbd></KbdGroup>
+      from anywhere.
+    </p>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Small</h2>
+    <p class="flex flex-wrap items-center gap-1.5 text-xs text-muted">
+      <Kbd size="sm" id="small" class="text-muted">↑</Kbd>
+      <Kbd size="sm" class="text-muted">↓</Kbd> to move
+      <Kbd size="sm" label="Enter" class="text-muted">↵</Kbd> to open
+    </p>
+  </section>
+</Base>

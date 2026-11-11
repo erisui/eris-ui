@@ -171,13 +171,3 @@
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
-.prose kbd:not(:where(.not-prose *)) {
-  font-family: var(--eris-font-mono);
-  font-size: 12px;
-  color: var(--eris-foreground);
-  background: var(--eris-raised);
-  border: 1px solid var(--eris-border-strong);
-  border-bottom-width: 2px;
-  border-radius: 6px;
-  padding: 1px 6px;
-}

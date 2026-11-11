@@ -4,11 +4,8 @@ import DialogTrigger from "@/components/ui/dialog/DialogTrigger.astro";
 import DialogContent from "@/components/ui/dialog/DialogContent.astro";
 import DialogTitle from "@/components/ui/dialog/DialogTitle.astro";
 import DialogClose from "@/components/ui/dialog/DialogClose.astro";
-import { cn } from "@/lib/eris/utils";
-
-// A keycap: 20px tall, glyphs centred, at least square so single arrows line up.
-const kbd =
-  "inline-flex h-5 min-w-5 items-center justify-center rounded-[6px] border border-border-strong bg-raised px-1.5 font-mono text-[11px] leading-none text-muted";
+import Kbd from "@/components/ui/kbd/Kbd.astro";
+import { kbdVariants } from "@/components/ui/kbd/variants";
 ---
 
 <Dialog id="site-search">
@@ -30,13 +27,14 @@ const kbd =
         <path d="m20 20-3.5-3.5"></path>
       </svg>
       <span class="sr-only md:not-sr-only md:font-normal">Search docs</span>
-      <kbd
+      <Kbd
+        size="sm"
         aria-hidden="true"
-        class={cn(kbd, "ms-auto hidden gap-0.5 rounded-pill px-2 font-sans text-xs md:inline-flex")}
+        class="ms-auto hidden gap-0.5 rounded-pill px-2 font-sans text-xs text-muted md:inline-flex"
       >
         <span data-search-modifier>⌘</span>
         <span>K</span>
-      </kbd>
+      </Kbd>
     </DialogTrigger>
   </span>
   <DialogContent class="max-w-xl gap-0 self-start overflow-hidden p-0 sm:mt-[12vh]">
@@ -68,7 +66,7 @@ const kbd =
         class="h-14 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-placeholder [&::-webkit-search-cancel-button]:hidden"
       />
       <span data-search-close class="contents">
-        <DialogClose size="sm" class={`${kbd} min-h-0 font-normal`}>
+        <DialogClose size="sm" class={kbdVariants({ size: "sm", class: "px-1.5 text-muted" })}>
           <span aria-hidden="true">Esc</span>
           <span class="sr-only">Close search</span>
         </DialogClose>
@@ -85,14 +83,14 @@ const kbd =
     <p data-search-status role="status" class="sr-only"></p>
     <div class="hidden items-center gap-4 border-t border-border px-5 py-2.5 text-xs text-muted sm:flex">
       <span class="flex items-center gap-1.5">
-        <kbd class={kbd}>↑</kbd>
-        <kbd class={kbd}>↓</kbd> to move
+        <Kbd size="sm" class="text-muted">↑</Kbd>
+        <Kbd size="sm" class="text-muted">↓</Kbd> to move
       </span>
       <span class="flex items-center gap-1.5">
-        <kbd class={kbd}>↵</kbd> to open
+        <Kbd size="sm" label="Enter" class="text-muted">↵</Kbd> to open
       </span>
       <span class="flex items-center gap-1.5">
-        <kbd class={kbd}>Esc</kbd> to close
+        <Kbd size="sm" class="text-muted">Esc</Kbd> to close
       </span>
     </div>
   </DialogContent>

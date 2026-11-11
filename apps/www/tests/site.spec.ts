@@ -8,6 +8,7 @@ const pages = [
   "/docs/theming",
   "/docs/components/button",
   "/docs/components/dialog",
+  "/docs/components/kbd",
   "/docs/components/tabs",
 ];
 
@@ -97,7 +98,7 @@ test("⌘K opens search, finds a heading and goes to it", async ({ page }) => {
   await expect(dialog).toBeVisible();
   const input = dialog.getByRole("combobox", { name: "Search docs" });
   await expect(input).toBeFocused();
-  await expect(dialog.getByRole("option")).toHaveCount(6);
+  await expect(dialog.getByRole("option")).toHaveCount(7);
 
   await input.fill("activation");
   const first = dialog.getByRole("option").first();

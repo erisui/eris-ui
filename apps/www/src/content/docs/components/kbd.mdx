@@ -1,0 +1,64 @@
+---
+title: Kbd
+description: A key or shortcut drawn as a keycap.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/kbd/Basic.astro";
+import basicSrc from "../../../demos/kbd/Basic.astro?raw";
+import Shortcut from "../../../demos/kbd/Shortcut.astro";
+import shortcutSrc from "../../../demos/kbd/Shortcut.astro?raw";
+import Symbols from "../../../demos/kbd/Symbols.astro";
+import symbolsSrc from "../../../demos/kbd/Symbols.astro?raw";
+import Sizes from "../../../demos/kbd/Sizes.astro";
+import sizesSrc from "../../../demos/kbd/Sizes.astro?raw";
+
+<Demo id="kbd-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="kbd" />
+
+## Shortcuts
+
+Wrap keys pressed together in `KbdGroup`. When a shortcut reaches the end of a line, its keys move to the next line together instead of splitting. They only wrap when the shortcut is wider than the space it has.
+
+<Demo id="kbd-shortcut" source={shortcutSrc}>
+  <Shortcut />
+</Demo>
+
+## Symbols
+
+Screen readers read some symbols by their Unicode name or skip them, so <kbd>↵</kbd> can come out as "downwards arrow with corner leftwards". Pass `label` with the key's name and screen readers say that instead. The symbol still shows on screen.
+
+<Demo id="kbd-symbols" source={symbolsSrc}>
+  <Symbols />
+</Demo>
+
+## Sizes
+
+`md` is the default and fits body text and tables. Use `sm` in tighter spots, such as menus and search hints.
+
+<Demo id="kbd-sizes" source={sizesSrc}>
+  <Sizes />
+</Demo>
+
+## Parts
+
+| Component  | Renders                              |
+| ---------- | ------------------------------------ |
+| `Kbd`      | One key. Props: `size`, `label`      |
+| `KbdGroup` | Keys pressed together, such as ⌘ K   |
+
+## Props
+
+| Prop    | Type           | Default                           |
+| ------- | -------------- | --------------------------------- |
+| `size`  | `"sm" \| "md"` | `"md"`                            |
+| `label` | `string`       | none; screen readers read the key |
+
+Other attributes on `Kbd` and `KbdGroup` go straight to the `<kbd>` element.

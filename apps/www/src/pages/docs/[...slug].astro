@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Docs from "../../layouts/Docs.astro";
 import TableCell from "../../components/TableCell.astro";
+import Kbd from "@/components/ui/kbd/Kbd.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("docs");
@@ -28,5 +29,6 @@ const { title, description, status } = entry.data;
     </div>
     <p class="text-[17px] leading-relaxed text-muted">{description}</p>
   </div>
-  <Content components={{ td: TableCell }} />
+  {/* Every <kbd> in the docs renders as the Kbd component, so the docs show the real keycap. */}
+  <Content components={{ td: TableCell, kbd: Kbd }} />
 </Docs>
