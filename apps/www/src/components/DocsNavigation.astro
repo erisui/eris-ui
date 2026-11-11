@@ -1,0 +1,33 @@
+---
+import { docsNav } from "../nav";
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+
+<details class="docs-navigation group mb-8 border-b border-border pb-3 md:hidden">
+  <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 rounded-lg text-sm font-medium text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground">
+    Browse docs
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-4 shrink-0 text-muted group-open:rotate-180 motion-safe:transition-transform motion-safe:duration-150">
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </summary>
+  <nav aria-label="Docs" class="flex flex-col gap-5 pt-4 pb-2">
+    {docsNav.map((section) => (
+      <section class="flex min-w-0 flex-col gap-2">
+        <h2 class="text-[11px] font-medium tracking-[0.06em] text-ghost uppercase">{section.title}</h2>
+        <ul class="ms-0.5 flex flex-col border-s border-border-strong ps-3">
+          {section.items.map((item) => (
+            <li>
+              <a href={item.href} aria-current={item.href === path ? "page" : undefined} class="flex min-h-11 items-center rounded-lg px-3 py-2 text-sm wrap-anywhere text-muted hover:bg-raised hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-foreground aria-[current=page]:bg-raised aria-[current=page]:font-medium aria-[current=page]:text-foreground">{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </nav>
+</details>
+
+<style>
+  .docs-navigation summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

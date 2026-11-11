@@ -5,48 +5,94 @@ import Search from "./Search.astro";
 import { LINKS, SITE } from "../const";
 const path = Astro.url.pathname;
 const links = [
-  { href: "/docs", label: "Docs" },
-  { href: "/docs/components/button", label: "Components" },
+  { href: "/docs", label: "Docs", active: path.startsWith("/docs") && !path.startsWith("/docs/components") },
+  { href: "/docs/components/button", label: "Components", active: path.startsWith("/docs/components") },
 ];
 ---
 
-<header class="sticky top-0 z-40 px-2 pt-3 min-[375px]:px-4">
-  <div class="relative mx-auto flex h-14 max-w-5xl items-center gap-2 rounded-pill border border-border px-4 py-1.5 min-[375px]:gap-3 sm:gap-6 sm:px-5 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
-    <!-- The blur lives on its own layer: backdrop-filter on the bar would trap the search dialog's fixed overlay inside it. -->
-    <div
-      aria-hidden="true"
-      class="absolute inset-0 -z-10 rounded-pill bg-page/75 backdrop-blur-md"
-    ></div>
-    <a href="/" class="-ms-1 flex items-center gap-2.5 text-foreground" aria-label={`${SITE.name} home`}>
+<header class="site-header sticky top-0 z-40 px-2 pt-3 min-[375px]:px-4">
+  <div class="header-bar relative mx-auto flex max-w-5xl items-center rounded-pill border border-border shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]">
+    <div aria-hidden="true" class="header-backdrop absolute inset-0 -z-10 rounded-pill bg-page/90 backdrop-blur-md"></div>
+    <a href="/" class="header-brand flex items-center text-foreground" aria-label={`${SITE.name} home`}>
       <Mark width={26} height={26} aria-hidden="true" />
-      <span class="hidden text-[17px] font-semibold tracking-[-0.03em] whitespace-nowrap min-[375px]:inline">
-        eris <span class="font-normal text-muted">ui</span>
-      </span>
+      <span class="header-wordmark text-[17px] font-semibold tracking-[-0.03em] whitespace-nowrap">eris <span class="font-normal text-muted">ui</span></span>
     </a>
-    <nav aria-label="Main" class="flex items-center gap-0.5 text-sm sm:gap-1">
-      {links.map((l) => (
-        <a
-          href={l.href}
-          class:list={[
-            "rounded-pill px-2.5 py-1.5 transition-colors sm:px-3.5 hover:text-foreground",
-            path.startsWith(l.href) && (l.href !== "/docs" || !path.startsWith("/docs/components"))
-              ? "bg-raised text-foreground"
-              : "text-muted",
-          ]}
-        >
-          {l.label}
-        </a>
-      ))}
+    <nav aria-label="Main" class="header-links">
+      {links.map((l) => {
+        const active = l.active;
+        return <a href={l.href} aria-current={active ? "page" : undefined} class:list={["header-link", active && "is-active"]}>{l.label}</a>;
+      })}
     </nav>
-    <div class="ms-auto">
-      <Search />
-    </div>
-    <a
-      href={LINKS.github}
-      class="-ms-1 inline-flex items-center gap-2 rounded-pill bg-raised px-2 py-1.5 sm:-ms-3 sm:px-3.5 text-sm text-ghost transition-colors hover:text-foreground"
-    >
-      <GitHubMark width={18} height={18} aria-hidden="true" />
-      <span class="sr-only sm:not-sr-only">GitHub</span>
+    <div class="header-search"><Search /></div>
+    <a href={LINKS.github} class="header-github text-ghost hover:text-foreground">
+      <GitHubMark width={18} height={18} aria-hidden="true" /><span class="header-github-label">GitHub</span>
     </a>
+    <details class="header-menu">
+      <summary aria-label="Navigation"><svg class="menu-open-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg><svg class="menu-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6" /></svg></summary>
+      <nav aria-label="Main menu">
+        {links.map((l) => <a href={l.href} aria-current={l.active ? "page" : undefined}>{l.label}</a>)}
+      </nav>
+    </details>
   </div>
 </header>
+<style>
+  .header-bar { height: 56px; gap: 24px; padding: 6px 20px; }
+  .header-brand { gap: 10px; }
+  .header-links { display: flex; align-items: center; gap: 4px; font-size: 14px; }
+  .header-link { border-radius: 999px; padding: 6px 14px; color: var(--eris-muted); }
+  .header-link:hover { color: var(--eris-foreground); }
+  .header-link.is-active { background: var(--eris-raised); color: var(--eris-foreground); }
+  .header-search { margin-inline-start: auto; }
+  .header-github { display: inline-flex; align-items: center; gap: 8px; margin-inline-start: -12px; border-radius: 999px; background: var(--eris-raised); padding: 6px 14px; font-size: 14px; }
+  .header-menu { display: none; }
+  .header-bar a:focus-visible, .header-menu summary:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+  @media (pointer: coarse) {
+    .header-bar { height: auto; min-height: 60px; }
+    .header-brand, .header-link, .header-github { min-height: 44px; }
+    .header-search :global([data-search-open] > button) { min-height: 44px; }
+  }
+  @media (hover: hover) {
+    .header-menu nav a:hover { background: var(--eris-raised); }
+  }
+  @media (max-width: 767px) {
+    .header-bar { height: 60px; gap: 4px; padding: 4px 8px; }
+    .header-brand { height: 44px; flex: none; padding-inline-start: 8px; }
+    .header-links { display: none; }
+    .header-github { width: 44px; height: 44px; justify-content: center; flex: none; margin: 0; padding: 0; background: transparent; }
+    .header-github-label { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .header-menu { display: block; }
+    .header-menu summary { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; list-style: none; }
+    .header-menu summary::-webkit-details-marker { display: none; }
+    .header-menu summary svg { width: 20px; height: 20px; }
+    .header-menu .menu-close-icon, .header-menu[open] .menu-open-icon { display: none; }
+    .header-menu[open] .menu-close-icon { display: block; }
+    .header-menu[open] summary { background: var(--eris-raised); }
+    .header-menu nav { position: absolute; inset-inline: 0; top: calc(100% + 8px); max-height: calc(100dvh - 100px); overflow-y: auto; overscroll-behavior: contain; padding: 8px; border: 1px solid var(--eris-border); border-radius: 20px; background: var(--site-page); box-shadow: 0 12px 32px #0008; }
+    .header-menu nav a { display: flex; align-items: center; min-height: 48px; padding: 12px 16px; border-radius: 12px; font-size: 15px; }
+    .header-menu nav a[aria-current] { background: var(--eris-raised); font-weight: 600; }
+  }
+</style>
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const menu = document.querySelector<HTMLDetailsElement>(".header-menu");
+    if (!menu) return;
+    const controller = new AbortController();
+    document.addEventListener("astro:before-swap", () => controller.abort(), { once: true });
+    document.addEventListener("pointerdown", (event) => {
+      if (event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+    }, { signal: controller.signal });
+    document.addEventListener("focusin", (event) => {
+      if (event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+    }, { signal: controller.signal });
+    const desktop = window.matchMedia("(min-width: 768px)");
+    desktop.addEventListener("change", (event) => {
+      if (event.matches) menu.open = false;
+    }, { signal: controller.signal });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menu.open) {
+        menu.open = false;
+        menu.querySelector("summary")?.focus();
+      }
+    }, { signal: controller.signal });
+  });
+</script>
