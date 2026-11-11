@@ -10,17 +10,48 @@ interface Props {
 const { code, lang = "astro", title } = Astro.props;
 ---
 
-<div class="eris-code not-prose relative" data-copy-root>
+<!-- Code reads left to right on an RTL page too, so the block opts out of mirroring. -->
+<div class="eris-code not-prose relative" data-copy-root data-lang={lang} dir="ltr">
   {title && <div class="mb-2 font-mono text-xs text-muted">{title}</div>}
-  <Code code={code.trim()} lang={lang} theme="github-dark-default" class="eris-pre" />
-  <button
-    type="button"
-    data-copy
-    class="eris-curve absolute top-2.5 right-2.5 rounded-pill border border-border bg-raised px-2.5 py-1 text-xs text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-    aria-label="Copy code"
-  >
-    Copy
-  </button>
+  <div class="relative">
+    <Code code={code.trim()} lang={lang} theme="github-dark-default" class="eris-pre" />
+    <!-- Lucide "copy" and "check" icons, inlined so the docs site needs no icon package. -->
+    <button
+      type="button"
+      data-copy
+      aria-label="Copy code"
+      class="group eris-curve absolute end-2.5 top-[calc(1px+16px+(13px*1.65-2rem)/2)] grid size-8 place-items-center rounded-pill text-muted transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-[copied]:text-foreground"
+    >
+      <svg
+        class="size-4 group-data-[copied]:hidden"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+      </svg>
+      <svg
+        class="hidden size-4 group-data-[copied]:block"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M20 6 9 17l-5-5"></path>
+      </svg>
+    </button>
+    <span data-copy-status role="status" class="sr-only"></span>
+  </div>
 </div>
 
 <style is:global>
@@ -29,11 +60,18 @@ const { code, lang = "astro", title } = Astro.props;
     font-size: 13px;
     line-height: 1.65;
     padding: 16px 18px;
-    padding-right: 72px;
+    padding-inline-end: 56px;
     border-radius: 16px;
     border: 1px solid var(--eris-border);
     background: #0f0f0f !important;
     overflow-x: auto;
+  }
+  /* Shell prompt. Generated content stays out of innerText and selection,
+     so the copy button and a manual select both get the bare command. */
+  .eris-code[data-lang="sh"] .eris-pre .line:not(:empty)::before {
+    content: "$ ";
+    color: var(--eris-muted);
+    user-select: none;
   }
   @supports (corner-shape: superellipse(1.25)) {
     .eris-pre {
@@ -47,15 +85,23 @@ const { code, lang = "astro", title } = Astro.props;
     document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
       if (btn.dataset.wired) return;
       btn.dataset.wired = "";
+      const status = btn.parentElement?.querySelector<HTMLElement>("[data-copy-status]");
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const show = (copied: boolean, message = "") => {
+        btn.toggleAttribute("data-copied", copied);
+        btn.setAttribute("aria-label", copied ? "Copied" : "Copy code");
+        if (status) status.textContent = message;
+      };
       btn.addEventListener("click", async () => {
         const code = btn.closest("[data-copy-root]")?.querySelector("pre")?.innerText ?? "";
+        clearTimeout(timer);
         try {
           await navigator.clipboard.writeText(code);
-          btn.textContent = "Copied";
+          show(true, "Copied");
         } catch {
-          btn.textContent = "Press Ctrl+C";
+          show(false, "Copy failed. Press Ctrl+C to copy.");
         }
-        setTimeout(() => (btn.textContent = "Copy"), 1500);
+        timer = setTimeout(() => show(false), 1500);
       });
     });
   }
