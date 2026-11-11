@@ -3,6 +3,7 @@ import Base from "./Base.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { docsNav } from "../nav";
+import DocsNavigation from "../components/DocsNavigation.astro";
 
 interface Props {
   title: string;
@@ -43,6 +44,7 @@ const next = index >= 0 && index < flat.length - 1 ? flat[index + 1] : undefined
       </nav>
     </aside>
     <main id="main" class="min-w-0 flex-1 py-10 pb-24">
+      <DocsNavigation />
       <article class="prose max-w-3xl">
         <slot />
       </article>

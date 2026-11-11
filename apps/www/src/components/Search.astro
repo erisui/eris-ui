@@ -13,7 +13,7 @@ import { kbdVariants } from "@/components/ui/kbd/variants";
     <DialogTrigger
       variant="ghost"
       size="sm"
-      class="size-8 gap-2.5 rounded-pill border-border bg-field p-0 text-muted hover:bg-raised md:h-8 md:w-auto md:min-w-52 md:justify-start md:ps-3 md:pe-[5px]"
+      class="size-11 gap-2.5 rounded-pill border-border bg-field p-0 text-muted hover:bg-raised md:h-8 md:w-auto md:min-w-52 md:justify-start md:ps-3 md:pe-[5px]"
     >
       <svg
         viewBox="0 0 24 24"
@@ -100,9 +100,14 @@ import { kbdVariants } from "@/components/ui/kbd/variants";
   import type { SearchRecord } from "../search";
 
   let index: Promise<SearchRecord[]> | undefined;
+  let loaded = false;
   const load = () =>
     (index ??= fetch("/search.json")
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((records: SearchRecord[]) => {
+        loaded = true;
+        return records;
+      })
       .catch(() => {
         index = undefined;
         return [];
@@ -225,8 +230,19 @@ import { kbdVariants } from "@/components/ui/kbd/variants";
     const update = async () => {
       const q = input.value.trim();
       const id = ++run;
+      if (!loaded) {
+        list.hidden = true;
+        list.setAttribute("aria-busy", "true");
+        empty.hidden = false;
+        empty.textContent = "Loading docs…";
+        status.textContent = "Loading docs…";
+        options = [];
+        active = -1;
+        input.removeAttribute("aria-activedescendant");
+      }
       const records = await load();
       if (id !== run) return;
+      list.removeAttribute("aria-busy");
       const results = search(records, q);
       const words = terms(q);
 
