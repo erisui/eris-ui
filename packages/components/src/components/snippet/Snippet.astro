@@ -6,9 +6,9 @@ interface Props {
   id?: string;
   /** One shell command, such as `npx eris-ui@latest init`. The copy button copies all of it. */
   code: string;
-  /** Copy button text before a copy. */
+  /** The copy button's accessible name before a copy. The button shows an icon, not this text. */
   copyLabel?: string;
-  /** Copy button text after a copy, for two seconds. */
+  /** The copy button's accessible name after a copy, for two seconds. Screen readers also hear it. */
   copiedLabel?: string;
   class?: string;
 }
@@ -36,15 +36,50 @@ const args = space === -1 ? "" : code.slice(space);
   data-copied-label={copiedLabel}
   dir="ltr"
   class={cn(
-    "eris-curve flex flex-wrap items-center gap-3 rounded-field border border-border bg-background p-4",
+    "eris-curve flex items-start gap-3 rounded-field border border-border bg-background py-3 ps-4 pe-3",
     className,
   )}
 >
-  <code class="min-w-0 grow font-mono text-sm leading-6 break-words">
-    <span class="text-code-runner">{runner}</span><span class="text-code-args">{args}</span>
+  <!-- The block padding makes one line of code as tall as the button, so the two line up. -->
+  <code class="min-w-0 grow py-1 font-mono text-sm leading-6 break-words">
+    <span class="text-code-runner">{runner}</span>
+    <span class="text-code-args">{args}</span>
   </code>
-  <Button variant="secondary" size="sm" data-part="trigger" class="shrink-0">
-    <span data-part="label">{copyLabel}</span>
+  <!-- Lucide "copy" and "check" icons, inlined so the component needs no icon package. -->
+  <Button
+    variant="ghost"
+    size="icon"
+    data-part="trigger"
+    aria-label={copyLabel}
+    class="group size-8 shrink-0 text-muted data-[copied]:text-foreground"
+  >
+    <svg
+      class="group-data-[copied]:hidden"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+    </svg>
+    <svg
+      class="hidden group-data-[copied]:block"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M20 6 9 17l-5-5"></path>
+    </svg>
   </Button>
   <span data-part="status" role="status" class="sr-only"></span>
 </div>
