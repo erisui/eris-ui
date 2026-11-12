@@ -1,0 +1,56 @@
+---
+title: Snippet
+description: A shell command with an icon copy button that confirms the copy.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/snippet/Basic.astro";
+import basicSrc from "../../../demos/snippet/Basic.astro?raw";
+import Long from "../../../demos/snippet/Long.astro";
+import longSrc from "../../../demos/snippet/Long.astro?raw";
+
+<Demo id="snippet-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="snippet" />
+
+## Usage
+
+Pass one shell command as `code`. The copy button copies all of it, and its icon turns into a check mark for two seconds. The first word, such as `npx` or `pnpm`, takes one colour and the rest takes another.
+
+## Long commands
+
+A command breaks onto more lines instead of scrolling sideways. The copy button stays beside the first line.
+
+<Demo id="snippet-long" source={longSrc}>
+  <Long />
+</Demo>
+
+## Labels
+
+The button shows an icon, so its name comes from `copyLabel` and `copiedLabel`. Screen readers say `copyLabel` for the button and `copiedLabel` after a copy. Set both to translate the button.
+
+```astro
+<Snippet code="npx eris-ui@latest init" copyLabel="Kopieren" copiedLabel="Kopiert" />
+```
+
+## Accessibility
+
+- The copy button is a plain `<button>` named by `copyLabel`, so <kbd>Enter</kbd> and <kbd>Space</kbd> copy the command.
+- After a copy, a live region tells screen readers the copied label, because focus does not move.
+- The command stays left to right on a right-to-left page.
+
+## Props
+
+| Prop          | Type     | Default    |
+| ------------- | -------- | ---------- |
+| `code`        | `string` | required   |
+| `copyLabel`   | `string` | `"Copy"`   |
+| `copiedLabel` | `string` | `"Copied"` |
+| `id`          | `string` | generated  |
+| `class`       | `string` | none       |
