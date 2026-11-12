@@ -6,7 +6,9 @@ import Snippet from "@eris/components/snippet/Snippet.astro";
 <Base title="Snippet">
   <section class="flex flex-col gap-4">
     <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Snippet</h1>
-    <p class="text-muted">A shell command with a copy button. The button reads Copied for two seconds.</p>
+    <p class="text-muted">
+      A shell command with an icon copy button. The icon turns into a check mark for two seconds.
+    </p>
   </section>
 
   <section class="flex flex-col gap-4">
@@ -25,7 +27,7 @@ import Snippet from "@eris/components/snippet/Snippet.astro";
   </section>
 
   <section class="flex flex-col gap-4">
-    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Long translated labels</h2>
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">Translated labels</h2>
     <Snippet
       id="german"
       code="npx eris-ui@latest init"
