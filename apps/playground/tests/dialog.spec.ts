@@ -42,10 +42,70 @@ test.describe("Dialog", () => {
     }
   });
 
+  for (const change of ["removed", "hidden", "disabled"] as const) {
+    test(`moves focus to main when the trigger is ${change} before close`, async ({ page }) => {
+      const raw = page.locator('[data-eris-id="create-project"] [data-part="trigger"]');
+      await raw.focus();
+      await page.keyboard.press("Enter");
+      const dialog = page.getByRole("dialog", { name: "Create project" });
+      await expect(dialog).toBeVisible();
+
+      await raw.evaluate((el: HTMLButtonElement, change) => {
+        if (change === "removed") el.remove();
+        if (change === "hidden") el.style.display = "none";
+        if (change === "disabled") el.disabled = true;
+      }, change);
+
+      await page.keyboard.press("Escape");
+      await expect(dialog).toBeHidden();
+      const main = page.locator("main");
+      await expect(main).toBeFocused();
+
+      // main is only focusable for that landing.
+      await page.keyboard.press("Tab");
+      await expect(main).not.toBeFocused();
+      await expect(main).not.toHaveAttribute("tabindex");
+    });
+  }
+
+  test("finalFocus sends focus to the chosen element on close", async ({ page }) => {
+    await trigger(page, "Archive project").click();
+    const dialog = page.getByRole("dialog", { name: "Archive this project?" });
+    await expect(dialog).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    await expect(page.locator("#projects-heading")).toBeFocused();
+  });
+
+  test("finalFocus still applies when the dialog closes in the frame it opened", async ({ page }) => {
+    const raw = page.locator('[data-eris-id="archive-project"] [data-part="trigger"]');
+    await raw.evaluate(async (el: HTMLButtonElement) => {
+      el.focus();
+      el.click();
+      // One task later the dialog is open but its focus trap has not started.
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      el.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    });
+    await expect(raw).toHaveAttribute("data-state", "closed");
+    await expect(page.locator("#projects-heading")).toBeFocused();
+  });
+
+  test("falls back to the trigger when finalFocus matches nothing", async ({ page }) => {
+    await page.locator("#projects-heading").evaluate((el) => el.remove());
+    await trigger(page, "Archive project").click();
+    const dialog = page.getByRole("dialog", { name: "Archive this project?" });
+    await expect(dialog).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    await expect(trigger(page, "Archive project")).toBeFocused();
+  });
+
   test("closes on outside click, but an alertdialog does not", async ({ page }) => {
     await trigger(page, "Create project").click();
     const dialog = page.getByRole("dialog", { name: "Create project" });
     await expect(dialog).toBeVisible();
+    // Outside clicks only count once the dialog has taken focus.
+    await expect(dialog.getByPlaceholder("Name of your project")).toBeFocused();
     await page.mouse.click(10, 10);
     await expect(dialog).toBeHidden();
 

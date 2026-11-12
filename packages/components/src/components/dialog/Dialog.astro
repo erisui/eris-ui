@@ -7,6 +7,8 @@ interface Props {
   /** "alertdialog" for confirmations that need a decision. */
   role?: "dialog" | "alertdialog";
   closeOnInteractOutside?: boolean;
+  /** CSS selector for the element that gets focus on close. Defaults to the trigger. */
+  finalFocus?: string;
   class?: string;
 }
 
@@ -15,6 +17,7 @@ const {
   defaultOpen = false,
   role = "dialog",
   closeOnInteractOutside = true,
+  finalFocus,
   class: className,
 } = Astro.props;
 ---
@@ -25,6 +28,7 @@ const {
   data-default-open={String(defaultOpen)}
   data-role={role}
   data-close-on-interact-outside={String(closeOnInteractOutside)}
+  data-final-focus={finalFocus}
   data-state={defaultOpen ? "open" : "closed"}
   class={cn("contents", className)}
 >
