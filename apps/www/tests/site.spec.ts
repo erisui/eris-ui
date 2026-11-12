@@ -9,6 +9,7 @@ const pages = [
   "/docs/components/button",
   "/docs/components/dialog",
   "/docs/components/kbd",
+  "/docs/components/snippet",
   "/docs/components/tabs",
 ];
 
@@ -91,6 +92,19 @@ test("install note lists npm deps and added registry items", async ({ page }) =>
   await expect(dialogNote).toHaveText("Installs @zag-js/dialog, @zag-js/vanilla. Also adds button.");
 });
 
+test("the snippet demo copies its command and confirms it", async ({ page, context }) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.goto("/docs/components/snippet");
+  const copy = page.locator('[data-eris-id="snippet-init"]').getByRole("button");
+  await expect(copy).toHaveAccessibleName("Copy");
+  await copy.click();
+  await expect(copy).toHaveAccessibleName("Copied");
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("npx eris-ui@latest init");
+  await expect(page.locator('[data-eris-id="install-snippet"] + p')).toHaveText(
+    "Installs @zag-js/clipboard, @zag-js/vanilla. Also adds button.",
+  );
+});
+
 test("⌘K opens search, finds a heading and goes to it", async ({ page }) => {
   await page.goto("/");
   await page.keyboard.press("ControlOrMeta+k");
@@ -98,7 +112,7 @@ test("⌘K opens search, finds a heading and goes to it", async ({ page }) => {
   await expect(dialog).toBeVisible();
   const input = dialog.getByRole("combobox", { name: "Search docs" });
   await expect(input).toBeFocused();
-  await expect(dialog.getByRole("option")).toHaveCount(7);
+  await expect(dialog.getByRole("option")).toHaveCount(8);
 
   await input.fill("activation");
   const first = dialog.getByRole("option").first();
