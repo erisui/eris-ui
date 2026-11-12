@@ -27,6 +27,25 @@ For a decision the user must make before going on, use `role="alertdialog"` and 
   <Alert />
 </Demo>
 
+## Focus on close
+
+Closing the dialog returns focus to the trigger. To send it somewhere else, pass a CSS selector as `finalFocus`. Use this when the trigger will not be there afterwards, like a delete button in a row that the dialog removes.
+
+```astro
+<h2 id="projects" tabindex="-1">
+  Projects
+</h2>
+
+<Dialog finalFocus="#projects">
+  <DialogTrigger variant="danger">Delete project</DialogTrigger>
+  ...
+</Dialog>
+```
+
+The target must be focusable, so give a heading or container `tabindex="-1"`.
+
+If the trigger is removed, hidden or disabled when the dialog closes and `finalFocus` is not set, focus moves to the nearest focusable ancestor of the dialog, or to the page's `<main>`. It does not fall to `<body>`. This only covers changes made before the dialog closes. If you remove the trigger later, after a request finishes for example, set `finalFocus`.
+
 ## Keyboard
 
 | Key                                                 | Does                                                        |
@@ -39,11 +58,11 @@ While the dialog is open, the page behind it does not scroll and screen readers 
 
 ## Parts
 
-| Component           | Renders                                                                |
-| ------------------- | ---------------------------------------------------------------------- |
-| `Dialog`            | The root. Props: `id`, `defaultOpen`, `role`, `closeOnInteractOutside` |
-| `DialogTrigger`     | The button that opens it. Takes Button's `variant` and `size`          |
-| `DialogContent`     | The backdrop and the dialog panel                                      |
-| `DialogTitle`       | The heading; becomes the dialog's accessible name                      |
-| `DialogDescription` | Supporting text; becomes its accessible description                    |
-| `DialogClose`       | A button that closes it. Takes Button's `variant` and `size`           |
+| Component           | Renders                                                                              |
+| ------------------- | ------------------------------------------------------------------------------------ |
+| `Dialog`            | The root. Props: `id`, `defaultOpen`, `role`, `closeOnInteractOutside`, `finalFocus` |
+| `DialogTrigger`     | The button that opens it. Takes Button's `variant` and `size`                        |
+| `DialogContent`     | The backdrop and the dialog panel                                                    |
+| `DialogTitle`       | The heading; becomes the dialog's accessible name                                    |
+| `DialogDescription` | Supporting text; becomes its accessible description                                  |
+| `DialogClose`       | A button that closes it. Takes Button's `variant` and `size`                         |
