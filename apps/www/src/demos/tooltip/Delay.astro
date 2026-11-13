@@ -1,0 +1,13 @@
+---
+import Tooltip from "@/components/ui/tooltip/Tooltip.astro";
+import Button from "@/components/ui/button/Button.astro";
+---
+
+<div class="flex flex-wrap justify-center gap-3">
+  <Tooltip text="Opens at once" openDelay={0} closeDelay={0}>
+    <Button variant="secondary">No delay</Button>
+  </Tooltip>
+  <Tooltip text="Opens after a second" openDelay={1000}>
+    <Button variant="secondary">Slow</Button>
+  </Tooltip>
+</div>

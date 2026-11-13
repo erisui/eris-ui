@@ -1,0 +1,12 @@
+---
+import Tooltip from "@/components/ui/tooltip/Tooltip.astro";
+import Button from "@/components/ui/button/Button.astro";
+import Kbd from "@/components/ui/kbd/Kbd.astro";
+---
+
+<Tooltip>
+  <Button variant="secondary">Search</Button>
+  <span slot="content" class="flex items-center gap-2">
+    Search the docs <Kbd size="sm">/</Kbd>
+  </span>
+</Tooltip>

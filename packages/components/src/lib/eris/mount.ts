@@ -41,10 +41,16 @@ export function mountAll(name: string, factory: Factory) {
 }
 
 /**
+ * Roots that own parts. A wrapper such as Tooltip marks itself data-eris-wrapper: it sits
+ * around another component's trigger and must not take that trigger away from its owner.
+ */
+const OWNER = "[data-eris]:not([data-eris-wrapper])";
+
+/**
  * A part belongs to its nearest Eris root of any kind. A Dialog inside a Tabs panel
  * has its own "trigger" and "content" parts, and Tabs must not claim them.
  */
-const ownedBy = (el: HTMLElement, root: HTMLElement) => el.parentElement?.closest("[data-eris]") === root;
+const ownedBy = (el: HTMLElement, root: HTMLElement) => el.parentElement?.closest(OWNER) === root;
 
 /** Find a part that belongs to this root, not to a component nested inside it. */
 export function part<T extends HTMLElement = HTMLElement>(root: HTMLElement, name: string): T | null {

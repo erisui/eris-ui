@@ -1,0 +1,104 @@
+---
+import Base from "../layouts/Base.astro";
+import Tooltip from "@eris/components/tooltip/Tooltip.astro";
+import Button from "@eris/components/button/Button.astro";
+import Popover from "@eris/components/popover/Popover.astro";
+import PopoverTrigger from "@eris/components/popover/PopoverTrigger.astro";
+import PopoverContent from "@eris/components/popover/PopoverContent.astro";
+import PopoverTitle from "@eris/components/popover/PopoverTitle.astro";
+import Dialog from "@eris/components/dialog/Dialog.astro";
+import DialogTrigger from "@eris/components/dialog/DialogTrigger.astro";
+import DialogContent from "@eris/components/dialog/DialogContent.astro";
+import DialogTitle from "@eris/components/dialog/DialogTitle.astro";
+import DialogClose from "@eris/components/dialog/DialogClose.astro";
+---
+
+<Base title="Tooltip">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Tooltip</h1>
+    <p class="text-muted">Rest the pointer on a button, or Tab to it. Escape hides the hint.</p>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Basic</h2>
+    <div class="flex gap-3">
+      <Tooltip id="basic" text="Save your changes">
+        <Button>Save</Button>
+      </Tooltip>
+      <Tooltip id="instant" text="Opens at once" openDelay={0} closeDelay={0}>
+        <Button variant="secondary">Instant</Button>
+      </Tooltip>
+      <Tooltip id="off" text="Never shown" disabled openDelay={0}>
+        <Button variant="secondary">Disabled hint</Button>
+      </Tooltip>
+    </div>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Placement</h2>
+    <div class="flex gap-3">
+      <Tooltip id="bottom" text="Below" placement="bottom" openDelay={0}>
+        <Button variant="secondary">Bottom</Button>
+      </Tooltip>
+      <Tooltip id="right" text="Beside" placement="right" gutter={12} openDelay={0}>
+        <Button variant="secondary">Right</Button>
+      </Tooltip>
+    </div>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Rich and interactive</h2>
+    <div class="flex items-center gap-3">
+      <Tooltip id="rich" openDelay={0}>
+        <Button variant="secondary">Shortcut</Button>
+        <span slot="content">
+          Search <kbd class="ml-1 text-muted">⌘K</kbd>
+        </span>
+      </Tooltip>
+      <Tooltip id="interactive" text="Select this text" interactive openDelay={0}>
+        <Button variant="secondary">Interactive</Button>
+      </Tooltip>
+      <Tooltip id="link" text="Opens the docs" openDelay={0}>
+        <a href="/second" class="text-sm underline">
+          A link
+        </a>
+      </Tooltip>
+      <Tooltip id="described" text="Second description" openDelay={0}>
+        <button id="own-id" type="button" aria-describedby="existing-help" class="text-sm underline">
+          Own id
+        </button>
+      </Tooltip>
+      <span id="existing-help" class="text-sm text-muted">
+        First description
+      </span>
+    </div>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Around another trigger</h2>
+    <div class="flex gap-3">
+      <Popover id="filters">
+        <Tooltip id="filters-tip" text="Filter the list" openDelay={0}>
+          <PopoverTrigger>Filters</PopoverTrigger>
+        </Tooltip>
+        <PopoverContent>
+          <PopoverTitle>Filter by status</PopoverTitle>
+          <Tooltip id="inside-tip" text="Clears every filter" openDelay={0}>
+            <Button size="sm" variant="secondary">
+              Reset filters
+            </Button>
+          </Tooltip>
+        </PopoverContent>
+      </Popover>
+      <Dialog id="invite">
+        <Tooltip id="invite-tip" text="Invite a teammate" openDelay={0}>
+          <DialogTrigger>Invite</DialogTrigger>
+        </Tooltip>
+        <DialogContent>
+          <DialogTitle>Invite people</DialogTitle>
+          <DialogClose>Close</DialogClose>
+        </DialogContent>
+      </Dialog>
+    </div>
+  </section>
+</Base>

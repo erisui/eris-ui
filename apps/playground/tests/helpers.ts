@@ -20,6 +20,8 @@ export async function leaveAndReturn(page: Page, navLabel: string, path: string)
   await expect(page).toHaveURL(/\/second/);
   await page.getByRole("navigation").getByRole("link", { name: navLabel, exact: true }).click();
   await expect(page).toHaveURL(new RegExp(`${path}$`));
+  // While the transition runs, its overlay takes pointer events, so hovers would be lost.
+  await page.waitForFunction(() => !document.documentElement.matches(":active-view-transition"));
 }
 
 /** Wait for an element's open or close animation to finish, so its box and colours are final. */
