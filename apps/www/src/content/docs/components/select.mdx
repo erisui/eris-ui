@@ -1,0 +1,94 @@
+---
+title: Select
+description: A styled list of options that submits with forms like a native select.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/select/Basic.astro";
+import basicSrc from "../../../demos/select/Basic.astro?raw";
+import Groups from "../../../demos/select/Groups.astro";
+import groupsSrc from "../../../demos/select/Groups.astro?raw";
+import Form from "../../../demos/select/Form.astro";
+import formSrc from "../../../demos/select/Form.astro?raw";
+import Change from "../../../demos/select/Change.astro";
+import changeSrc from "../../../demos/select/Change.astro?raw";
+import States from "../../../demos/select/States.astro";
+import statesSrc from "../../../demos/select/States.astro?raw";
+
+<Demo id="select-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="select" />
+
+## Starting value and groups
+
+Set `value` on the `Select` to the `value` of the item chosen on load. Without it, the trigger shows its `placeholder`.
+
+`SelectGroup` takes a `label`, shown above its options and read out as the group's name.
+
+<Demo id="select-groups" source={groupsSrc}>
+  <Groups />
+</Demo>
+
+## In a form
+
+Give the select a `name`. It keeps a hidden native `<select>` in step with the list, so the form sends the chosen `value`, `required` stops the form while nothing is chosen, and a form reset goes back to the starting value.
+
+<Demo id="select-form" source={formSrc}>
+  <Form />
+</Demo>
+
+The hidden select is filled in by the script, so unlike Switch and Checkbox, Select needs JavaScript. If the field must work without it, use a native `<select>`.
+
+## Reacting to a change
+
+The hidden `<select>` fires a normal `change` event and has the chosen `value`, so you listen to it as you would a native one.
+
+<Demo id="select-change" source={changeSrc}>
+  <Change />
+</Demo>
+
+## Naming the select
+
+`SelectLabel` names the select, and clicking it focuses the trigger. With no visible label, give `SelectTrigger` an `aria-label`, as in the demo above.
+
+## States
+
+<Demo id="select-states" source={statesSrc}>
+  <States />
+</Demo>
+
+`readOnly` keeps the select focusable and sends its value, but the list does not open. A `disabled` item on a `SelectItem` is skipped by the arrow keys.
+
+## Placement
+
+`placement` and `gutter` work as on [Popover](/docs/components/popover#placement). The default is `bottom-start`, 6 pixels from the trigger. The list is at least as wide as the trigger and scrolls when it is long.
+
+## Keyboard
+
+| Key                                                              | Does                                                   |
+| ---------------------------------------------------------------- | ------------------------------------------------------ |
+| <kbd>Enter</kbd>, <kbd>Space</kbd>, <kbd>↓</kbd> or <kbd>↑</kbd> | Opens the list from the trigger                        |
+| <kbd>↓</kbd> / <kbd>↑</kbd>                                      | Next or previous option. Wraps around with `loopFocus` |
+| <kbd>Home</kbd> / <kbd>End</kbd>                                 | First or last option                                   |
+| Letters                                                          | Jumps to the option that starts with what you type     |
+| <kbd>Enter</kbd> or <kbd>Space</kbd>                             | Chooses the option and closes the list                 |
+| <kbd>Esc</kbd>                                                   | Closes the list without changing the value             |
+
+Typing letters while the list is closed changes the value directly, as on a native select. Choosing several options at once is not part of this component yet.
+
+## Parts
+
+| Component       | Renders                                                                                                                           |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `Select`        | The root. Props: `id`, `name`, `value`, `disabled`, `required`, `readOnly`, `invalid`, `form`, `placement`, `gutter`, `loopFocus` |
+| `SelectLabel`   | The visible label                                                                                                                 |
+| `SelectTrigger` | The button showing the chosen option. Props: `placeholder`, `aria-label`                                                          |
+| `SelectContent` | The floating list                                                                                                                 |
+| `SelectItem`    | One option. Props: `value`, `disabled`                                                                                            |
+| `SelectGroup`   | A labelled set of options. Prop: `label`                                                                                          |

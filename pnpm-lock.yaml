@@ -131,6 +131,9 @@ importers:
       '@zag-js/popover':
         specifier: ^1.47.0
         version: 1.47.0
+      '@zag-js/select':
+        specifier: ^1.47.0
+        version: 1.47.0
       '@zag-js/switch':
         specifier: ^1.47.0
         version: 1.47.0
@@ -1153,6 +1156,9 @@ packages:
   '@zag-js/clipboard@1.47.0':
     resolution: {integrity: sha512-bOoZQ2Me/k3iiFIUjhMhjs5bnAAoDB1GQB+lliZHOgVQTGM9QaTD0ZFeMEduJXir7OBPdBiqFKoz/vqCiZOfRQ==}
 
+  '@zag-js/collection@1.47.0':
+    resolution: {integrity: sha512-GMnmLfuf/fmUQKKkRaEPn7yIBye5S++GbNZSNJd9WtBZMHf5iu9+bsWSIQOt38O7lNUAmieoBD+k6w70bam2Vw==}
+
   '@zag-js/core@1.47.0':
     resolution: {integrity: sha512-VOlDoXvB43DoHsSJHrBTXBP0gQRPA8nTZY2dIG328iL+U70vu2cYNUDMTBBxHlexJPE3JDAt9kFIoEmfZCNPew==}
 
@@ -1188,6 +1194,9 @@ packages:
 
   '@zag-js/remove-scroll@1.47.0':
     resolution: {integrity: sha512-HmK8RGxNkdBx7M2+RaLor05C/5dxHB6rye2uhi7GtvhDJ1vLGYEolkkD37tKQBOWasbkfsV/PZab0rCZsxDtQg==}
+
+  '@zag-js/select@1.47.0':
+    resolution: {integrity: sha512-lH5J0o+ejtXmqGErM1t/Qe7rBcX4skINwn87/8kjwdQaCYo6cgvYyt+8TyalA9WPvmvgWipH7B+wxawyIqi8zA==}
 
   '@zag-js/store@1.47.0':
     resolution: {integrity: sha512-uHkrNEJhtRf5xbBBreTX5vXBGT6RfOfKDcRs02u9yhatk9DJRTgk5DQGLKcqH/X+SIeRU5smzUKH4OPT8wR42A==}
@@ -3021,6 +3030,10 @@ snapshots:
       '@zag-js/types': 1.47.0
       '@zag-js/utils': 1.47.0
 
+  '@zag-js/collection@1.47.0':
+    dependencies:
+      '@zag-js/utils': 1.47.0
+
   '@zag-js/core@1.47.0':
     dependencies:
       '@zag-js/dom-query': 1.47.0
@@ -3097,6 +3110,18 @@ snapshots:
   '@zag-js/remove-scroll@1.47.0':
     dependencies:
       '@zag-js/dom-query': 1.47.0
+
+  '@zag-js/select@1.47.0':
+    dependencies:
+      '@zag-js/anatomy': 1.47.0
+      '@zag-js/collection': 1.47.0
+      '@zag-js/core': 1.47.0
+      '@zag-js/dismissable': 1.47.0
+      '@zag-js/dom-query': 1.47.0
+      '@zag-js/focus-visible': 1.47.0
+      '@zag-js/popper': 1.47.0
+      '@zag-js/types': 1.47.0
+      '@zag-js/utils': 1.47.0
 
   '@zag-js/store@1.47.0':
     dependencies:
