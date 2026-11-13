@@ -5,7 +5,8 @@
  * pushing the table past the screen, and `"primary"` never splits. <wbr> adds no text,
  * so copying the code still gives the original identifier.
  */
-const html = await Astro.slots.render("default");
+// An empty cell has no slot content to render.
+const html = (await Astro.slots.render("default")) ?? "";
 const withBreaks = html.replace(
   /(<code[^>]*>)([^<]*)(<\/code>)/g,
   (_, open, text, close) => open + text.replace(/([a-z0-9])(?=[A-Z])/g, "$1<wbr>") + close,
