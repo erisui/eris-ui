@@ -1,0 +1,81 @@
+---
+import Base from "../layouts/Base.astro";
+import Switch from "@eris/components/switch/Switch.astro";
+import Button from "@eris/components/button/Button.astro";
+import Tabs from "@eris/components/tabs/Tabs.astro";
+import TabsList from "@eris/components/tabs/TabsList.astro";
+import TabsTrigger from "@eris/components/tabs/TabsTrigger.astro";
+import TabsContent from "@eris/components/tabs/TabsContent.astro";
+---
+
+<Base title="Switch">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Switch</h1>
+    <p class="text-muted">Click the track or its text, or press Space while it has focus.</p>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">States</h2>
+    <Switch id="basic">Email notifications</Switch>
+    <Switch id="on" checked>
+      Weekly digest
+    </Switch>
+    <Switch id="disabled" disabled>
+      Disabled
+    </Switch>
+    <Switch id="disabled-on" disabled checked>
+      Disabled and on
+    </Switch>
+    <Switch id="read-only" readOnly checked>
+      Read only
+    </Switch>
+    <Switch id="invalid" invalid>
+      Accept the terms
+    </Switch>
+    <Switch id="no-text" label="Airplane mode" />
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">In a form</h2>
+    <form id="settings-form" class="flex flex-col items-start gap-4">
+      <Switch id="marketing" name="marketing" value="yes" checked>
+        Marketing emails
+      </Switch>
+      <Switch id="beta" name="beta">
+        Beta features
+      </Switch>
+      <div class="flex gap-3">
+        <Button type="submit">Save</Button>
+        <Button type="reset" variant="secondary">
+          Reset
+        </Button>
+      </div>
+      <output id="submitted" class="text-sm text-muted"></output>
+    </form>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Inside a tab panel</h2>
+    <Tabs id="nested">
+      <TabsList aria-label="Nested">
+        <TabsTrigger value="one">One</TabsTrigger>
+        <TabsTrigger value="two">Two</TabsTrigger>
+      </TabsList>
+      <TabsContent value="one">
+        <Switch id="in-tabs">Switch in a panel</Switch>
+      </TabsContent>
+      <TabsContent value="two">Second panel</TabsContent>
+    </Tabs>
+  </section>
+</Base>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const form = document.querySelector<HTMLFormElement>("#settings-form");
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
+      form.querySelector("output")!.textContent = data.toString() || "(nothing)";
+    });
+  });
+</script>

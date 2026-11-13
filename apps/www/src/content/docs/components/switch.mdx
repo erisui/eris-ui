@@ -1,0 +1,74 @@
+---
+title: Switch
+description: An on and off toggle that submits with forms like a checkbox.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/switch/Basic.astro";
+import basicSrc from "../../../demos/switch/Basic.astro?raw";
+import States from "../../../demos/switch/States.astro";
+import statesSrc from "../../../demos/switch/States.astro?raw";
+import Form from "../../../demos/switch/Form.astro";
+import formSrc from "../../../demos/switch/Form.astro?raw";
+import NoText from "../../../demos/switch/NoText.astro";
+import noTextSrc from "../../../demos/switch/NoText.astro?raw";
+
+<Demo id="switch-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="switch" />
+
+## How it works
+
+The switch is a real `<input type="checkbox" role="switch">` inside a `<label>`, drawn with CSS. It toggles, shows its state and submits with a form before its script loads, and with JavaScript turned off. The script adds `data-state`, `data-focus` and `data-hover` attributes for styling.
+
+## States
+
+<Demo id="switch-states" source={statesSrc}>
+  <States />
+</Demo>
+
+A `readOnly` switch keeps focus and is still sent with the form, but does not change. A `disabled` switch is skipped by <kbd>Tab</kbd> and left out of the form.
+
+## In a form
+
+Give the switch a `name`. While it is on, the form sends that name with `value`, which defaults to `on`. While it is off, the form sends nothing for it. A form reset returns it to how it loaded.
+
+<Demo id="switch-form" source={formSrc}>
+  <Form />
+</Demo>
+
+## Without visible text
+
+When a switch has no text next to it, name it with `label` so screen readers can announce it.
+
+<Demo id="switch-no-text" source={noTextSrc}>
+  <NoText />
+</Demo>
+
+## Keyboard
+
+| Key              | Does                       |
+| ---------------- | -------------------------- |
+| <kbd>Tab</kbd>   | Moves focus to the switch  |
+| <kbd>Space</kbd> | Turns the switch on or off |
+
+## Props
+
+| Prop       | Default | Does                                                   |
+| ---------- | ------- | ------------------------------------------------------ |
+| `checked`  | `false` | On when the page loads                                 |
+| `name`     |         | Field name sent with the form                          |
+| `value`    | `"on"`  | Value sent while the switch is on                      |
+| `disabled` | `false` | Cannot be focused or changed, and is not submitted     |
+| `readOnly` | `false` | Can be focused and is submitted, but cannot be changed |
+| `required` | `false` | The form will not submit while the switch is off       |
+| `invalid`  | `false` | Marks the switch as failing validation                 |
+| `form`     |         | Id of a form elsewhere on the page                     |
+| `label`    |         | Accessible name when there is no visible text          |
+| `id`       | random  | Id for the instance, used to build the part ids        |
