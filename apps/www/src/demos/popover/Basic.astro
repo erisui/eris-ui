@@ -1,0 +1,21 @@
+---
+import Popover from "@/components/ui/popover/Popover.astro";
+import PopoverTrigger from "@/components/ui/popover/PopoverTrigger.astro";
+import PopoverContent from "@/components/ui/popover/PopoverContent.astro";
+import PopoverTitle from "@/components/ui/popover/PopoverTitle.astro";
+import PopoverDescription from "@/components/ui/popover/PopoverDescription.astro";
+import PopoverClose from "@/components/ui/popover/PopoverClose.astro";
+import Button from "@/components/ui/button/Button.astro";
+---
+
+<Popover>
+  <PopoverTrigger>Share</PopoverTrigger>
+  <PopoverContent>
+    <PopoverTitle>Share this page</PopoverTitle>
+    <PopoverDescription>Anyone with the link can view it.</PopoverDescription>
+    <div class="flex gap-2">
+      <Button size="sm">Copy link</Button>
+      <PopoverClose>Done</PopoverClose>
+    </div>
+  </PopoverContent>
+</Popover>

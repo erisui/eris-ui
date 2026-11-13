@@ -1,0 +1,67 @@
+---
+title: Popover
+description: A floating panel that opens next to its trigger.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/popover/Basic.astro";
+import basicSrc from "../../../demos/popover/Basic.astro?raw";
+import Placement from "../../../demos/popover/Placement.astro";
+import placementSrc from "../../../demos/popover/Placement.astro?raw";
+import Modal from "../../../demos/popover/Modal.astro";
+import modalSrc from "../../../demos/popover/Modal.astro?raw";
+
+<Demo id="popover-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="popover" />
+
+## Placement
+
+`placement` picks the side of the trigger: `top`, `bottom`, `left` or `right`, each with an optional `-start` or `-end` to line the panel up with an edge of the trigger. The default is `bottom`. `gutter` is the gap in pixels, 8 by default.
+
+When the panel does not fit on that side, it flips to the opposite one and shifts to stay on screen. It is positioned against the viewport, so a parent with `overflow: hidden` does not clip it.
+
+<Demo id="popover-placement" source={placementSrc}>
+  <Placement />
+</Demo>
+
+## Modal
+
+By default the rest of the page stays usable: <kbd>Tab</kbd> moves out of the panel and on through the page. With `modal`, focus stays inside until the popover closes and screen readers only see the panel. Use it for a short task that should be finished or cancelled, like a rename.
+
+<Demo id="popover-modal" source={modalSrc}>
+  <Modal />
+</Demo>
+
+## Staying open
+
+A click outside closes the popover. Set `closeOnInteractOutside={false}` to keep it open until the user presses <kbd>Esc</kbd> or a `PopoverClose`.
+
+## Naming the panel
+
+The panel is announced as a dialog. `PopoverTitle` gives it its name and `PopoverDescription` its description. If you leave the title out, give `PopoverContent` an `aria-label`.
+
+## Keyboard
+
+| Key                                                 | Does                                                           |
+| --------------------------------------------------- | -------------------------------------------------------------- |
+| <kbd>Enter</kbd> or <kbd>Space</kbd> on the trigger | Opens the popover and moves focus inside                       |
+| <kbd>Tab</kbd> / <kbd>Shift</kbd> <kbd>Tab</kbd>    | Moves through the panel, then on through the page unless modal |
+| <kbd>Esc</kbd>                                      | Closes the popover and returns focus to the trigger            |
+
+## Parts
+
+| Component            | Renders                                                                                        |
+| -------------------- | ---------------------------------------------------------------------------------------------- |
+| `Popover`            | The root. Props: `id`, `defaultOpen`, `placement`, `gutter`, `modal`, `closeOnInteractOutside` |
+| `PopoverTrigger`     | The button that opens it. Props: `variant`, `size`, as on Button                               |
+| `PopoverContent`     | The floating panel                                                                             |
+| `PopoverTitle`       | The panel's name, an `h3`                                                                      |
+| `PopoverDescription` | The panel's description                                                                        |
+| `PopoverClose`       | A button that closes it. Props: `variant`, `size`                                              |

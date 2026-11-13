@@ -7,6 +7,7 @@ import kbd from "./components/kbd/meta";
 import accordion from "./components/accordion/meta";
 import switchMeta from "./components/switch/meta";
 import checkbox from "./components/checkbox/meta";
+import popover from "./components/popover/meta";
 
 /** Every free registry item. Input to packages/registry-build. */
 export const core: RegistryMeta = {
@@ -15,8 +16,19 @@ export const core: RegistryMeta = {
   title: "Eris core",
   description: "Mount lifecycle, part helpers, cn() and the theme.",
   dependencies: ["clsx", "tailwind-merge"],
-  files: ["lib/eris/mount.ts", "lib/eris/utils.ts", "styles/theme.css"],
+  files: ["lib/eris/mount.ts", "lib/eris/utils.ts", "lib/eris/positioning.ts", "styles/theme.css"],
   status: "beta",
 };
 
-export const registry: RegistryMeta[] = [core, button, dialog, tabs, snippet, kbd, accordion, switchMeta, checkbox];
+export const registry: RegistryMeta[] = [
+  core,
+  button,
+  dialog,
+  tabs,
+  snippet,
+  kbd,
+  accordion,
+  switchMeta,
+  checkbox,
+  popover,
+];

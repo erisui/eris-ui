@@ -1,0 +1,46 @@
+---
+import { cn, uid } from "@/lib/eris/utils";
+import type { Placement } from "@/lib/eris/positioning";
+
+interface Props {
+  id?: string;
+  defaultOpen?: boolean;
+  /** Side of the trigger the panel opens on. It flips when there is no room. */
+  placement?: Placement;
+  /** Gap between the trigger and the panel, in pixels. */
+  gutter?: number;
+  /** Trap focus inside and hide the rest of the page from screen readers while open. */
+  modal?: boolean;
+  closeOnInteractOutside?: boolean;
+  class?: string;
+}
+
+const {
+  id = uid("popover"),
+  defaultOpen = false,
+  placement = "bottom",
+  gutter = 8,
+  modal = false,
+  closeOnInteractOutside = true,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  data-eris="popover"
+  data-eris-id={id}
+  data-default-open={String(defaultOpen)}
+  data-placement={placement}
+  data-gutter={gutter}
+  data-modal={String(modal)}
+  data-close-on-interact-outside={String(closeOnInteractOutside)}
+  class={cn("contents", className)}
+>
+  <slot />
+</div>
+
+<script>
+  import { mountAll } from "@/lib/eris/mount";
+  import { createPopover } from "./popover";
+  mountAll("popover", createPopover);
+</script>
