@@ -8,6 +8,7 @@ import accordion from "./components/accordion/meta";
 import switchMeta from "./components/switch/meta";
 import checkbox from "./components/checkbox/meta";
 import popover from "./components/popover/meta";
+import tooltip from "./components/tooltip/meta";
 
 /** Every free registry item. Input to packages/registry-build. */
 export const core: RegistryMeta = {
@@ -31,4 +32,5 @@ export const registry: RegistryMeta[] = [
   switchMeta,
   checkbox,
   popover,
+  tooltip,
 ];

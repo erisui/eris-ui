@@ -1,0 +1,91 @@
+---
+title: Tooltip
+description: A short hint shown when an element is hovered or focused.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/tooltip/Basic.astro";
+import basicSrc from "../../../demos/tooltip/Basic.astro?raw";
+import Placement from "../../../demos/tooltip/Placement.astro";
+import placementSrc from "../../../demos/tooltip/Placement.astro?raw";
+import Delay from "../../../demos/tooltip/Delay.astro";
+import delaySrc from "../../../demos/tooltip/Delay.astro?raw";
+import Rich from "../../../demos/tooltip/Rich.astro";
+import richSrc from "../../../demos/tooltip/Rich.astro?raw";
+import WithPopover from "../../../demos/tooltip/WithPopover.astro";
+import withPopoverSrc from "../../../demos/tooltip/WithPopover.astro?raw";
+
+<Demo id="tooltip-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="tooltip" />
+
+## Usage
+
+Wrap the element the hint describes and pass the hint as `text`. The tooltip adds no element around it, so your layout stays the same.
+
+The hint attaches to the first focusable element inside: a button, a link, an input, or anything with `tabindex`. To pick a different element, mark it `data-tooltip-trigger`. Put the hint on something focusable, or keyboard users never see it.
+
+While the hint is showing, it is the trigger's description for screen readers. It does not replace the trigger's name, so an icon-only button still needs an `aria-label`.
+
+## Placement
+
+`placement` picks the side of the trigger: `top`, `bottom`, `left` or `right`, each with an optional `-start` or `-end`. The default is `top`. `gutter` is the gap in pixels, 6 by default. The hint flips to the opposite side when it does not fit.
+
+<Demo id="tooltip-placement" source={placementSrc}>
+  <Placement />
+</Demo>
+
+## Delay
+
+The hint opens after the pointer rests for `openDelay` milliseconds, 400 by default, and closes `closeDelay` milliseconds after it leaves, 150 by default. Keyboard focus opens it at once.
+
+<Demo id="tooltip-delay" source={delaySrc}>
+  <Delay />
+</Demo>
+
+## Markup in the hint
+
+For more than plain text, leave `text` out and fill the `content` slot. Keep it short and do not put links or buttons in it: a tooltip cannot be reached with <kbd>Tab</kbd>. Use a [Popover](/docs/components/popover) for that.
+
+<Demo id="tooltip-rich" source={richSrc}>
+  <Rich />
+</Demo>
+
+Set `interactive` to keep the hint open while the pointer is over it, so its text can be selected.
+
+## On another component's trigger
+
+A tooltip can wrap the trigger of a Dialog or Popover. Both keep working on the same button.
+
+<Demo id="tooltip-with-popover" source={withPopoverSrc}>
+  <WithPopover />
+</Demo>
+
+## Keyboard
+
+| Key            | Does                                    |
+| -------------- | --------------------------------------- |
+| <kbd>Tab</kbd> | Focusing the trigger shows the hint     |
+| <kbd>Esc</kbd> | Hides the hint. Focus stays where it is |
+
+Pressing the trigger also hides the hint, and only one hint shows at a time. Inside a Popover or Dialog, <kbd>Esc</kbd> hides the hint and closes the Popover or Dialog in one press.
+
+## Props
+
+| Prop          | Default | Does                                            |
+| ------------- | ------- | ----------------------------------------------- |
+| `text`        | none    | The hint. Use the `content` slot for markup     |
+| `placement`   | `"top"` | Side of the trigger the hint opens on           |
+| `gutter`      | `6`     | Gap between trigger and hint, in pixels         |
+| `openDelay`   | `400`   | Milliseconds of hover before it opens           |
+| `closeDelay`  | `150`   | Milliseconds it stays after the pointer leaves  |
+| `interactive` | `false` | Stays open while the pointer is over the hint   |
+| `disabled`    | `false` | Never shows the hint                            |
+| `class`       | none    | Classes for the hint                            |
+| `id`          | random  | Id for the instance, used to build the part ids |
