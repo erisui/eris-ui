@@ -9,11 +9,9 @@
     "directory": "./dist",
     "not_found_handling": "404-page",
   },
-  // Serve only on the custom domains. Without these, every deploy turns the workers.dev URLs back on.
+  // The site is served only on erisui.dev and www.erisui.dev, attached as custom domains in the Cloudflare
+  // dashboard (the CI token can't manage them). Without these two lines, every deploy turns the
+  // workers.dev URLs back on.
   "workers_dev": false,
   "preview_urls": false,
-  "routes": [
-    { "pattern": "erisui.dev", "custom_domain": true },
-    { "pattern": "www.erisui.dev", "custom_domain": true },
-  ],
 }
