@@ -10,6 +10,8 @@ type Props = (HTMLAttributes<"button"> | HTMLAttributes<"a">) & {
 
 const { variant, size, href, class: className, ...rest } = Astro.props;
 const classes = buttonVariants({ variant, size, class: className as string | undefined });
+// Taken out of the spread: a second `type` attribute in the HTML would be ignored.
+const { type = "button", ...buttonRest } = rest as HTMLAttributes<"button">;
 ---
 
 {href ? (
@@ -17,7 +19,7 @@ const classes = buttonVariants({ variant, size, class: className as string | und
     <slot />
   </a>
 ) : (
-  <button type="button" class={classes} {...(rest as HTMLAttributes<"button">)}>
+  <button type={type} class={classes} {...buttonRest}>
     <slot />
   </button>
 )}
