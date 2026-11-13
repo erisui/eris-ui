@@ -1,5 +1,6 @@
 ---
 import { Code } from "astro:components";
+import { CODE_THEMES } from "../const";
 
 interface Props {
   code: string;
@@ -14,7 +15,7 @@ const { code, lang = "astro", title } = Astro.props;
 <div class="eris-code not-prose relative" data-copy-root data-lang={lang} dir="ltr">
   {title && <div class="mb-2 font-mono text-xs text-muted">{title}</div>}
   <div class="relative">
-    <Code code={code.trim()} lang={lang} theme="github-dark-default" class="eris-pre" />
+    <Code code={code.trim()} lang={lang} themes={CODE_THEMES} defaultColor="dark" class="eris-pre" />
     <!-- Lucide "copy" and "check" icons, inlined so the docs site needs no icon package. -->
     <button
       type="button"
@@ -63,7 +64,7 @@ const { code, lang = "astro", title } = Astro.props;
     padding-inline-end: 56px;
     border-radius: 16px;
     border: 1px solid var(--eris-border);
-    background: #0f0f0f !important;
+    background: var(--site-code) !important;
     overflow-x: auto;
   }
   /* Shell prompt. Generated content stays out of innerText and selection,

@@ -1,0 +1,55 @@
+---
+import { THEME_STORAGE_KEY } from "../const";
+---
+
+<!-- Flips between the dark and light theme and remembers the choice. The icon shows the theme you would switch to;
+     which one shows is plain CSS on the html attribute, so it is right before any script runs. -->
+<button type="button" class="theme-toggle" data-theme-toggle data-storage-key={THEME_STORAGE_KEY} aria-label="Switch to light theme">
+  <svg class="theme-toggle-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+  </svg>
+  <svg class="theme-toggle-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"></path>
+  </svg>
+</button>
+
+<style>
+  .theme-toggle { display: grid; place-items: center; flex: none; width: 32px; height: 32px; border-radius: 999px; color: var(--eris-ghost); cursor: pointer; }
+  .theme-toggle:hover { background: var(--eris-raised); color: var(--eris-foreground); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--eris-ring); outline-offset: 2px; }
+  .theme-toggle svg { width: 18px; height: 18px; }
+  .theme-toggle-moon { display: none; }
+  :global([data-theme="light"]) .theme-toggle-sun { display: none; }
+  :global([data-theme="light"]) .theme-toggle-moon { display: block; }
+  @media (pointer: coarse), (max-width: 767px) {
+    .theme-toggle { width: 44px; height: 44px; }
+  }
+</style>
+
+<script>
+  // The theme itself is applied by the inline script in Base.astro, which answers the "eris:theme" event.
+  const isLight = () => document.documentElement.dataset.theme === "light";
+  const label = (button: HTMLButtonElement) =>
+    button.setAttribute("aria-label", isLight() ? "Switch to dark theme" : "Switch to light theme");
+
+  function wire() {
+    document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((button) => {
+      label(button);
+      // An empty data attribute reads as "", so test for the key, not its value.
+      if ("wired" in button.dataset) return;
+      button.dataset.wired = "";
+      button.addEventListener("click", () => {
+        try {
+          localStorage.setItem(button.dataset.storageKey!, isLight() ? "dark" : "light");
+        } catch {
+          // Storage can be blocked; the theme then lasts until the next page.
+        }
+        document.dispatchEvent(new CustomEvent("eris:theme", { detail: isLight() ? "dark" : "light" }));
+        label(button);
+      });
+    });
+  }
+  document.addEventListener("astro:page-load", wire);
+  wire();
+</script>

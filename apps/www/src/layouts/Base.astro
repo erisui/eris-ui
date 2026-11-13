@@ -1,7 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
-import { SITE } from "../const";
+import { SITE, THEME_STORAGE_KEY } from "../const";
 
 interface Props {
   title?: string;
@@ -29,7 +29,29 @@ const ogImage = new URL("/og-image.png", Astro.site);
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content={SITE.themeColor} />
+    <meta name="theme-color" content={SITE.themeColor.dark} />
+    <!-- Sets the theme before first paint, and again after each client-side navigation (which resets <html>).
+         Dark unless the visitor chose light with the header toggle. -->
+    <script is:inline define:vars={{ key: THEME_STORAGE_KEY, colors: SITE.themeColor }}>
+      if (!window.__erisTheme) {
+        window.__erisTheme = true;
+        const stored = () => {
+          try {
+            return localStorage.getItem(key) === "light" ? "light" : "dark";
+          } catch {
+            return "dark";
+          }
+        };
+        const apply = (theme) => {
+          if (theme === "light") document.documentElement.dataset.theme = "light";
+          else delete document.documentElement.dataset.theme;
+          document.querySelector('meta[name="theme-color"]')?.setAttribute("content", colors[theme]);
+        };
+        apply(stored());
+        document.addEventListener("astro:after-swap", () => apply(stored()));
+        document.addEventListener("eris:theme", (event) => apply(event.detail));
+      }
+    </script>
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
