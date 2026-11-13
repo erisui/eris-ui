@@ -1,0 +1,24 @@
+---
+import Popover from "@/components/ui/popover/Popover.astro";
+import PopoverTrigger from "@/components/ui/popover/PopoverTrigger.astro";
+import PopoverContent from "@/components/ui/popover/PopoverContent.astro";
+import PopoverTitle from "@/components/ui/popover/PopoverTitle.astro";
+import PopoverClose from "@/components/ui/popover/PopoverClose.astro";
+import Button from "@/components/ui/button/Button.astro";
+---
+
+<Popover modal>
+  <PopoverTrigger>Rename</PopoverTrigger>
+  <PopoverContent>
+    <PopoverTitle>Rename project</PopoverTitle>
+    <input
+      aria-label="Project name"
+      value="eris"
+      class="h-11 rounded-field border border-border bg-field px-3 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring focus-visible:outline-solid"
+    />
+    <div class="flex gap-2">
+      <Button size="sm">Save</Button>
+      <PopoverClose>Cancel</PopoverClose>
+    </div>
+  </PopoverContent>
+</Popover>
