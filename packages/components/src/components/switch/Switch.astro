@@ -1,0 +1,91 @@
+---
+import { cn, uid } from "@/lib/eris/utils";
+
+interface Props {
+  id?: string;
+  /** Field name sent with the form. The value is only sent while the switch is on. */
+  name?: string;
+  /** Value sent with the form. Defaults to "on". */
+  value?: string;
+  /** On when the page loads. */
+  checked?: boolean;
+  disabled?: boolean;
+  required?: boolean;
+  /** Focusable and sent with the form, but cannot be changed. */
+  readOnly?: boolean;
+  invalid?: boolean;
+  /** Id of a form elsewhere on the page that this switch belongs to. */
+  form?: string;
+  /** Accessible name for a switch with no visible text. */
+  label?: string;
+  class?: string;
+}
+
+const {
+  id = uid("switch"),
+  name,
+  value = "on",
+  checked = false,
+  disabled = false,
+  required = false,
+  readOnly = false,
+  invalid = false,
+  form,
+  label,
+  class: className,
+} = Astro.props;
+const hasText = Astro.slots.has("default");
+---
+
+<label
+  data-eris="switch"
+  data-eris-id={id}
+  data-read-only={String(readOnly)}
+  data-invalid-field={String(invalid)}
+  class={cn(
+    "group/switch inline-flex cursor-pointer items-center gap-3 text-[15px] text-foreground",
+    "has-disabled:cursor-default has-disabled:text-(--eris-disabled)",
+    className,
+  )}
+>
+  <input
+    type="checkbox"
+    role="switch"
+    data-part="hidden-input"
+    name={name}
+    value={value}
+    checked={checked}
+    disabled={disabled}
+    required={required}
+    form={form}
+    aria-label={hasText ? undefined : label}
+    aria-invalid={invalid ? "true" : undefined}
+    class="peer sr-only"
+  />
+  <span
+    data-part="control"
+    class={cn(
+      "eris-curve relative inline-flex h-6 w-10 shrink-0 items-center rounded-pill border border-border-strong bg-raised",
+      "transition-colors duration-(--eris-duration-state) ease-eris",
+      "peer-checked:border-foreground peer-checked:bg-foreground",
+      "peer-focus-visible:outline-solid peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring",
+      "peer-aria-invalid:border-danger peer-disabled:opacity-40",
+    )}
+  >
+    <span
+      data-part="thumb"
+      class="eris-curve size-4 translate-x-[3px] rounded-pill bg-muted transition-[translate,background-color] group-has-checked/switch:translate-x-[19px] group-has-checked/switch:bg-background duration-(--eris-duration-state) ease-eris"
+    ></span>
+  </span>
+  {hasText && (
+    <span data-part="label">
+      <slot />
+    </span>
+  )}
+</label>
+
+<script>
+  import { mountAll } from "@/lib/eris/mount";
+  import { createSwitch } from "./switch";
+  mountAll("switch", createSwitch);
+</script>

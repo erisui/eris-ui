@@ -5,6 +5,7 @@ import tabs from "./components/tabs/meta";
 import snippet from "./components/snippet/meta";
 import kbd from "./components/kbd/meta";
 import accordion from "./components/accordion/meta";
+import switchMeta from "./components/switch/meta";
 
 /** Every free registry item. Input to packages/registry-build. */
 export const core: RegistryMeta = {
@@ -17,4 +18,4 @@ export const core: RegistryMeta = {
   status: "beta",
 };
 
-export const registry: RegistryMeta[] = [core, button, dialog, tabs, snippet, kbd, accordion];
+export const registry: RegistryMeta[] = [core, button, dialog, tabs, snippet, kbd, accordion, switchMeta];
