@@ -9,13 +9,18 @@ const base =
   "outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring " +
   "disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0";
 
+// Every filled variant shares one lighting model: a border, a 1px highlight on the top edge and
+// the same drop shadow. Class names stay written out in full so Tailwind can find them.
 const variants: Record<ButtonVariant, string> = {
   primary:
-    "bg-foreground text-background shadow-[0_1px_2px_rgb(0_0_0/0.55),0_0_0_1px_rgb(255_255_255/0.06),inset_0_-1px_0_rgb(0_0_0/0.1)] hover:bg-white",
+    "border-(--eris-primary-border) bg-foreground text-background shadow-[inset_0_1px_0_var(--eris-primary-highlight),0_1px_2px_var(--eris-button-shadow)] hover:bg-(--eris-primary-hover)",
+  // Gradient, border, highlight and shadow live in the .eris-accent class in theme.css.
   accent: "eris-accent hover:brightness-110",
-  secondary: "border-border bg-raised text-foreground hover:bg-border",
-  ghost: "text-ghost hover:bg-raised hover:text-foreground",
-  danger: "border-border bg-raised text-danger hover:bg-border",
+  secondary:
+    "border-border bg-raised text-foreground shadow-[inset_0_1px_0_var(--eris-raised-highlight),0_1px_2px_var(--eris-button-shadow)] hover:bg-(--eris-raised-hover)",
+  ghost: "text-ghost hover:bg-(--eris-raised-hover) hover:text-foreground",
+  danger:
+    "border-border bg-raised text-danger shadow-[inset_0_1px_0_var(--eris-raised-highlight),0_1px_2px_var(--eris-button-shadow)] hover:bg-(--eris-raised-hover)",
 };
 
 const sizes: Record<ButtonSize, string> = {

@@ -3,7 +3,7 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
 import { fileURLToPath } from "node:url";
-import { SITE } from "./src/const.ts";
+import { CODE_THEMES, SITE } from "./src/const.ts";
 
 const components = fileURLToPath(new URL("../../packages/components/src", import.meta.url));
 
@@ -11,7 +11,7 @@ export default defineConfig({
   site: SITE.url,
   integrations: [mdx()],
   markdown: {
-    shikiConfig: { theme: "github-dark-default" },
+    shikiConfig: { themes: CODE_THEMES, defaultColor: "dark" },
   },
   vite: {
     plugins: [tailwindcss()],

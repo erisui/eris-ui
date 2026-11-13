@@ -1,37 +1,59 @@
 /* Eris UI theme · visual language v1 · dark first
-   Import after `@import "tailwindcss";` */
+   Import after `@import "tailwindcss";`
+   Light: put data-theme="light" on <html> (or any element, to make just that part light). */
 
 :root {
   /* Surfaces */
-  --eris-background: #141414;
+  --eris-background: #141414; /* page */
   --eris-surface: #191919; /* cards, dialogs */
   --eris-field: #1c1c1c; /* inputs, selects */
   --eris-raised: #1f1f1f; /* secondary buttons */
-  --eris-border: #2a2a2a;
-  --eris-border-strong: #363636;
+  --eris-raised-hover: #2a2a2a; /* secondary, danger and ghost buttons on hover */
+  --eris-border: #2a2a2a; /* default borders */
+  --eris-border-strong: #363636; /* control outlines, dividers that must show */
 
   /* Text */
-  --eris-foreground: #f5f5f5;
+  --eris-foreground: #f5f5f5; /* text, the primary button */
   --eris-muted: #8c8c8c; /* helper text, descriptions */
-  --eris-placeholder: #6b6b6b;
+  --eris-placeholder: #6b6b6b; /* input placeholders */
   --eris-ghost: #b4b4b4; /* ghost button text */
-  --eris-disabled: #5a5a5a;
+  --eris-disabled: #5a5a5a; /* disabled text */
 
   /* Status */
-  --eris-danger: #e07a90;
+  --eris-danger: #e07a90; /* destructive text, errors */
 
   /* Code: the runner (npx, pnpm) and the arguments in a snippet */
-  --eris-code-runner: #e9a25c;
-  --eris-code-args: #a9c8f5;
+  --eris-code-runner: #e9a25c; /* the runner in a snippet: npx, pnpm */
+  --eris-code-args: #a9c8f5; /* the rest of a snippet command */
 
   /* Accent: rare, one per screen at most */
-  --eris-accent-top: #628af7;
-  --eris-accent-bottom: #3a65df;
-  --eris-accent-highlight: #7ca0f8;
-  --eris-accent-border: #162a73;
+  --eris-accent-top: #628af7; /* accent gradient, top */
+  --eris-accent-bottom: #3a65df; /* accent gradient, bottom */
+  --eris-accent-highlight: #7ca0f8; /* accent top edge */
+  --eris-accent-border: #2f56c8; /* accent border */
+
+  /* Buttons: every filled variant gets a border, a 1px top highlight and the same drop shadow */
+  --eris-primary-border: #d4d4d4; /* primary button border */
+  --eris-primary-highlight: #ffffff; /* primary button top edge */
+  --eris-primary-hover: #e5e5e5; /* primary button on hover */
+  --eris-raised-highlight: rgb(255 255 255 / 0.06); /* secondary and danger button top edge */
+  --eris-button-shadow: rgb(0 0 0 / 0.4); /* drop shadow under filled buttons */
+
+  /* Controls */
+  --eris-track: #1c1c1c; /* the tabs list and a switch that is off */
+  --eris-switch-thumb: #8c8c8c; /* the thumb of a switch that is off */
+  --eris-highlight: #1f1f1f; /* the highlighted item in a menu or select */
+
+  /* Floating layers: dialogs, popovers, menus, tooltips */
+  --eris-overlay-shadow: rgb(0 0 0 / 0.7); /* shadow under floating layers */
+  --eris-scrim: rgb(0 0 0 / 0.6); /* behind a dialog */
+  --eris-tooltip: #1f1f1f; /* tooltip surface */
+  --eris-tooltip-foreground: #f5f5f5; /* tooltip text */
+  --eris-tooltip-muted: #8c8c8c; /* muted text inside a tooltip, such as a shortcut */
+  --eris-tooltip-border: #363636; /* tooltip border */
 
   /* Focus */
-  --eris-ring: #628af7;
+  --eris-ring: #628af7; /* focus ring */
 
   /* Radius (every radius also gets the Eris curve, below) */
   --eris-radius-pill: 9999px; /* buttons, badges, switches */
@@ -46,6 +68,47 @@
 
   /* Type */
   --eris-font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --eris-background: #ffffff;
+  --eris-surface: #ffffff;
+  --eris-field: #ffffff;
+  --eris-raised: #fafafa;
+  --eris-raised-hover: #efefef;
+  --eris-border: #e2e2e2;
+  --eris-border-strong: #d4d4d4;
+
+  --eris-foreground: #141414; /* also the primary button, which turns near-black */
+  --eris-muted: #666666; /* 4.5:1 on the track colour as well as on white */
+  --eris-placeholder: #8c8c8c;
+  --eris-ghost: #6b6b6b;
+  --eris-disabled: #b4b4b4;
+
+  --eris-danger: #be2f52;
+
+  --eris-code-runner: #b45309;
+  --eris-code-args: #2f56c8;
+
+  --eris-primary-border: #000000;
+  --eris-primary-highlight: rgb(255 255 255 / 0.14);
+  --eris-primary-hover: #2e2e2e;
+  --eris-raised-highlight: #ffffff;
+  --eris-button-shadow: rgb(0 0 0 / 0.12);
+
+  --eris-track: #e8e8e8;
+  --eris-switch-thumb: #ffffff;
+  --eris-highlight: #f2f2f2;
+
+  --eris-overlay-shadow: rgb(0 0 0 / 0.18);
+  --eris-scrim: rgb(0 0 0 / 0.35);
+  /* The tooltip inverts on a light page, so it stands apart from the content under it. */
+  --eris-tooltip: #1a1a1a;
+  --eris-tooltip-foreground: #fafafa;
+  --eris-tooltip-muted: #a3a3a3;
+  --eris-tooltip-border: #000000;
 }
 
 @theme inline {
@@ -86,7 +149,7 @@
   border: 1px solid var(--eris-accent-border);
   box-shadow:
     inset 0 1px 0 var(--eris-accent-highlight),
-    0 1px 2px rgb(0 0 0 / 0.55);
+    0 1px 2px var(--eris-button-shadow);
   color: #fff;
 }
 

@@ -138,3 +138,48 @@ test("search arrow keys move the selection and clicking a result navigates", asy
   await expect(page).toHaveURL(/\/docs\/components\/dialog$/);
   await expect(page.locator("h1")).toHaveText("Dialog");
 });
+
+test.describe("light theme", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem("eris-theme", "light"));
+  });
+
+  for (const path of pages) {
+    test(`${path} has no serious a11y issues in light`, async ({ page }) => {
+      await page.goto(path);
+      await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+      const results = await new AxeBuilder({ page }).analyze();
+      const serious = results.violations.filter((v) => v.impact === "serious" || v.impact === "critical");
+      expect(serious, JSON.stringify(serious.map((v) => [v.id, v.nodes.map((n) => n.target)]))).toEqual([]);
+      await page.screenshot({ path: `test-results/theme/light${path === "/" ? "/index" : path}.png`, fullPage: true });
+    });
+  }
+
+  test("code blocks use the light palette", async ({ page }) => {
+    await page.goto("/docs/theming");
+    const pre = page.locator("pre.astro-code").first();
+    const luminance = (rgb: string) => rgb.match(/\d+/g)!.slice(0, 3).reduce((sum, n) => sum + Number(n), 0) / 765;
+    expect(luminance(await pre.evaluate((el) => getComputedStyle(el).backgroundColor))).toBeGreaterThan(0.9);
+    expect(luminance(await pre.evaluate((el) => getComputedStyle(el).color))).toBeLessThan(0.4);
+  });
+});
+
+test("the theme toggle switches, and the choice survives navigation and a reload", async ({ page }) => {
+  await page.goto("/");
+  const html = page.locator("html");
+  await expect(html).not.toHaveAttribute("data-theme", "light");
+  await page.getByRole("button", { name: "Switch to light theme" }).click();
+  await expect(html).toHaveAttribute("data-theme", "light");
+  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", "#f6f6f6");
+
+  await page.getByRole("link", { name: "Docs", exact: true }).click();
+  await expect(page).toHaveURL(/\/docs/);
+  await expect(html).toHaveAttribute("data-theme", "light");
+  await page.reload();
+  await expect(html).toHaveAttribute("data-theme", "light");
+
+  await page.getByRole("button", { name: "Switch to dark theme" }).click();
+  await expect(html).not.toHaveAttribute("data-theme", "light");
+  await page.reload();
+  await expect(html).not.toHaveAttribute("data-theme", "light");
+});

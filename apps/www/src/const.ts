@@ -7,8 +7,15 @@ export const SITE = {
   title: "Eris UI - Accessible components for Astro",
   description:
     "Accessible UI components you can drop into any Astro project. Plain .astro files, Zag state machines, Tailwind v4.",
-  themeColor: "#111111",
+  /** The browser chrome colour per theme; matches --site-page. */
+  themeColor: { dark: "#111111", light: "#f6f6f6" },
 } as const;
+
+/** Syntax highlighting palettes. Code is rendered with both and CSS picks one. */
+export const CODE_THEMES = { dark: "github-dark-default", light: "github-light-default" } as const;
+
+/** Where the visitor's theme choice is kept. Dark is the default. */
+export const THEME_STORAGE_KEY = "eris-theme";
 
 export const LINKS = {
   github: "https://github.com/erisui/eris-ui",

@@ -7,7 +7,7 @@ const { class: className } = Astro.props as { class?: string };
   data-part="list"
   role="tablist"
   class={cn(
-    "eris-curve relative isolate inline-flex w-fit gap-1 rounded-pill border border-border bg-field p-1",
+    "eris-curve relative isolate inline-flex w-fit gap-1 rounded-pill border border-border bg-(--eris-track) p-1",
     "data-[orientation=vertical]:flex-col data-[orientation=vertical]:rounded-[20px]",
     className,
   )}

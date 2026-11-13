@@ -22,6 +22,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check:components
+      - run: pnpm check:theme
       - run: pnpm check
       - run: pnpm build
       - run: pnpm test
