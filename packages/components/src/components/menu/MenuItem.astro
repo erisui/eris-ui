@@ -1,0 +1,43 @@
+---
+import { cn, uid } from "@/lib/eris/utils";
+
+interface Props {
+  /** Reported in the eris:select event. Must be unique in the menu. Defaults to a random id. */
+  value?: string;
+  /** Renders the item as a link. */
+  href?: string;
+  disabled?: boolean;
+  /** "danger" for destructive actions such as delete. */
+  variant?: "default" | "danger";
+  /** Overrides the menu's closeOnSelect for this item. */
+  closeOnSelect?: boolean;
+  class?: string;
+}
+
+const {
+  value = uid("item"),
+  href,
+  disabled = false,
+  variant = "default",
+  closeOnSelect,
+  class: className,
+} = Astro.props;
+const Tag = href && !disabled ? "a" : "div";
+---
+
+<Tag
+  href={Tag === "a" ? href : undefined}
+  role="menuitem"
+  data-part="item"
+  data-value={value}
+  data-item-disabled={disabled ? "" : undefined}
+  data-item-close-on-select={closeOnSelect === undefined ? undefined : String(closeOnSelect)}
+  class={cn(
+    "flex min-h-9 cursor-pointer items-center gap-2 rounded-[10px] px-2.5 py-1.5 text-sm no-underline outline-none select-none",
+    "data-highlighted:bg-raised data-disabled:cursor-default data-disabled:text-(--eris-disabled) [&_svg]:size-4 [&_svg]:shrink-0",
+    variant === "danger" ? "text-danger" : "text-foreground",
+    className,
+  )}
+>
+  <slot />
+</Tag>

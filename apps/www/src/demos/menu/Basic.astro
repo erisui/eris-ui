@@ -1,0 +1,23 @@
+---
+import Menu from "@/components/ui/menu/Menu.astro";
+import MenuTrigger from "@/components/ui/menu/MenuTrigger.astro";
+import MenuContent from "@/components/ui/menu/MenuContent.astro";
+import MenuItem from "@/components/ui/menu/MenuItem.astro";
+import MenuSeparator from "@/components/ui/menu/MenuSeparator.astro";
+---
+
+<Menu>
+  <MenuTrigger>Actions</MenuTrigger>
+  <MenuContent>
+    <MenuItem value="edit">Edit</MenuItem>
+    <MenuItem value="duplicate">Duplicate</MenuItem>
+    <MenuItem value="archive" disabled>
+      Archive
+    </MenuItem>
+    <MenuItem href="/docs">Open the docs</MenuItem>
+    <MenuSeparator />
+    <MenuItem value="delete" variant="danger">
+      Delete
+    </MenuItem>
+  </MenuContent>
+</Menu>

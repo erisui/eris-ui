@@ -1,0 +1,28 @@
+---
+import Menu from "@/components/ui/menu/Menu.astro";
+import MenuTrigger from "@/components/ui/menu/MenuTrigger.astro";
+import MenuContent from "@/components/ui/menu/MenuContent.astro";
+import MenuCheckboxItem from "@/components/ui/menu/MenuCheckboxItem.astro";
+import MenuRadioGroup from "@/components/ui/menu/MenuRadioGroup.astro";
+import MenuRadioItem from "@/components/ui/menu/MenuRadioItem.astro";
+import MenuGroup from "@/components/ui/menu/MenuGroup.astro";
+import MenuSeparator from "@/components/ui/menu/MenuSeparator.astro";
+---
+
+<Menu closeOnSelect={false}>
+  <MenuTrigger>View</MenuTrigger>
+  <MenuContent>
+    <MenuGroup label="Show">
+      <MenuCheckboxItem value="toolbar" checked>
+        Toolbar
+      </MenuCheckboxItem>
+      <MenuCheckboxItem value="sidebar">Sidebar</MenuCheckboxItem>
+    </MenuGroup>
+    <MenuSeparator />
+    <MenuRadioGroup label="Density" name="density" value="comfortable">
+      <MenuRadioItem value="compact">Compact</MenuRadioItem>
+      <MenuRadioItem value="comfortable">Comfortable</MenuRadioItem>
+      <MenuRadioItem value="spacious">Spacious</MenuRadioItem>
+    </MenuRadioGroup>
+  </MenuContent>
+</Menu>
