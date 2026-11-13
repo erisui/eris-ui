@@ -1,0 +1,19 @@
+---
+import Switch from "@/components/ui/switch/Switch.astro";
+import Button from "@/components/ui/button/Button.astro";
+---
+
+<form class="flex flex-col items-start gap-4">
+  <Switch name="digest" value="weekly" checked>
+    Weekly digest
+  </Switch>
+  <Switch name="beta">Beta features</Switch>
+  <div class="flex gap-3">
+    <Button type="submit" size="sm">
+      Save
+    </Button>
+    <Button type="reset" size="sm" variant="secondary">
+      Reset
+    </Button>
+  </div>
+</form>

@@ -40,7 +40,37 @@ if (!name || !/^[a-z][a-z0-9-]*$/.test(name) || partNames.some((p) => !/^[A-Z][A
 
 const zag = noZag ? null : (zagFlag ?? name);
 const pascal = name.replace(/(^|-)(\w)/g, (_, _dash, c) => c.toUpperCase());
-const camel = pascal[0].toLowerCase() + pascal.slice(1);
+// The import name in registry.ts. "switch" and friends are reserved words in JavaScript.
+const RESERVED = [
+  "switch",
+  "case",
+  "default",
+  "delete",
+  "new",
+  "class",
+  "function",
+  "import",
+  "export",
+  "in",
+  "do",
+  "if",
+  "for",
+  "var",
+  "let",
+  "const",
+  "void",
+  "with",
+  "yield",
+  "enum",
+  "this",
+  "super",
+  "typeof",
+  "return",
+  "static",
+  "package",
+];
+const lower = pascal[0].toLowerCase() + pascal.slice(1);
+const camel = RESERVED.includes(lower) ? `${lower}Meta` : lower;
 const kebab = (s) => s.replace(/[A-Z]/g, (c, i) => (i ? "-" : "") + c.toLowerCase());
 const partFiles = partNames.map((p) => `${pascal}${p}`);
 const componentFiles = [pascal, ...partFiles].map((f) => `${f}.astro`).concat(zag ? [`${name}.ts`] : []);
@@ -148,7 +178,10 @@ const { class: className } = Astro.props;
 }
 
 if (zag) {
-  const zagNs = zag.replace(/-(\w)/g, (_, c) => c.toUpperCase());
+  const zagCamel = zag.replace(/-(\w)/g, (_, c) => c.toUpperCase());
+  const zagNs = RESERVED.includes(zagCamel)
+    ? `zag${zagCamel[0].toUpperCase()}${zagCamel.slice(1)}`
+    : zagCamel;
   write(
     `${dir}/${name}.ts`,
     `import * as ${zagNs} from "@zag-js/${zag}";
