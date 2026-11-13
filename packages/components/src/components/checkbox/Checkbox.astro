@@ -1,0 +1,118 @@
+---
+import { cn, uid } from "@/lib/eris/utils";
+
+interface Props {
+  id?: string;
+  /** Field name sent with the form. The value is only sent while the box is checked. */
+  name?: string;
+  /** Value sent with the form. Defaults to "on". */
+  value?: string;
+  /** Checked when the page loads. */
+  checked?: boolean;
+  /** Starts in the mixed state, for a parent whose children are partly checked. */
+  indeterminate?: boolean;
+  disabled?: boolean;
+  required?: boolean;
+  /** Focusable and sent with the form, but cannot be changed. */
+  readOnly?: boolean;
+  invalid?: boolean;
+  /** Id of a form elsewhere on the page that this checkbox belongs to. */
+  form?: string;
+  /** Accessible name for a checkbox with no visible text. */
+  label?: string;
+  class?: string;
+}
+
+const {
+  id = uid("checkbox"),
+  name,
+  value = "on",
+  checked = false,
+  indeterminate = false,
+  disabled = false,
+  required = false,
+  readOnly = false,
+  invalid = false,
+  form,
+  label,
+  class: className,
+} = Astro.props;
+const hasText = Astro.slots.has("default");
+// The mixed state only exists as a DOM property, so until the script sets it, the
+// data attribute stands in for it.
+const mixed =
+  "group-has-indeterminate/checkbox:opacity-100 group-[[data-default-indeterminate]:not([data-ready])]/checkbox:opacity-100";
+---
+
+<label
+  data-eris="checkbox"
+  data-eris-id={id}
+  data-read-only={String(readOnly)}
+  data-invalid-field={String(invalid)}
+  data-default-indeterminate={indeterminate ? "" : undefined}
+  class={cn(
+    "group/checkbox inline-flex cursor-pointer items-center gap-3 text-[15px] text-foreground",
+    "has-disabled:cursor-default has-disabled:text-(--eris-disabled)",
+    className,
+  )}
+>
+  <input
+    type="checkbox"
+    data-part="hidden-input"
+    name={name}
+    value={value}
+    checked={checked}
+    disabled={disabled}
+    required={required}
+    form={form}
+    aria-label={hasText ? undefined : label}
+    aria-invalid={invalid ? "true" : undefined}
+    class="peer sr-only"
+  />
+  <span
+    data-part="control"
+    class={cn(
+      "relative inline-flex size-5 shrink-0 items-center justify-center rounded-[6px] border border-border-strong bg-field text-background",
+      "transition-colors duration-(--eris-duration-state) ease-eris",
+      "peer-checked:border-foreground peer-checked:bg-foreground peer-indeterminate:border-foreground peer-indeterminate:bg-foreground",
+      "group-[[data-default-indeterminate]:not([data-ready])]/checkbox:border-foreground group-[[data-default-indeterminate]:not([data-ready])]/checkbox:bg-foreground",
+      "peer-focus-visible:outline-solid peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring",
+      "peer-aria-invalid:border-danger peer-disabled:opacity-40",
+    )}
+  >
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="absolute size-3.5 opacity-0 group-has-[:checked:not(:indeterminate)]/checkbox:opacity-100"
+    >
+      <path d="m3.5 8.5 3 3 6-7"></path>
+    </svg>
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      class={cn("absolute size-3.5 opacity-0", mixed)}
+    >
+      <path d="M4 8h8"></path>
+    </svg>
+  </span>
+  {hasText && (
+    <span data-part="label">
+      <slot />
+    </span>
+  )}
+</label>
+
+<script>
+  import { mountAll } from "@/lib/eris/mount";
+  import { createCheckbox } from "./checkbox";
+  mountAll("checkbox", createCheckbox);
+</script>

@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@zag-js/accordion": "^1.47.0",
+    "@zag-js/checkbox": "^1.47.0",
     "@zag-js/clipboard": "^1.47.0",
     "@zag-js/dialog": "^1.47.0",
     "@zag-js/switch": "^1.47.0",

@@ -116,6 +116,9 @@ importers:
       '@zag-js/accordion':
         specifier: ^1.47.0
         version: 1.47.0
+      '@zag-js/checkbox':
+        specifier: ^1.47.0
+        version: 1.47.0
       '@zag-js/clipboard':
         specifier: ^1.47.0
         version: 1.47.0
@@ -1125,6 +1128,9 @@ packages:
 
   '@zag-js/aria-hidden@1.47.0':
     resolution: {integrity: sha512-UVnk+Ge7YvS873dSBzLE6lihHz8jcnaAS6aRxg4O5Gj3NaazW5jWb3dCiSgSGQaG0lxJCdIZysafHy/mIeSbhw==}
+
+  '@zag-js/checkbox@1.47.0':
+    resolution: {integrity: sha512-8fHGi5bNfnKc5vFKVRppT2DEh2lgba3/eWMkzE3b158cUUuFjbOYaNQrOh41qicUT7taAsj+T2iTFte+VEQtUA==}
 
   '@zag-js/clipboard@1.47.0':
     resolution: {integrity: sha512-bOoZQ2Me/k3iiFIUjhMhjs5bnAAoDB1GQB+lliZHOgVQTGM9QaTD0ZFeMEduJXir7OBPdBiqFKoz/vqCiZOfRQ==}
@@ -2953,6 +2959,15 @@ snapshots:
   '@zag-js/aria-hidden@1.47.0':
     dependencies:
       '@zag-js/dom-query': 1.47.0
+
+  '@zag-js/checkbox@1.47.0':
+    dependencies:
+      '@zag-js/anatomy': 1.47.0
+      '@zag-js/core': 1.47.0
+      '@zag-js/dom-query': 1.47.0
+      '@zag-js/focus-visible': 1.47.0
+      '@zag-js/types': 1.47.0
+      '@zag-js/utils': 1.47.0
 
   '@zag-js/clipboard@1.47.0':
     dependencies:

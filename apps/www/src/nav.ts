@@ -17,6 +17,7 @@ export const docsNav: { title: string; items: NavItem[] }[] = [
     items: [
       { href: "/docs/components/accordion", label: "Accordion" },
       { href: "/docs/components/button", label: "Button" },
+      { href: "/docs/components/checkbox", label: "Checkbox" },
       { href: "/docs/components/dialog", label: "Dialog" },
       { href: "/docs/components/kbd", label: "Kbd" },
       { href: "/docs/components/snippet", label: "Snippet" },

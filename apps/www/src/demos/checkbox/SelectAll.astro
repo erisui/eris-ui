@@ -1,0 +1,36 @@
+---
+import Checkbox from "@/components/ui/checkbox/Checkbox.astro";
+---
+
+<div class="flex flex-col items-start gap-3">
+  <Checkbox id="demo-all">All notifications</Checkbox>
+  <div id="demo-kinds" class="flex flex-col items-start gap-3 pl-8">
+    <Checkbox checked>Comments</Checkbox>
+    <Checkbox>Mentions</Checkbox>
+    <Checkbox>Invites</Checkbox>
+  </div>
+</div>
+
+<script>
+  import { setChecked } from "@/components/ui/checkbox/checkbox";
+
+  document.addEventListener("astro:page-load", () => {
+    const all = document.querySelector<HTMLElement>('[data-eris-id="demo-all"]');
+    const boxes = [...document.querySelectorAll<HTMLInputElement>("#demo-kinds input")];
+    if (!all || !boxes.length) return;
+
+    // Children changed: the parent becomes checked, unchecked or mixed.
+    const sync = () => {
+      const count = boxes.filter((box) => box.checked).length;
+      setChecked(all, count === 0 ? false : count === boxes.length ? true : "indeterminate");
+    };
+    boxes.forEach((box) => box.addEventListener("change", sync));
+
+    // Parent changed: every child follows it.
+    all.querySelector("input")!.addEventListener("change", (event) => {
+      const { checked } = event.target as HTMLInputElement;
+      boxes.forEach((box) => setChecked(box.closest<HTMLElement>("[data-eris]")!, checked));
+    });
+    sync();
+  });
+</script>
