@@ -1,5 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { leaveAndReturn } from "./helpers";
 
 const COMMAND = "npx eris-ui@latest init";
 
@@ -65,6 +66,15 @@ test.describe("Snippet", () => {
     const box = await root(page, "install").getByRole("button").boundingBox();
     expect(box!.width).toBeGreaterThanOrEqual(32);
     expect(box!.height).toBeGreaterThanOrEqual(32);
+  });
+
+  test("still copies after a view transition", async ({ page }) => {
+    await page.goto("/snippet");
+    await leaveAndReturn(page, "Snippet", "/snippet");
+    const copy = root(page, "install").getByRole("button");
+    await copy.click();
+    await expect(copy).toHaveAccessibleName("Copied");
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(COMMAND);
   });
 
   test("has no axe violations", async ({ page }) => {
