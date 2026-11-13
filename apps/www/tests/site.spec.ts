@@ -1,17 +1,9 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { docsNav } from "../src/nav";
 
-const pages = [
-  "/",
-  "/docs",
-  "/docs/installation",
-  "/docs/theming",
-  "/docs/components/button",
-  "/docs/components/dialog",
-  "/docs/components/kbd",
-  "/docs/components/snippet",
-  "/docs/components/tabs",
-];
+// Every docs page in the sidebar, so a new component page is covered without editing this list.
+const pages = ["/", ...docsNav.flatMap((group) => group.items.map((item) => item.href))];
 
 for (const path of pages) {
   test(`${path} loads without errors or serious a11y issues`, async ({ page }) => {
@@ -33,7 +25,7 @@ test("serves the registry as JSON", async ({ request }) => {
   const index = await request.get("/r/registry.json");
   expect(index.ok()).toBe(true);
   const names = (await index.json()).items.map((i: { name: string }) => i.name);
-  expect(names).toEqual(expect.arrayContaining(["eris-core", "button", "dialog", "tabs"]));
+  expect(names).toEqual(expect.arrayContaining(["eris-core", "accordion", "button", "dialog", "tabs"]));
   const dialog = await (await request.get("/r/dialog.json")).json();
   expect(dialog.files.length).toBeGreaterThan(3);
   expect(dialog.files.every((f: { content: string }) => f.content.length > 0)).toBe(true);
@@ -112,7 +104,7 @@ test("⌘K opens search, finds a heading and goes to it", async ({ page }) => {
   await expect(dialog).toBeVisible();
   const input = dialog.getByRole("combobox", { name: "Search docs" });
   await expect(input).toBeFocused();
-  await expect(dialog.getByRole("option")).toHaveCount(8);
+  await expect(dialog.getByRole("option")).toHaveCount(pages.length - 1);
 
   await input.fill("activation");
   const first = dialog.getByRole("option").first();

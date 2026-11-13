@@ -1,0 +1,40 @@
+---
+import { cn } from "@/lib/eris/utils";
+
+interface Props {
+  /** Heading element that wraps the button. Pick the level that fits the page outline. */
+  as?: "h2" | "h3" | "h4" | "h5" | "h6";
+  class?: string;
+}
+
+const { as: Heading = "h3", class: className } = Astro.props;
+---
+
+<Heading class="flex">
+  <button
+    type="button"
+    data-part="trigger"
+    class={cn(
+      "flex flex-1 cursor-pointer items-center justify-between gap-4 rounded-[6px] py-4 text-left text-[15px] font-medium text-foreground",
+      "transition-colors duration-(--eris-duration-state) ease-eris",
+      "outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+      "disabled:cursor-default disabled:text-(--eris-disabled)",
+      className,
+    )}
+  >
+    <slot />
+    <svg
+      data-part="indicator"
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="size-4 shrink-0 text-muted transition-transform duration-(--eris-duration-open) ease-eris data-[state=open]:rotate-180"
+    >
+      <path d="m4 6 4 4 4-4"></path>
+    </svg>
+  </button>
+</Heading>

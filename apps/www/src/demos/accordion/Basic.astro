@@ -1,0 +1,21 @@
+---
+import Accordion from "@/components/ui/accordion/Accordion.astro";
+import AccordionItem from "@/components/ui/accordion/AccordionItem.astro";
+import AccordionTrigger from "@/components/ui/accordion/AccordionTrigger.astro";
+import AccordionContent from "@/components/ui/accordion/AccordionContent.astro";
+---
+
+<Accordion class="max-w-md">
+  <AccordionItem value="framework" open>
+    <AccordionTrigger>Does it work without a framework?</AccordionTrigger>
+    <AccordionContent>Yes. Every component is a plain .astro file with a small script.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="styles">
+    <AccordionTrigger>Can I change the styles?</AccordionTrigger>
+    <AccordionContent>The code is copied into your project, so edit the classes freely.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="license">
+    <AccordionTrigger>What is the license?</AccordionTrigger>
+    <AccordionContent>MIT. Use it in personal and commercial projects.</AccordionContent>
+  </AccordionItem>
+</Accordion>

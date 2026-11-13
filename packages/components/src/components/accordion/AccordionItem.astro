@@ -1,0 +1,23 @@
+---
+import { cn } from "@/lib/eris/utils";
+
+interface Props {
+  value: string;
+  /** Open on load. Without `multiple` on the Accordion, only the first open item counts. */
+  open?: boolean;
+  disabled?: boolean;
+  class?: string;
+}
+
+const { value, open = false, disabled = false, class: className } = Astro.props;
+---
+
+<div
+  data-part="item"
+  data-value={value}
+  data-default-open={open ? "" : undefined}
+  data-item-disabled={disabled ? "" : undefined}
+  class={cn("border-b border-border", className)}
+>
+  <slot />
+</div>

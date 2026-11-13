@@ -1,0 +1,21 @@
+---
+import Accordion from "@/components/ui/accordion/Accordion.astro";
+import AccordionItem from "@/components/ui/accordion/AccordionItem.astro";
+import AccordionTrigger from "@/components/ui/accordion/AccordionTrigger.astro";
+import AccordionContent from "@/components/ui/accordion/AccordionContent.astro";
+---
+
+<Accordion multiple class="max-w-md">
+  <AccordionItem value="shipping" open>
+    <AccordionTrigger>Shipping</AccordionTrigger>
+    <AccordionContent>Orders leave the warehouse within two working days.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="returns" open>
+    <AccordionTrigger>Returns</AccordionTrigger>
+    <AccordionContent>Send anything back within 30 days for a full refund.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="warranty">
+    <AccordionTrigger>Warranty</AccordionTrigger>
+    <AccordionContent>Two years, covering faults in materials and assembly.</AccordionContent>
+  </AccordionItem>
+</Accordion>
