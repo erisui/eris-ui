@@ -53,8 +53,10 @@ const {
       hidden
       role="tooltip"
       class={cn(
-        "z-50 block w-max max-w-64 origin-(--transform-origin) rounded-[8px] border border-border-strong bg-raised px-2.5 py-1.5 text-[13px] leading-snug font-normal text-foreground",
-        "shadow-[0_8px_24px_-8px_rgb(0_0_0/0.7)]",
+        "z-50 block w-max max-w-64 origin-(--transform-origin) rounded-[8px] border border-(--eris-tooltip-border) bg-(--eris-tooltip) px-2.5 py-1.5 text-[13px] leading-snug font-normal text-(--eris-tooltip-foreground)",
+        "shadow-[0_8px_24px_-8px_var(--eris-overlay-shadow)]",
+        // Muted text in the slot follows the tooltip's surface, not the page's.
+        "[--eris-muted:var(--eris-tooltip-muted)]",
         "data-[state=open]:animate-[eris-fade-in_var(--eris-duration-state)_var(--eris-ease)]",
         !interactive && "pointer-events-none",
         className,

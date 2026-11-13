@@ -21,7 +21,7 @@ const { "aria-label": ariaLabel, class: className } = Astro.props;
     aria-label={ariaLabel}
     class={cn(
       "eris-curve z-50 flex w-72 max-w-[calc(100vw-2rem)] origin-(--transform-origin) flex-col gap-3 rounded-menu border border-border bg-surface p-4 text-[15px] text-foreground",
-      "shadow-[0_16px_48px_-12px_rgb(0_0_0/0.7)] outline-none",
+      "shadow-[0_16px_48px_-12px_var(--eris-overlay-shadow)] outline-none",
       "data-[state=open]:animate-[eris-pop-in_var(--eris-duration-open)_var(--eris-ease)]",
       className,
     )}

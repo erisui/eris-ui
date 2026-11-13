@@ -65,7 +65,7 @@ const hasText = Astro.slots.has("default");
   <span
     data-part="control"
     class={cn(
-      "eris-curve relative inline-flex h-6 w-10 shrink-0 items-center rounded-pill border border-border-strong bg-raised",
+      "eris-curve relative inline-flex h-6 w-10 shrink-0 items-center rounded-pill border border-border-strong bg-(--eris-track)",
       "transition-colors duration-(--eris-duration-state) ease-eris",
       "peer-checked:border-foreground peer-checked:bg-foreground",
       "peer-focus-visible:outline-solid peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring",
@@ -74,7 +74,7 @@ const hasText = Astro.slots.has("default");
   >
     <span
       data-part="thumb"
-      class="eris-curve size-4 translate-x-[3px] rounded-pill bg-muted transition-[translate,background-color] group-has-checked/switch:translate-x-[19px] group-has-checked/switch:bg-background duration-(--eris-duration-state) ease-eris"
+      class="eris-curve size-4 translate-x-[3px] rounded-pill bg-(--eris-switch-thumb) shadow-[0_1px_2px_var(--eris-button-shadow)] transition-[translate,background-color] group-has-checked/switch:translate-x-[19px] group-has-checked/switch:bg-background duration-(--eris-duration-state) ease-eris"
     ></span>
   </span>
   {hasText && (

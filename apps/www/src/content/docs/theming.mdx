@@ -35,6 +35,29 @@ import CodeBlock from "../../components/CodeBlock.astro";
 
 The accent button uses its own gradient tokens (`--eris-accent-top`, `--eris-accent-bottom`, `--eris-accent-highlight`, `--eris-accent-border`). Use it for the single most important action on a screen.
 
+Every filled button shares one lighting model: a border, a 1px highlight on the top edge and the same drop shadow. The primary button takes `--eris-primary-border`, `--eris-primary-highlight` and `--eris-primary-hover`; secondary and danger take `--eris-raised-highlight` and `--eris-raised-hover`; all of them share `--eris-button-shadow`.
+
+## Light theme
+
+The theme is dark by default. Add `data-theme="light"` to `<html>` for a light page, or to any element to make just that part light.
+
+<CodeBlock code={`<html lang="en" data-theme="light">`} />
+
+The primary button follows `--eris-foreground`, so it turns near-black on a light page. Danger, ghost and code colours get darker values to keep their contrast on white.
+
+A few tokens exist so that parts can differ between the themes:
+
+| Token                                | Used for                                     |
+| ------------------------------------ | -------------------------------------------- |
+| `--eris-track`                       | The tabs list and a switch that is off       |
+| `--eris-switch-thumb`                | The thumb of a switch that is off            |
+| `--eris-highlight`                   | The highlighted item in a menu or select     |
+| `--eris-scrim`                       | The backdrop behind a dialog                 |
+| `--eris-overlay-shadow`              | The shadow under dialogs, popovers and menus |
+| `--eris-tooltip`, `--eris-tooltip-*` | The tooltip, which turns near-black on light |
+
+To add your own colour, give it a value in both `:root` and `[data-theme="light"]`.
+
 ## Radius and the Eris curve
 
 | Token                 | Default  | Used for              |

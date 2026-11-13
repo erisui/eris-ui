@@ -12,7 +12,7 @@ const { class: className } = Astro.props;
   data-part="backdrop"
   data-state="closed"
   hidden
-  class="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] data-[state=open]:animate-[eris-fade-in_var(--eris-duration-open)_var(--eris-ease)]"
+  class="fixed inset-0 z-50 bg-(--eris-scrim) backdrop-blur-[2px] data-[state=open]:animate-[eris-fade-in_var(--eris-duration-open)_var(--eris-ease)]"
 ></div>
 <div
   data-part="positioner"
@@ -24,8 +24,8 @@ const { class: className } = Astro.props;
     hidden
     role="dialog"
     class={cn(
-      "eris-curve pointer-events-auto flex w-full max-w-md flex-col gap-5 rounded-card border border-[#262626] bg-surface p-8 text-foreground",
-      "shadow-[0_24px_64px_-16px_rgb(0_0_0/0.7)] outline-none",
+      "eris-curve pointer-events-auto flex w-full max-w-md flex-col gap-5 rounded-card border border-border bg-surface p-8 text-foreground",
+      "shadow-[0_24px_64px_-16px_var(--eris-overlay-shadow)] outline-none",
       "data-[state=open]:animate-[eris-pop-in_var(--eris-duration-open)_var(--eris-ease)]",
       className,
     )}
