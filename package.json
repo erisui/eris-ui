@@ -12,7 +12,9 @@
     "test:e2e": "turbo run test:e2e",
     "format": "prettier --write .",
     "test": "turbo run test",
-    "registry": "pnpm --filter @eris-ui/registry-build build"
+    "registry": "pnpm --filter @eris-ui/registry-build build",
+    "new:component": "node scripts/new-component.mjs",
+    "check:components": "node scripts/check-components.mjs"
   },
   "devDependencies": {
     "prettier": "^3.9.10",

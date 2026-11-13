@@ -1,0 +1,103 @@
+---
+import Base from "../layouts/Base.astro";
+import Accordion from "@eris/components/accordion/Accordion.astro";
+import AccordionItem from "@eris/components/accordion/AccordionItem.astro";
+import AccordionTrigger from "@eris/components/accordion/AccordionTrigger.astro";
+import AccordionContent from "@eris/components/accordion/AccordionContent.astro";
+import Dialog from "@eris/components/dialog/Dialog.astro";
+import DialogTrigger from "@eris/components/dialog/DialogTrigger.astro";
+import DialogContent from "@eris/components/dialog/DialogContent.astro";
+import DialogTitle from "@eris/components/dialog/DialogTitle.astro";
+import DialogClose from "@eris/components/dialog/DialogClose.astro";
+---
+
+<Base title="Accordion">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Accordion</h1>
+    <p class="text-muted">
+      Arrow keys move between headers, Home and End jump to the ends, Enter or Space opens a section.
+    </p>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Single</h2>
+    <Accordion id="faq">
+      <AccordionItem value="astro" open>
+        <AccordionTrigger>Does it work without a framework?</AccordionTrigger>
+        <AccordionContent>Yes. Every component is a plain .astro file.</AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="styles">
+        <AccordionTrigger>Can I change the styles?</AccordionTrigger>
+        <AccordionContent>The code is copied into your project, so edit it freely.</AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="pro" disabled>
+        <AccordionTrigger>Is there a Pro version?</AccordionTrigger>
+        <AccordionContent>Not yet.</AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="license">
+        <AccordionTrigger>What is the license?</AccordionTrigger>
+        <AccordionContent>MIT.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Multiple</h2>
+    <Accordion id="multi" multiple>
+      <AccordionItem value="one" open>
+        <AccordionTrigger>First</AccordionTrigger>
+        <AccordionContent>First panel</AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="two" open>
+        <AccordionTrigger>Second</AccordionTrigger>
+        <AccordionContent>Second panel</AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="three">
+        <AccordionTrigger>Third</AccordionTrigger>
+        <AccordionContent>Third panel</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Always one open</h2>
+    <Accordion id="pinned" collapsible={false}>
+      <AccordionItem value="one" open>
+        <AccordionTrigger>Pinned one</AccordionTrigger>
+        <AccordionContent>Pinned panel one</AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="two">
+        <AccordionTrigger>Pinned two</AccordionTrigger>
+        <AccordionContent>Pinned panel two</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Nested components</h2>
+    <Accordion id="nested">
+      <AccordionItem value="outer" open>
+        <AccordionTrigger>Outer</AccordionTrigger>
+        <AccordionContent class="flex flex-col gap-4">
+          <Dialog id="nested-dialog">
+            <DialogTrigger>Open nested dialog</DialogTrigger>
+            <DialogContent>
+              <DialogTitle>Nested dialog</DialogTitle>
+              <DialogClose>Close</DialogClose>
+            </DialogContent>
+          </Dialog>
+          <Accordion id="inner">
+            <AccordionItem value="inner-one">
+              <AccordionTrigger as="h4">Inner one</AccordionTrigger>
+              <AccordionContent>Inner panel one</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="other">
+        <AccordionTrigger>Other</AccordionTrigger>
+        <AccordionContent>Other panel</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  </section>
+</Base>

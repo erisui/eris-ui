@@ -39,6 +39,16 @@ pnpm test:e2e                  # Playwright + axe
 
 To test against an installed Chrome instead of Playwright's download, set `CHROME_PATH`.
 
+## Add a component
+
+```sh
+pnpm new:component accordion --parts Item,Trigger,Content   # --no-zag for a static one
+pnpm install
+pnpm check:components                                        # lists what is still missing
+```
+
+`new:component` writes the source skeleton, playground page, spec, docs page and demo, and registers the component in the four places that list them. Fill in every `TODO` it leaves. `check:components` runs in CI and fails while a component is half added.
+
 ## Try the CLI locally
 
 The registry is not online yet, so point the CLI at a local build:

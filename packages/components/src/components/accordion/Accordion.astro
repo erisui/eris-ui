@@ -1,0 +1,39 @@
+---
+import { cn, uid } from "@/lib/eris/utils";
+
+interface Props {
+  id?: string;
+  /** Let more than one item stay open at a time. */
+  multiple?: boolean;
+  /** Let the open item be closed again. Only matters when `multiple` is off. */
+  collapsible?: boolean;
+  /** Disable every item. */
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  id = uid("accordion"),
+  multiple = false,
+  collapsible = true,
+  disabled = false,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  data-eris="accordion"
+  data-eris-id={id}
+  data-multiple={String(multiple)}
+  data-collapsible={String(collapsible)}
+  data-all-disabled={String(disabled)}
+  class={cn("flex w-full flex-col", className)}
+>
+  <slot />
+</div>
+
+<script>
+  import { mountAll } from "@/lib/eris/mount";
+  import { createAccordion } from "./accordion";
+  mountAll("accordion", createAccordion);
+</script>

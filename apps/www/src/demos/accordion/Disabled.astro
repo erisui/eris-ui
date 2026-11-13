@@ -1,0 +1,21 @@
+---
+import Accordion from "@/components/ui/accordion/Accordion.astro";
+import AccordionItem from "@/components/ui/accordion/AccordionItem.astro";
+import AccordionTrigger from "@/components/ui/accordion/AccordionTrigger.astro";
+import AccordionContent from "@/components/ui/accordion/AccordionContent.astro";
+---
+
+<Accordion class="max-w-md">
+  <AccordionItem value="profile">
+    <AccordionTrigger>Profile</AccordionTrigger>
+    <AccordionContent>Your name, avatar and time zone.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="billing" disabled>
+    <AccordionTrigger>Billing</AccordionTrigger>
+    <AccordionContent>Only workspace owners can see billing.</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="security">
+    <AccordionTrigger>Security</AccordionTrigger>
+    <AccordionContent>Password, two-factor codes and active sessions.</AccordionContent>
+  </AccordionItem>
+</Accordion>

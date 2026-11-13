@@ -106,3 +106,10 @@
 [data-eris="tabs"]:not([data-ready]) [data-part="content"] ~ [data-part="content"] {
   display: none;
 }
+
+/* Before a machine mounts, show only the accordion items marked open so nothing flashes. */
+[data-eris="accordion"]:not([data-ready])
+  [data-part="item"]:not([data-default-open])
+  > [data-part="content"] {
+  display: none;
+}

@@ -1,0 +1,80 @@
+---
+title: Accordion
+description: Stacked sections that expand and collapse, one or several at a time.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/accordion/Basic.astro";
+import basicSrc from "../../../demos/accordion/Basic.astro?raw";
+import Multiple from "../../../demos/accordion/Multiple.astro";
+import multipleSrc from "../../../demos/accordion/Multiple.astro?raw";
+import Disabled from "../../../demos/accordion/Disabled.astro";
+import disabledSrc from "../../../demos/accordion/Disabled.astro?raw";
+
+<Demo id="accordion-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="accordion" />
+
+## Open on load
+
+Add `open` to an `AccordionItem` to show it when the page loads. The panel is in the HTML already, so it does not flash closed before the script runs.
+
+## Several open at once
+
+By default, opening an item closes the one that was open. With `multiple`, each item opens and closes on its own.
+
+<Demo id="accordion-multiple" source={multipleSrc}>
+  <Multiple />
+</Demo>
+
+## Always one open
+
+Clicking the open item closes it. Set `collapsible={false}` to keep one item open at all times. This has no effect with `multiple`.
+
+```astro
+<Accordion collapsible={false}>
+  <AccordionItem value="monthly" open>
+    ...
+  </AccordionItem>
+</Accordion>
+```
+
+## Disabled items
+
+A disabled item cannot be opened, and the arrow keys skip it. Put `disabled` on the `Accordion` to disable every item.
+
+<Demo id="accordion-disabled" source={disabledSrc}>
+  <Disabled />
+</Demo>
+
+## Heading level
+
+Each trigger is a button inside a heading, so screen reader users can jump between sections. The heading is an `h3` by default. Set `as` to the level that fits your page outline.
+
+```astro
+<AccordionTrigger as="h2">Shipping</AccordionTrigger>
+```
+
+## Keyboard
+
+| Key                                  | Does                                           |
+| ------------------------------------ | ---------------------------------------------- |
+| <kbd>Tab</kbd>                       | Moves focus to the next header or into a panel |
+| <kbd>Enter</kbd> or <kbd>Space</kbd> | Opens or closes the focused item               |
+| <kbd>↓</kbd> / <kbd>↑</kbd>          | Next or previous header, wrapping at the ends  |
+| <kbd>Home</kbd> / <kbd>End</kbd>     | First or last header                           |
+
+## Parts
+
+| Component          | Renders                                                                 |
+| ------------------ | ----------------------------------------------------------------------- |
+| `Accordion`        | The root. Props: `id`, `multiple`, `collapsible`, `disabled`            |
+| `AccordionItem`    | One section. Props: `value`, `open`, `disabled`                         |
+| `AccordionTrigger` | The heading and button that toggle the item, with a chevron. Prop: `as` |
+| `AccordionContent` | The panel shown when the item is open                                   |
