@@ -1,0 +1,29 @@
+---
+import { cn } from "@/lib/eris/utils";
+
+interface Props {
+  /** Shown above the items and read out as the group's name. */
+  label: string;
+  /** Reported in the eris:select event, to tell groups apart. */
+  name?: string;
+  /** Value of the MenuRadioItem chosen when the page loads. */
+  value?: string;
+  class?: string;
+}
+
+const { label, name, value, class: className } = Astro.props;
+---
+
+<div
+  role="group"
+  aria-label={label}
+  data-part="radio-group"
+  data-name={name}
+  data-group-value={value}
+  class={cn("flex flex-col", className)}
+>
+  <div aria-hidden="true" class="px-2.5 pt-1.5 pb-1 text-xs font-medium text-muted select-none">
+    {label}
+  </div>
+  <slot />
+</div>

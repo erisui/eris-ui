@@ -1,0 +1,23 @@
+---
+import Menu from "@/components/ui/menu/Menu.astro";
+import MenuTrigger from "@/components/ui/menu/MenuTrigger.astro";
+import MenuContent from "@/components/ui/menu/MenuContent.astro";
+import MenuItem from "@/components/ui/menu/MenuItem.astro";
+import Tooltip from "@/components/ui/tooltip/Tooltip.astro";
+---
+
+<Menu placement="bottom-end">
+  <Tooltip text="More options">
+    <MenuTrigger size="icon" aria-label="More">
+      <svg aria-hidden="true" viewBox="0 0 16 16" fill="currentColor">
+        <circle cx="3" cy="8" r="1.25"></circle>
+        <circle cx="8" cy="8" r="1.25"></circle>
+        <circle cx="13" cy="8" r="1.25"></circle>
+      </svg>
+    </MenuTrigger>
+  </Tooltip>
+  <MenuContent>
+    <MenuItem value="rename">Rename</MenuItem>
+    <MenuItem value="share">Share</MenuItem>
+  </MenuContent>
+</Menu>

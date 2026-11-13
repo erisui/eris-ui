@@ -1,0 +1,43 @@
+---
+import { cn } from "@/lib/eris/utils";
+
+interface Props {
+  /** The value its MenuRadioGroup takes when this item is chosen. */
+  value: string;
+  disabled?: boolean;
+  /** Overrides the menu's closeOnSelect for this item. */
+  closeOnSelect?: boolean;
+  class?: string;
+}
+
+const { value, disabled = false, closeOnSelect, class: className } = Astro.props;
+---
+
+<div
+  role="menuitemradio"
+  aria-checked="false"
+  data-part="radio-item"
+  data-value={value}
+  data-item-disabled={disabled ? "" : undefined}
+  data-item-close-on-select={closeOnSelect === undefined ? undefined : String(closeOnSelect)}
+  class={cn(
+    "group/item text-foreground",
+    "flex min-h-9 cursor-pointer items-center gap-2 rounded-[10px] px-2.5 py-1.5 text-sm no-underline outline-none select-none",
+    "data-highlighted:bg-raised data-disabled:cursor-default data-disabled:text-(--eris-disabled) [&_svg]:size-4 [&_svg]:shrink-0",
+    className,
+  )}
+>
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="opacity-0 group-data-[state=checked]/item:opacity-100"
+  >
+    <path d="m3.5 8.5 3 3 6-7"></path>
+  </svg>
+  <slot />
+</div>
