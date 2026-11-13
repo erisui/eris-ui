@@ -1,0 +1,89 @@
+---
+title: Checkbox
+description: A box that is checked, unchecked or mixed, and submits with forms.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/checkbox/Basic.astro";
+import basicSrc from "../../../demos/checkbox/Basic.astro?raw";
+import States from "../../../demos/checkbox/States.astro";
+import statesSrc from "../../../demos/checkbox/States.astro?raw";
+import Form from "../../../demos/checkbox/Form.astro";
+import formSrc from "../../../demos/checkbox/Form.astro?raw";
+import SelectAll from "../../../demos/checkbox/SelectAll.astro";
+import selectAllSrc from "../../../demos/checkbox/SelectAll.astro?raw";
+import NoText from "../../../demos/checkbox/NoText.astro";
+import noTextSrc from "../../../demos/checkbox/NoText.astro?raw";
+
+<Demo id="checkbox-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="checkbox" />
+
+## How it works
+
+The checkbox is a real `<input type="checkbox">` inside a `<label>`, drawn with CSS. It toggles, shows its state and submits with a form before its script loads, and with JavaScript turned off. The script adds the mixed state and `data-state`, `data-focus` and `data-hover` attributes for styling.
+
+## States
+
+<Demo id="checkbox-states" source={statesSrc}>
+  <States />
+</Demo>
+
+A `readOnly` checkbox keeps focus and is still sent with the form, but does not change. A `disabled` checkbox is skipped by <kbd>Tab</kbd> and left out of the form.
+
+## In a form
+
+Give the checkbox a `name`. While it is checked, the form sends that name with `value`, which defaults to `on`. While it is unchecked, the form sends nothing for it. A form reset returns it to how it loaded.
+
+<Demo id="checkbox-form" source={formSrc}>
+  <Form />
+</Demo>
+
+## Mixed state and select all
+
+`indeterminate` starts a checkbox in the mixed state, shown as a dash. Clicking a mixed checkbox checks it.
+
+To change the state from your own script, import `setChecked` from the component's `checkbox.ts` and pass it the checkbox root and `true`, `false` or `"indeterminate"`. It is safe to call before the checkbox has mounted.
+
+`setChecked` fires no `change` event, the same as setting `input.checked` yourself. So a `change` event on the input always means the user did it.
+
+<Demo id="checkbox-select-all" source={selectAllSrc}>
+  <SelectAll />
+</Demo>
+
+## Without visible text
+
+When a checkbox has no text next to it, as in a table row, name it with `label` so screen readers can announce it.
+
+<Demo id="checkbox-no-text" source={noTextSrc}>
+  <NoText />
+</Demo>
+
+## Keyboard
+
+| Key              | Does                            |
+| ---------------- | ------------------------------- |
+| <kbd>Tab</kbd>   | Moves focus to the checkbox     |
+| <kbd>Space</kbd> | Checks or unchecks the checkbox |
+
+## Props
+
+| Prop            | Default | Does                                                   |
+| --------------- | ------- | ------------------------------------------------------ |
+| `checked`       | `false` | Checked when the page loads                            |
+| `indeterminate` | `false` | Starts in the mixed state                              |
+| `name`          | none    | Field name sent with the form                          |
+| `value`         | `"on"`  | Value sent while the checkbox is checked               |
+| `disabled`      | `false` | Cannot be focused or changed, and is not submitted     |
+| `readOnly`      | `false` | Can be focused and is submitted, but cannot be changed |
+| `required`      | `false` | The form will not submit while the box is unchecked    |
+| `invalid`       | `false` | Marks the checkbox as failing validation               |
+| `form`          | none    | Id of a form elsewhere on the page                     |
+| `label`         | none    | Accessible name when there is no visible text          |
+| `id`            | random  | Id for the instance, used to build the part ids        |

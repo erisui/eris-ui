@@ -1,0 +1,111 @@
+---
+import Base from "../layouts/Base.astro";
+import Checkbox from "@eris/components/checkbox/Checkbox.astro";
+import Button from "@eris/components/button/Button.astro";
+import Dialog from "@eris/components/dialog/Dialog.astro";
+import DialogTrigger from "@eris/components/dialog/DialogTrigger.astro";
+import DialogContent from "@eris/components/dialog/DialogContent.astro";
+import DialogTitle from "@eris/components/dialog/DialogTitle.astro";
+import DialogClose from "@eris/components/dialog/DialogClose.astro";
+---
+
+<Base title="Checkbox">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Checkbox</h1>
+    <p class="text-muted">Click the box or its text, or press Space while it has focus.</p>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">States</h2>
+    <Checkbox id="basic">Remember me</Checkbox>
+    <Checkbox id="on" checked>
+      Send me updates
+    </Checkbox>
+    <Checkbox id="mixed" indeterminate>
+      Some selected
+    </Checkbox>
+    <Checkbox id="disabled" disabled>
+      Disabled
+    </Checkbox>
+    <Checkbox id="disabled-on" disabled checked>
+      Disabled and checked
+    </Checkbox>
+    <Checkbox id="read-only" readOnly checked>
+      Read only
+    </Checkbox>
+    <Checkbox id="invalid" invalid>
+      Accept the terms
+    </Checkbox>
+    <Checkbox id="no-text" label="Select row" />
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Select all</h2>
+    <Checkbox id="all">All toppings</Checkbox>
+    <div id="toppings" class="flex flex-col items-start gap-3 pl-8">
+      <Checkbox id="cheese" checked>
+        Cheese
+      </Checkbox>
+      <Checkbox id="olives">Olives</Checkbox>
+    </div>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">In a form</h2>
+    <form id="signup-form" class="flex flex-col items-start gap-4">
+      <Checkbox id="terms" name="terms" value="accepted" checked>
+        Terms
+      </Checkbox>
+      <Checkbox id="news" name="news">
+        Newsletter
+      </Checkbox>
+      <div class="flex gap-3">
+        <Button type="submit">Save</Button>
+        <Button type="reset" variant="secondary">
+          Reset
+        </Button>
+      </div>
+      <output id="submitted" class="text-sm text-muted"></output>
+    </form>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Inside a dialog</h2>
+    <Dialog id="with-checkbox">
+      <DialogTrigger>Open dialog</DialogTrigger>
+      <DialogContent>
+        <DialogTitle>Delete project</DialogTitle>
+        <Checkbox id="in-dialog">Also delete backups</Checkbox>
+        <DialogClose>Close</DialogClose>
+      </DialogContent>
+    </Dialog>
+  </section>
+</Base>
+
+<script>
+  import { setChecked } from "@eris/components/checkbox/checkbox";
+
+  document.addEventListener("astro:page-load", () => {
+    const form = document.querySelector<HTMLFormElement>("#signup-form");
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
+      form.querySelector("output")!.textContent = data.toString() || "(nothing)";
+    });
+
+    // A parent box that mirrors its children: all, none, or mixed.
+    const all = document.querySelector<HTMLElement>('[data-eris-id="all"]');
+    const boxes = [...document.querySelectorAll<HTMLInputElement>("#toppings input")];
+    if (!all || !boxes.length) return;
+    const sync = () => {
+      const count = boxes.filter((box) => box.checked).length;
+      setChecked(all, count === 0 ? false : count === boxes.length ? true : "indeterminate");
+    };
+    boxes.forEach((box) => box.addEventListener("change", sync));
+    all.querySelector("input")!.addEventListener("change", (event) => {
+      const { checked } = event.target as HTMLInputElement;
+      boxes.forEach((box) => setChecked(box.closest<HTMLElement>("[data-eris]")!, checked));
+    });
+    sync();
+  });
+</script>
