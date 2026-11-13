@@ -1,0 +1,20 @@
+---
+import Popover from "@/components/ui/popover/Popover.astro";
+import PopoverTrigger from "@/components/ui/popover/PopoverTrigger.astro";
+import PopoverContent from "@/components/ui/popover/PopoverContent.astro";
+---
+
+<div class="flex flex-wrap justify-center gap-3">
+  <Popover placement="top">
+    <PopoverTrigger>Top</PopoverTrigger>
+    <PopoverContent class="w-44">Opens above the trigger.</PopoverContent>
+  </Popover>
+  <Popover placement="right">
+    <PopoverTrigger>Right</PopoverTrigger>
+    <PopoverContent class="w-44">Opens beside the trigger.</PopoverContent>
+  </Popover>
+  <Popover placement="bottom-start" gutter={16}>
+    <PopoverTrigger>Bottom start</PopoverTrigger>
+    <PopoverContent class="w-44">Lined up with the left edge, 16px away.</PopoverContent>
+  </Popover>
+</div>

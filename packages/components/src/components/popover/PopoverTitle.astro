@@ -1,0 +1,8 @@
+---
+import { cn } from "@/lib/eris/utils";
+const { class: className } = Astro.props as { class?: string };
+---
+
+<h3 data-part="title" class={cn("text-[15px] font-semibold tracking-[-0.01em]", className)}>
+  <slot />
+</h3>

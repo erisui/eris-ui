@@ -1,0 +1,113 @@
+---
+import Base from "../layouts/Base.astro";
+import Popover from "@eris/components/popover/Popover.astro";
+import PopoverTrigger from "@eris/components/popover/PopoverTrigger.astro";
+import PopoverContent from "@eris/components/popover/PopoverContent.astro";
+import PopoverTitle from "@eris/components/popover/PopoverTitle.astro";
+import PopoverDescription from "@eris/components/popover/PopoverDescription.astro";
+import PopoverClose from "@eris/components/popover/PopoverClose.astro";
+import Button from "@eris/components/button/Button.astro";
+import Dialog from "@eris/components/dialog/Dialog.astro";
+import DialogTrigger from "@eris/components/dialog/DialogTrigger.astro";
+import DialogContent from "@eris/components/dialog/DialogContent.astro";
+import DialogTitle from "@eris/components/dialog/DialogTitle.astro";
+import DialogClose from "@eris/components/dialog/DialogClose.astro";
+---
+
+<Base title="Popover">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Popover</h1>
+    <p class="text-muted">Opens next to its trigger. Escape or a click outside closes it.</p>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Basic</h2>
+    <Popover id="basic">
+      <PopoverTrigger>Share</PopoverTrigger>
+      <PopoverContent>
+        <PopoverTitle>Share this page</PopoverTitle>
+        <PopoverDescription>Anyone with the link can view it.</PopoverDescription>
+        <div class="flex gap-2">
+          <Button size="sm">Copy link</Button>
+          <PopoverClose>Done</PopoverClose>
+        </div>
+      </PopoverContent>
+    </Popover>
+    <button id="outside" type="button" class="text-sm text-muted">
+      Outside button
+    </button>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Placement</h2>
+    <div class="flex flex-wrap gap-3 self-center py-10">
+      <Popover id="top" placement="top">
+        <PopoverTrigger>Top</PopoverTrigger>
+        <PopoverContent class="w-40">Above the trigger</PopoverContent>
+      </Popover>
+      <Popover id="right" placement="right" gutter={20}>
+        <PopoverTrigger>Right</PopoverTrigger>
+        <PopoverContent class="w-40">Beside the trigger</PopoverContent>
+      </Popover>
+      <Popover id="bottom-start" placement="bottom-start">
+        <PopoverTrigger>Bottom start</PopoverTrigger>
+        <PopoverContent class="w-40">Lined up with the left edge</PopoverContent>
+      </Popover>
+    </div>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Stays open on outside click</h2>
+    <Popover id="sticky" closeOnInteractOutside={false}>
+      <PopoverTrigger>Sticky</PopoverTrigger>
+      <PopoverContent>
+        <PopoverTitle>Sticky popover</PopoverTitle>
+        <PopoverClose>Close sticky</PopoverClose>
+      </PopoverContent>
+    </Popover>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Modal</h2>
+    <Popover id="modal" modal>
+      <PopoverTrigger>Rename</PopoverTrigger>
+      <PopoverContent>
+        <PopoverTitle>Rename project</PopoverTitle>
+        <input
+          aria-label="Project name"
+          value="eris"
+          class="h-11 rounded-field border border-border bg-field px-3 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring focus-visible:outline-solid"
+        />
+        <PopoverClose>Cancel</PopoverClose>
+      </PopoverContent>
+    </Popover>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Clipped parent</h2>
+    <div id="clip" class="h-16 w-full overflow-hidden rounded-field border border-border p-3">
+      <Popover id="clipped">
+        <PopoverTrigger size="sm">In a clipped box</PopoverTrigger>
+        <PopoverContent>This panel is taller than the box that holds its trigger.</PopoverContent>
+      </Popover>
+    </div>
+  </section>
+
+  <section class="flex flex-col items-start gap-4 pb-40">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Inside a dialog</h2>
+    <Dialog id="host">
+      <DialogTrigger>Open dialog</DialogTrigger>
+      <DialogContent>
+        <DialogTitle>Project settings</DialogTitle>
+        <Popover id="in-dialog">
+          <PopoverTrigger>More info</PopoverTrigger>
+          <PopoverContent>
+            <PopoverTitle>About projects</PopoverTitle>
+            <PopoverClose>Got it</PopoverClose>
+          </PopoverContent>
+        </Popover>
+        <DialogClose>Close dialog</DialogClose>
+      </DialogContent>
+    </Dialog>
+  </section>
+</Base>
