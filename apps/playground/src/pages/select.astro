@@ -1,0 +1,186 @@
+---
+import Base from "../layouts/Base.astro";
+import Select from "@eris/components/select/Select.astro";
+import SelectLabel from "@eris/components/select/SelectLabel.astro";
+import SelectTrigger from "@eris/components/select/SelectTrigger.astro";
+import SelectContent from "@eris/components/select/SelectContent.astro";
+import SelectItem from "@eris/components/select/SelectItem.astro";
+import SelectGroup from "@eris/components/select/SelectGroup.astro";
+import Button from "@eris/components/button/Button.astro";
+import Dialog from "@eris/components/dialog/Dialog.astro";
+import DialogTrigger from "@eris/components/dialog/DialogTrigger.astro";
+import DialogContent from "@eris/components/dialog/DialogContent.astro";
+import DialogTitle from "@eris/components/dialog/DialogTitle.astro";
+import DialogClose from "@eris/components/dialog/DialogClose.astro";
+
+const countries = [
+  "Austria",
+  "Belgium",
+  "Canada",
+  "Denmark",
+  "Estonia",
+  "Finland",
+  "Germany",
+  "Hungary",
+  "Iceland",
+  "Japan",
+  "Kenya",
+  "Latvia",
+  "Mexico",
+  "Norway",
+];
+---
+
+<Base title="Select">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Select</h1>
+    <p class="text-muted">Arrow keys move, Enter chooses, typing jumps to an option, Escape closes.</p>
+  </section>
+
+  <section class="flex max-w-xs flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Basic</h2>
+    <Select id="framework">
+      <SelectLabel>Framework</SelectLabel>
+      <SelectTrigger placeholder="Pick a framework" />
+      <SelectContent>
+        <SelectItem value="astro">Astro</SelectItem>
+        <SelectItem value="next">Next.js</SelectItem>
+        <SelectItem value="nuxt" disabled>
+          Nuxt
+        </SelectItem>
+        <SelectItem value="remix">Remix</SelectItem>
+        <SelectItem value="sveltekit">SvelteKit</SelectItem>
+      </SelectContent>
+    </Select>
+    <output id="changed" class="text-sm text-muted"></output>
+  </section>
+
+  <section class="flex max-w-xs flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Starting value and groups</h2>
+    <Select id="food" value="carrot" loopFocus>
+      <SelectLabel>Food</SelectLabel>
+      <SelectTrigger />
+      <SelectContent>
+        <SelectGroup label="Fruit">
+          <SelectItem value="apple">Apple</SelectItem>
+          <SelectItem value="banana">Banana</SelectItem>
+        </SelectGroup>
+        <SelectGroup label="Vegetables">
+          <SelectItem value="carrot">Carrot</SelectItem>
+          <SelectItem value="leek">Leek</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  </section>
+
+  <section class="flex max-w-xs flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">States</h2>
+    <Select id="disabled" disabled value="a">
+      <SelectLabel>Disabled</SelectLabel>
+      <SelectTrigger />
+      <SelectContent>
+        <SelectItem value="a">Option A</SelectItem>
+      </SelectContent>
+    </Select>
+    <Select id="read-only" readOnly value="a">
+      <SelectLabel>Read only</SelectLabel>
+      <SelectTrigger />
+      <SelectContent>
+        <SelectItem value="a">Option A</SelectItem>
+        <SelectItem value="b">Option B</SelectItem>
+      </SelectContent>
+    </Select>
+    <Select id="invalid" invalid>
+      <SelectLabel>Invalid</SelectLabel>
+      <SelectTrigger />
+      <SelectContent>
+        <SelectItem value="a">Option A</SelectItem>
+      </SelectContent>
+    </Select>
+    <Select id="no-label">
+      <SelectTrigger aria-label="Sort order" placeholder="Sort" />
+      <SelectContent>
+        <SelectItem value="asc">Ascending</SelectItem>
+        <SelectItem value="desc">Descending</SelectItem>
+      </SelectContent>
+    </Select>
+  </section>
+
+  <section class="flex max-w-xs flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Long list</h2>
+    <Select id="country">
+      <SelectLabel>Country</SelectLabel>
+      <SelectTrigger placeholder="Pick a country" />
+      <SelectContent>
+        {countries.map((name) => (
+          <SelectItem value={name.toLowerCase()}>{name}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  </section>
+
+  <section class="flex max-w-xs flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">In a form</h2>
+    <form id="plan-form" class="flex flex-col items-start gap-4">
+      <Select id="plan" name="plan" value="pro" required class="w-full">
+        <SelectLabel>Plan</SelectLabel>
+        <SelectTrigger />
+        <SelectContent>
+          <SelectItem value="free">Free</SelectItem>
+          <SelectItem value="pro">Pro</SelectItem>
+          <SelectItem value="team">Team</SelectItem>
+        </SelectContent>
+      </Select>
+      <Select id="region" name="region" required class="w-full">
+        <SelectLabel>Region</SelectLabel>
+        <SelectTrigger placeholder="Pick a region" />
+        <SelectContent>
+          <SelectItem value="eu">Europe</SelectItem>
+          <SelectItem value="us">United States</SelectItem>
+        </SelectContent>
+      </Select>
+      <div class="flex gap-3">
+        <Button type="submit">Save</Button>
+        <Button type="reset" variant="secondary">
+          Reset
+        </Button>
+      </div>
+      <output id="submitted" class="text-sm text-muted"></output>
+    </form>
+  </section>
+
+  <section class="flex flex-col items-start gap-4 pb-64">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Inside a dialog</h2>
+    <Dialog id="host">
+      <DialogTrigger>Open dialog</DialogTrigger>
+      <DialogContent>
+        <DialogTitle>Invite</DialogTitle>
+        <Select id="role">
+          <SelectLabel>Role</SelectLabel>
+          <SelectTrigger placeholder="Pick a role" />
+          <SelectContent>
+            <SelectItem value="viewer">Viewer</SelectItem>
+            <SelectItem value="editor">Editor</SelectItem>
+          </SelectContent>
+        </Select>
+        <DialogClose>Close dialog</DialogClose>
+      </DialogContent>
+    </Dialog>
+  </section>
+</Base>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const changed = document.querySelector("#changed");
+    document.querySelector('[data-eris-id="framework"] select')?.addEventListener("change", (event) => {
+      if (changed) changed.textContent = (event.target as HTMLSelectElement).value;
+    });
+
+    const form = document.querySelector<HTMLFormElement>("#plan-form");
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
+      form.querySelector("output")!.textContent = data.toString() || "(nothing)";
+    });
+  });
+</script>

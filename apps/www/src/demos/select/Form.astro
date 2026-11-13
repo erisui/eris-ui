@@ -1,0 +1,36 @@
+---
+import Select from "@/components/ui/select/Select.astro";
+import SelectLabel from "@/components/ui/select/SelectLabel.astro";
+import SelectTrigger from "@/components/ui/select/SelectTrigger.astro";
+import SelectContent from "@/components/ui/select/SelectContent.astro";
+import SelectItem from "@/components/ui/select/SelectItem.astro";
+import Button from "@/components/ui/button/Button.astro";
+---
+
+<form class="flex w-64 flex-col items-start gap-4">
+  <Select name="plan" value="pro" class="w-full">
+    <SelectLabel>Plan</SelectLabel>
+    <SelectTrigger />
+    <SelectContent>
+      <SelectItem value="free">Free</SelectItem>
+      <SelectItem value="pro">Pro</SelectItem>
+      <SelectItem value="team">Team</SelectItem>
+    </SelectContent>
+  </Select>
+  <Select name="region" required class="w-full">
+    <SelectLabel>Region</SelectLabel>
+    <SelectTrigger placeholder="Pick a region" />
+    <SelectContent>
+      <SelectItem value="eu">Europe</SelectItem>
+      <SelectItem value="us">United States</SelectItem>
+    </SelectContent>
+  </Select>
+  <div class="flex gap-3">
+    <Button type="submit" size="sm">
+      Save
+    </Button>
+    <Button type="reset" size="sm" variant="secondary">
+      Reset
+    </Button>
+  </div>
+</form>

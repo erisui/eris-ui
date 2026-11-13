@@ -1,0 +1,21 @@
+---
+import Select from "@/components/ui/select/Select.astro";
+import SelectLabel from "@/components/ui/select/SelectLabel.astro";
+import SelectTrigger from "@/components/ui/select/SelectTrigger.astro";
+import SelectContent from "@/components/ui/select/SelectContent.astro";
+import SelectItem from "@/components/ui/select/SelectItem.astro";
+---
+
+<Select class="w-64">
+  <SelectLabel>Framework</SelectLabel>
+  <SelectTrigger placeholder="Pick a framework" />
+  <SelectContent>
+    <SelectItem value="astro">Astro</SelectItem>
+    <SelectItem value="next">Next.js</SelectItem>
+    <SelectItem value="nuxt" disabled>
+      Nuxt
+    </SelectItem>
+    <SelectItem value="remix">Remix</SelectItem>
+    <SelectItem value="sveltekit">SvelteKit</SelectItem>
+  </SelectContent>
+</Select>

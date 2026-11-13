@@ -1,0 +1,72 @@
+---
+import { cn, uid } from "@/lib/eris/utils";
+import type { Placement } from "@/lib/eris/positioning";
+
+interface Props {
+  id?: string;
+  /** Field name sent with the form. */
+  name?: string;
+  /** Value of the SelectItem chosen when the page loads. */
+  value?: string;
+  disabled?: boolean;
+  required?: boolean;
+  /** Focusable and sent with the form, but cannot be changed. */
+  readOnly?: boolean;
+  invalid?: boolean;
+  /** Id of a form elsewhere on the page that this select belongs to. */
+  form?: string;
+  /** Side of the trigger the list opens on. It flips when there is no room. */
+  placement?: Placement;
+  /** Gap between the trigger and the list, in pixels. */
+  gutter?: number;
+  /** Arrow keys wrap from the last option to the first. */
+  loopFocus?: boolean;
+  class?: string;
+}
+
+const {
+  id = uid("select"),
+  name,
+  value,
+  disabled = false,
+  required = false,
+  readOnly = false,
+  invalid = false,
+  form,
+  placement = "bottom-start",
+  gutter = 6,
+  loopFocus = false,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  data-eris="select"
+  data-eris-id={id}
+  data-default-value={value}
+  data-placement={placement}
+  data-gutter={gutter}
+  data-read-only={String(readOnly)}
+  data-invalid-field={String(invalid)}
+  data-loop-focus={String(loopFocus)}
+  class={cn("group/select flex flex-col gap-2", className)}
+>
+  {/* The form control. The script fills in one <option> per SelectItem and keeps it in step. */}
+  <select
+    data-part="hidden-select"
+    name={name}
+    form={form}
+    disabled={disabled}
+    required={required}
+    aria-hidden="true"
+    tabindex="-1"
+    class="sr-only"
+  ></select>
+  <slot />
+</div>
+
+<script>
+  import { mountAll } from "@/lib/eris/mount";
+  import { createSelect } from "./select";
+  mountAll("select", createSelect);
+</script>
