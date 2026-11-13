@@ -14,9 +14,7 @@ const classes = kbdVariants({ size, class: className as string | undefined });
 
 {label ? (
   <kbd class={classes} {...rest}>
-    <span aria-hidden="true">
-      <slot />
-    </span>
+    <span aria-hidden="true"><slot /></span>
     <span class="sr-only">{label}</span>
   </kbd>
 ) : (
