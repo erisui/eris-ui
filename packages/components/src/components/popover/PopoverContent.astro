@@ -10,7 +10,9 @@ interface Props {
 const { "aria-label": ariaLabel, class: className } = Astro.props;
 ---
 
-<div data-part="positioner">
+<!-- Zag puts the panel's z-index in --z-index. The positioner is the element that is positioned, so it has to take it,
+     or any positioned element later in the page paints over the panel. -->
+<div data-part="positioner" class="z-(--z-index)">
   <div
     data-part="content"
     data-state="closed"

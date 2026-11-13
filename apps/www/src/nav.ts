@@ -20,6 +20,7 @@ export const docsNav: { title: string; items: NavItem[] }[] = [
       { href: "/docs/components/checkbox", label: "Checkbox" },
       { href: "/docs/components/dialog", label: "Dialog" },
       { href: "/docs/components/kbd", label: "Kbd" },
+      { href: "/docs/components/menu", label: "Menu" },
       { href: "/docs/components/popover", label: "Popover" },
       { href: "/docs/components/snippet", label: "Snippet" },
       { href: "/docs/components/switch", label: "Switch" },

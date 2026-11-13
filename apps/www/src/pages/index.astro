@@ -20,6 +20,20 @@ import TabsTrigger from "@/components/ui/tabs/TabsTrigger.astro";
 import TabsContent from "@/components/ui/tabs/TabsContent.astro";
 import Kbd from "@/components/ui/kbd/Kbd.astro";
 import KbdGroup from "@/components/ui/kbd/KbdGroup.astro";
+import Accordion from "@/components/ui/accordion/Accordion.astro";
+import AccordionItem from "@/components/ui/accordion/AccordionItem.astro";
+import AccordionTrigger from "@/components/ui/accordion/AccordionTrigger.astro";
+import AccordionContent from "@/components/ui/accordion/AccordionContent.astro";
+import Switch from "@/components/ui/switch/Switch.astro";
+import Checkbox from "@/components/ui/checkbox/Checkbox.astro";
+import Popover from "@/components/ui/popover/Popover.astro";
+import PopoverTrigger from "@/components/ui/popover/PopoverTrigger.astro";
+import PopoverContent from "@/components/ui/popover/PopoverContent.astro";
+import PopoverTitle from "@/components/ui/popover/PopoverTitle.astro";
+import PopoverDescription from "@/components/ui/popover/PopoverDescription.astro";
+import PopoverClose from "@/components/ui/popover/PopoverClose.astro";
+import Tooltip from "@/components/ui/tooltip/Tooltip.astro";
+import Snippet from "@/components/ui/snippet/Snippet.astro";
 import FactIcon, { type FactIconName } from "../components/FactIcon.astro";
 
 /** Documented components, so the hero badge count follows the docs nav. */
@@ -130,6 +144,56 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
               </div>
             </DialogContent>
           </Dialog>
+        </ShowcaseTile>
+
+        <!-- Two rows tall on wide screens, so opening an item never changes the tile's height. -->
+        <ShowcaseTile name="Accordion" href="/docs/components/accordion" class="md:col-span-2 lg:row-span-2">
+          <Accordion id="home-accordion" class="max-w-md">
+            <AccordionItem value="framework" open>
+              <AccordionTrigger>Does it work without a framework?</AccordionTrigger>
+              <AccordionContent>Yes. Every component is a plain .astro file with a small script.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="styles">
+              <AccordionTrigger>Can I change the styles?</AccordionTrigger>
+              <AccordionContent>The code is copied into your project, so edit the classes freely.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="license">
+              <AccordionTrigger>What is the license?</AccordionTrigger>
+              <AccordionContent>MIT. Use it in personal and commercial projects.</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </ShowcaseTile>
+
+        <ShowcaseTile name="Switch" href="/docs/components/switch">
+          <Switch id="home-switch" checked>Email notifications</Switch>
+        </ShowcaseTile>
+
+        <ShowcaseTile name="Checkbox" href="/docs/components/checkbox">
+          <Checkbox id="home-checkbox" checked>Remember me on this device</Checkbox>
+        </ShowcaseTile>
+
+        <ShowcaseTile name="Popover" href="/docs/components/popover">
+          <Popover id="home-popover">
+            <PopoverTrigger>Share</PopoverTrigger>
+            <PopoverContent>
+              <PopoverTitle>Share this page</PopoverTitle>
+              <PopoverDescription>Anyone with the link can view it.</PopoverDescription>
+              <div class="flex gap-2">
+                <Button size="sm">Copy link</Button>
+                <PopoverClose>Done</PopoverClose>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </ShowcaseTile>
+
+        <ShowcaseTile name="Tooltip" href="/docs/components/tooltip">
+          <Tooltip id="home-tooltip" text="Copy the link to this page">
+            <Button variant="secondary">Copy link</Button>
+          </Tooltip>
+        </ShowcaseTile>
+
+        <ShowcaseTile name="Snippet" href="/docs/components/snippet" class="px-4 md:col-span-2 lg:col-span-1">
+          <Snippet id="home-snippet" code={cliCommand("init")} />
         </ShowcaseTile>
       </div>
     </section>

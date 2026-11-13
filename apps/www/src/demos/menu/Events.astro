@@ -1,0 +1,33 @@
+---
+import Menu from "@/components/ui/menu/Menu.astro";
+import MenuTrigger from "@/components/ui/menu/MenuTrigger.astro";
+import MenuContent from "@/components/ui/menu/MenuContent.astro";
+import MenuItem from "@/components/ui/menu/MenuItem.astro";
+---
+
+<div class="flex flex-col items-center gap-4">
+  <Menu id="demo-events">
+    <MenuTrigger>Sort by</MenuTrigger>
+    <MenuContent>
+      <MenuItem value="name">Name</MenuItem>
+      <MenuItem value="date">Date modified</MenuItem>
+      <MenuItem value="size">Size</MenuItem>
+    </MenuContent>
+  </Menu>
+  <p class="text-sm text-muted">
+    Chosen: <output id="demo-events-output">nothing yet</output>
+  </p>
+</div>
+
+<script>
+  import type { MenuSelectDetail } from "@/components/ui/menu/menu";
+
+  document.addEventListener("astro:page-load", () => {
+    const menu = document.querySelector('[data-eris-id="demo-events"]');
+    const output = document.querySelector("#demo-events-output");
+    menu?.addEventListener("eris:select", (event) => {
+      const { value } = (event as CustomEvent<MenuSelectDetail>).detail;
+      if (output) output.textContent = value;
+    });
+  });
+</script>

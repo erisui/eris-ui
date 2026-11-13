@@ -1,0 +1,93 @@
+---
+title: Menu
+description: A dropdown list of actions, links and options.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/menu/Basic.astro";
+import basicSrc from "../../../demos/menu/Basic.astro?raw";
+import Options from "../../../demos/menu/Options.astro";
+import optionsSrc from "../../../demos/menu/Options.astro?raw";
+import Events from "../../../demos/menu/Events.astro";
+import eventsSrc from "../../../demos/menu/Events.astro?raw";
+import Icon from "../../../demos/menu/Icon.astro";
+import iconSrc from "../../../demos/menu/Icon.astro?raw";
+
+<Demo id="menu-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="menu" />
+
+## Items
+
+A `MenuItem` is an action. Give it an `href` and it becomes a link that works with a click, with <kbd>Enter</kbd>, and with a middle click to open in a new tab. `variant="danger"` marks destructive actions, and `disabled` items are skipped by the arrow keys.
+
+## Reacting to a choice
+
+Choosing an item fires an `eris:select` event on it. The event bubbles, so one listener on the menu covers every item. `event.detail.value` is the item's `value`.
+
+<Demo id="menu-events" source={eventsSrc}>
+  <Events />
+</Demo>
+
+## Checkbox and radio items
+
+A `MenuCheckboxItem` toggles on and off. `MenuRadioItem`s inside a `MenuRadioGroup` let the user pick one; set the group's `value` to the item chosen on load.
+
+Their `eris:select` event also carries `checked`, and for a radio item `group`, the `name` of its group.
+
+By default the menu closes after any choice. Here `closeOnSelect={false}` keeps it open so several options can be changed. You can also set `closeOnSelect` on a single item.
+
+<Demo id="menu-options" source={optionsSrc}>
+  <Options />
+</Demo>
+
+## Groups and separators
+
+`MenuGroup` and `MenuRadioGroup` take a `label`, shown above their items and read out as the group's name. `MenuSeparator` draws a line between sections.
+
+## Icon trigger
+
+A trigger that shows only an icon needs an `aria-label`. A [Tooltip](/docs/components/tooltip) can wrap the trigger to show the same hint to everyone else.
+
+<Demo id="menu-icon" source={iconSrc}>
+  <Icon />
+</Demo>
+
+## Placement
+
+`placement` and `gutter` work as on [Popover](/docs/components/popover#placement). The default is `bottom-start`, 6 pixels from the trigger. A menu taller than the space available scrolls.
+
+## Keyboard
+
+| Key                                                           | Does                                                  |
+| ------------------------------------------------------------- | ----------------------------------------------------- |
+| <kbd>Enter</kbd>, <kbd>Space</kbd> or <kbd>↓</kbd> on trigger | Opens the menu on its first item                      |
+| <kbd>↑</kbd> on the trigger                                   | Opens the menu on its last item                       |
+| <kbd>↓</kbd> / <kbd>↑</kbd>                                   | Next or previous item. Wraps around with `loopFocus`  |
+| <kbd>Home</kbd> / <kbd>End</kbd>                              | First or last item                                    |
+| Letters                                                       | Jumps to the next item that starts with what you type |
+| <kbd>Enter</kbd> or <kbd>Space</kbd>                          | Chooses the item                                      |
+| <kbd>Esc</kbd>                                                | Closes the menu and returns focus to the trigger      |
+
+<kbd>Tab</kbd> does not leave an open menu. Submenus and right-click context menus are not part of this
+component yet.
+
+## Parts
+
+| Component          | Renders                                                                           |
+| ------------------ | --------------------------------------------------------------------------------- |
+| `Menu`             | The root. Props: `id`, `placement`, `gutter`, `closeOnSelect`, `loopFocus`        |
+| `MenuTrigger`      | The button that opens it. Props: `variant`, `size`, `aria-label`                  |
+| `MenuContent`      | The floating list                                                                 |
+| `MenuItem`         | An action or link. Props: `value`, `href`, `disabled`, `variant`, `closeOnSelect` |
+| `MenuCheckboxItem` | An on and off option. Props: `value`, `checked`, `disabled`, `closeOnSelect`      |
+| `MenuRadioGroup`   | A set of radio items. Props: `label`, `name`, `value`                             |
+| `MenuRadioItem`    | One choice in a radio group. Props: `value`, `disabled`, `closeOnSelect`          |
+| `MenuGroup`        | A labelled section. Prop: `label`                                                 |
+| `MenuSeparator`    | A dividing line                                                                   |

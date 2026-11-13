@@ -1,0 +1,44 @@
+---
+import { cn, uid } from "@/lib/eris/utils";
+import type { Placement } from "@/lib/eris/positioning";
+
+interface Props {
+  id?: string;
+  /** Side of the trigger the menu opens on. It flips when there is no room. */
+  placement?: Placement;
+  /** Gap between the trigger and the menu, in pixels. */
+  gutter?: number;
+  /** Close the menu when an item is chosen. An item can override this. */
+  closeOnSelect?: boolean;
+  /** Arrow keys wrap from the last item to the first. */
+  loopFocus?: boolean;
+  class?: string;
+}
+
+const {
+  id = uid("menu"),
+  placement = "bottom-start",
+  gutter = 6,
+  closeOnSelect = true,
+  loopFocus = false,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  data-eris="menu"
+  data-eris-id={id}
+  data-placement={placement}
+  data-gutter={gutter}
+  data-close-on-select={String(closeOnSelect)}
+  data-loop-focus={String(loopFocus)}
+  class={cn("contents", className)}
+>
+  <slot />
+</div>
+
+<script>
+  import { mountAll } from "@/lib/eris/mount";
+  import { createMenu } from "./menu";
+  mountAll("menu", createMenu);
+</script>

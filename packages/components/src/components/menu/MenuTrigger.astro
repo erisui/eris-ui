@@ -1,0 +1,25 @@
+---
+import { buttonVariants, type ButtonSize, type ButtonVariant } from "../button/variants";
+
+interface Props {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  /** Accessible name for a trigger that shows only an icon. */
+  "aria-label"?: string;
+  class?: string;
+}
+
+const { variant = "secondary", size, "aria-label": ariaLabel, class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  data-part="trigger"
+  aria-haspopup="menu"
+  aria-expanded="false"
+  aria-label={ariaLabel}
+  data-state="closed"
+  class={buttonVariants({ variant, size, class: className })}
+>
+  <slot />
+</button>

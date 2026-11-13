@@ -1,0 +1,120 @@
+---
+import Base from "../layouts/Base.astro";
+import Menu from "@eris/components/menu/Menu.astro";
+import MenuTrigger from "@eris/components/menu/MenuTrigger.astro";
+import MenuContent from "@eris/components/menu/MenuContent.astro";
+import MenuItem from "@eris/components/menu/MenuItem.astro";
+import MenuCheckboxItem from "@eris/components/menu/MenuCheckboxItem.astro";
+import MenuRadioGroup from "@eris/components/menu/MenuRadioGroup.astro";
+import MenuRadioItem from "@eris/components/menu/MenuRadioItem.astro";
+import MenuGroup from "@eris/components/menu/MenuGroup.astro";
+import MenuSeparator from "@eris/components/menu/MenuSeparator.astro";
+import Tooltip from "@eris/components/tooltip/Tooltip.astro";
+import Dialog from "@eris/components/dialog/Dialog.astro";
+import DialogTrigger from "@eris/components/dialog/DialogTrigger.astro";
+import DialogContent from "@eris/components/dialog/DialogContent.astro";
+import DialogTitle from "@eris/components/dialog/DialogTitle.astro";
+import DialogClose from "@eris/components/dialog/DialogClose.astro";
+---
+
+<Base title="Menu">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Menu</h1>
+    <p class="text-muted">Arrow keys move, Enter chooses, typing jumps to an item, Escape closes.</p>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Actions</h2>
+    <Menu id="actions">
+      <MenuTrigger>Actions</MenuTrigger>
+      <MenuContent>
+        <MenuItem value="edit">Edit</MenuItem>
+        <MenuItem value="duplicate">Duplicate</MenuItem>
+        <MenuItem value="archive" disabled>
+          Archive
+        </MenuItem>
+        <MenuItem href="/second">Second page link</MenuItem>
+        <MenuSeparator />
+        <MenuItem value="delete" variant="danger">
+          Delete
+        </MenuItem>
+      </MenuContent>
+    </Menu>
+    <output id="selected" class="text-sm text-muted"></output>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Checkbox and radio items</h2>
+    <Menu id="view" closeOnSelect={false} loopFocus>
+      <MenuTrigger>View</MenuTrigger>
+      <MenuContent>
+        <MenuGroup label="Show">
+          <MenuCheckboxItem value="toolbar" checked>
+            Toolbar
+          </MenuCheckboxItem>
+          <MenuCheckboxItem value="sidebar">Sidebar</MenuCheckboxItem>
+        </MenuGroup>
+        <MenuSeparator />
+        <MenuRadioGroup label="Density" name="density" value="comfortable">
+          <MenuRadioItem value="compact">Compact</MenuRadioItem>
+          <MenuRadioItem value="comfortable">Comfortable</MenuRadioItem>
+          <MenuRadioItem value="spacious" closeOnSelect>
+            Spacious
+          </MenuRadioItem>
+        </MenuRadioGroup>
+      </MenuContent>
+    </Menu>
+  </section>
+
+  <section class="flex flex-col items-start gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Icon trigger with a tooltip</h2>
+    <div class="flex w-full justify-end">
+      <Menu id="more" placement="bottom-end">
+        <Tooltip id="more-tip" text="More options" openDelay={0}>
+          <MenuTrigger size="icon" aria-label="More">
+            <svg aria-hidden="true" viewBox="0 0 16 16" fill="currentColor">
+              <circle cx="3" cy="8" r="1.25"></circle>
+              <circle cx="8" cy="8" r="1.25"></circle>
+              <circle cx="13" cy="8" r="1.25"></circle>
+            </svg>
+          </MenuTrigger>
+        </Tooltip>
+        <MenuContent>
+          <MenuItem value="rename">Rename</MenuItem>
+          <MenuItem value="share">Share</MenuItem>
+        </MenuContent>
+      </Menu>
+    </div>
+  </section>
+
+  <section class="flex flex-col items-start gap-4 pb-64">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Inside a dialog</h2>
+    <Dialog id="host">
+      <DialogTrigger>Open dialog</DialogTrigger>
+      <DialogContent>
+        <DialogTitle>Project</DialogTitle>
+        <Menu id="in-dialog">
+          <MenuTrigger>Options</MenuTrigger>
+          <MenuContent>
+            <MenuItem value="export">Export</MenuItem>
+            <MenuItem value="import">Import</MenuItem>
+          </MenuContent>
+        </Menu>
+        <DialogClose>Close dialog</DialogClose>
+      </DialogContent>
+    </Dialog>
+  </section>
+</Base>
+
+<script>
+  import type { MenuSelectDetail } from "@eris/components/menu/menu";
+
+  document.addEventListener("astro:page-load", () => {
+    const output = document.querySelector("#selected");
+    if (!output) return;
+    document.addEventListener("eris:select", (event) => {
+      const { value, checked, group } = (event as CustomEvent<MenuSelectDetail>).detail;
+      output.textContent = [value, checked, group].filter((part) => part !== undefined).join(" ");
+    });
+  });
+</script>
