@@ -1,0 +1,19 @@
+---
+import Checkbox from "@/components/ui/checkbox/Checkbox.astro";
+import Button from "@/components/ui/button/Button.astro";
+---
+
+<form class="flex flex-col items-start gap-4">
+  <Checkbox name="terms" value="accepted" required>
+    I accept the terms
+  </Checkbox>
+  <Checkbox name="newsletter">Send me the newsletter</Checkbox>
+  <div class="flex gap-3">
+    <Button type="submit" size="sm">
+      Sign up
+    </Button>
+    <Button type="reset" size="sm" variant="secondary">
+      Reset
+    </Button>
+  </div>
+</form>
