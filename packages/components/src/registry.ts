@@ -10,6 +10,7 @@ import checkbox from "./components/checkbox/meta";
 import popover from "./components/popover/meta";
 import tooltip from "./components/tooltip/meta";
 import menu from "./components/menu/meta";
+import select from "./components/select/meta";
 
 /** Every free registry item. Input to packages/registry-build. */
 export const core: RegistryMeta = {
@@ -35,4 +36,5 @@ export const registry: RegistryMeta[] = [
   popover,
   tooltip,
   menu,
+  select,
 ];

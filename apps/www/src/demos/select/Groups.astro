@@ -1,0 +1,23 @@
+---
+import Select from "@/components/ui/select/Select.astro";
+import SelectLabel from "@/components/ui/select/SelectLabel.astro";
+import SelectTrigger from "@/components/ui/select/SelectTrigger.astro";
+import SelectContent from "@/components/ui/select/SelectContent.astro";
+import SelectItem from "@/components/ui/select/SelectItem.astro";
+import SelectGroup from "@/components/ui/select/SelectGroup.astro";
+---
+
+<Select value="carrot" class="w-64">
+  <SelectLabel>Food</SelectLabel>
+  <SelectTrigger />
+  <SelectContent>
+    <SelectGroup label="Fruit">
+      <SelectItem value="apple">Apple</SelectItem>
+      <SelectItem value="banana">Banana</SelectItem>
+    </SelectGroup>
+    <SelectGroup label="Vegetables">
+      <SelectItem value="carrot">Carrot</SelectItem>
+      <SelectItem value="leek">Leek</SelectItem>
+    </SelectGroup>
+  </SelectContent>
+</Select>

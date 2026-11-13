@@ -1,0 +1,11 @@
+---
+import { cn } from "@/lib/eris/utils";
+const { class: className } = Astro.props as { class?: string };
+---
+
+<label
+  data-part="label"
+  class={cn("text-[15px] text-foreground data-disabled:text-(--eris-disabled)", className)}
+>
+  <slot />
+</label>

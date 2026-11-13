@@ -1,0 +1,31 @@
+---
+import Select from "@/components/ui/select/Select.astro";
+import SelectLabel from "@/components/ui/select/SelectLabel.astro";
+import SelectTrigger from "@/components/ui/select/SelectTrigger.astro";
+import SelectContent from "@/components/ui/select/SelectContent.astro";
+import SelectItem from "@/components/ui/select/SelectItem.astro";
+---
+
+<div class="flex w-64 flex-col gap-3">
+  <Select id="demo-sort" value="name">
+    <SelectTrigger aria-label="Sort by" />
+    <SelectContent>
+      <SelectItem value="name">Name</SelectItem>
+      <SelectItem value="date">Date modified</SelectItem>
+      <SelectItem value="size">Size</SelectItem>
+    </SelectContent>
+  </Select>
+  <p class="text-sm text-muted">
+    Sorting by: <output id="demo-sort-output">name</output>
+  </p>
+</div>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const select = document.querySelector('[data-eris-id="demo-sort"] select');
+    const output = document.querySelector("#demo-sort-output");
+    select?.addEventListener("change", (event) => {
+      if (output) output.textContent = (event.target as HTMLSelectElement).value;
+    });
+  });
+</script>

@@ -1,0 +1,24 @@
+---
+import Select from "@/components/ui/select/Select.astro";
+import SelectLabel from "@/components/ui/select/SelectLabel.astro";
+import SelectTrigger from "@/components/ui/select/SelectTrigger.astro";
+import SelectContent from "@/components/ui/select/SelectContent.astro";
+import SelectItem from "@/components/ui/select/SelectItem.astro";
+---
+
+<div class="flex w-64 flex-col gap-4">
+  <Select disabled value="a">
+    <SelectLabel>Disabled</SelectLabel>
+    <SelectTrigger />
+    <SelectContent>
+      <SelectItem value="a">Option A</SelectItem>
+    </SelectContent>
+  </Select>
+  <Select invalid>
+    <SelectLabel>Invalid</SelectLabel>
+    <SelectTrigger />
+    <SelectContent>
+      <SelectItem value="a">Option A</SelectItem>
+    </SelectContent>
+  </Select>
+</div>
