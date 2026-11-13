@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { defaultConfig } from "../src/config.ts";
 import { addThemeImport, rewrite, targetPath } from "../src/files.ts";
@@ -49,4 +50,15 @@ test("resolves dependencies first, each once", async () => {
 
 test("explains an unknown component", async () => {
   await assert.rejects(resolveItems(REGISTRY, ["nope"], process.cwd()), /No component named "nope"/);
+});
+
+test("the published eris.json schema matches the config init writes", async () => {
+  const schema = JSON.parse(
+    await readFile(new URL("../../../apps/www/public/schema/eris.json", import.meta.url), "utf8"),
+  );
+  assert.equal(schema.$id, config.$schema);
+  assert.deepEqual(Object.keys(config).sort(), Object.keys(schema.properties).sort());
+  for (const key of ["aliases", "paths"] as const) {
+    assert.deepEqual(Object.keys(config[key]).sort(), Object.keys(schema.properties[key].properties).sort());
+  }
 });

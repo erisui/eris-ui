@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://erisui.dev/schema/eris.json",
+  "title": "Eris UI config",
+  "description": "Settings for the eris-ui CLI. `eris-ui init` writes this file to the project root.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "registry": {
+      "type": "string",
+      "description": "Where components come from: a URL, or a local folder of registry JSON for development.",
+      "default": "https://erisui.dev/r"
+    },
+    "css": {
+      "type": "string",
+      "description": "The global CSS file that imports Tailwind. The theme is imported next to it.",
+      "default": "src/styles/global.css"
+    },
+    "aliases": {
+      "type": "object",
+      "description": "Import aliases written into the copied components.",
+      "properties": {
+        "lib": { "type": "string", "default": "@/lib/eris" },
+        "components": { "type": "string", "default": "@/components/ui" }
+      },
+      "required": ["lib", "components"],
+      "additionalProperties": false
+    },
+    "paths": {
+      "type": "object",
+      "description": "Folders the CLI copies files into, relative to the project root.",
+      "properties": {
+        "lib": { "type": "string", "default": "src/lib/eris" },
+        "components": { "type": "string", "default": "src/components/ui" }
+      },
+      "required": ["lib", "components"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["registry", "css", "aliases", "paths"],
+  "additionalProperties": false
+}

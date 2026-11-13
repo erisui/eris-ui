@@ -1,5 +1,5 @@
 {
-  // Static site on Cloudflare Workers. `pnpm deploy` after `pnpm build`.
+  // Static site on Cloudflare Workers. From the repo root: `pnpm turbo run build --filter=www`, then `pnpm --filter www run deploy` (plain `pnpm deploy` is a pnpm built-in).
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "erisui-www",
   "compatibility_date": "2026-11-01",
