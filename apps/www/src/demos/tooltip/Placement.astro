@@ -1,0 +1,16 @@
+---
+import Tooltip from "@/components/ui/tooltip/Tooltip.astro";
+import Button from "@/components/ui/button/Button.astro";
+---
+
+<div class="flex flex-wrap justify-center gap-3">
+  <Tooltip text="Above" placement="top">
+    <Button variant="secondary">Top</Button>
+  </Tooltip>
+  <Tooltip text="Beside" placement="right">
+    <Button variant="secondary">Right</Button>
+  </Tooltip>
+  <Tooltip text="Below, 12px away" placement="bottom" gutter={12}>
+    <Button variant="secondary">Bottom</Button>
+  </Tooltip>
+</div>

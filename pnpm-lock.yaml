@@ -134,6 +134,9 @@ importers:
       '@zag-js/tabs':
         specifier: ^1.47.0
         version: 1.47.0
+      '@zag-js/tooltip':
+        specifier: ^1.47.0
+        version: 1.47.0
       '@zag-js/vanilla':
         specifier: ^1.47.0
         version: 1.47.0
@@ -1185,6 +1188,9 @@ packages:
 
   '@zag-js/tabs@1.47.0':
     resolution: {integrity: sha512-ozwN9K5DUbO99S2M4+E18VhrGwWpTo8q97cigOByySpZp6vBJI2A1HNQEVTqwgH9ltrRPfAYUatWXrkO/Dxamw==}
+
+  '@zag-js/tooltip@1.47.0':
+    resolution: {integrity: sha512-5KE8VDS5C175AvYmypk43KXK7NfW3EMSx+V2PbM10zJFHqC0BKeRpWtvWY7Q9fTY2iEoJ9FPuN5H2CXahcmL7A==}
 
   '@zag-js/types@1.47.0':
     resolution: {integrity: sha512-3TTiZR+PnODKSLl5PgpzS7QjBTQfB5K+M6q6NHXpr80Z9Rn2UxNoMFK3TA68lec5mryOvvum1P3EIS8Ho9NCGA==}
@@ -3087,6 +3093,16 @@ snapshots:
       '@zag-js/anatomy': 1.47.0
       '@zag-js/core': 1.47.0
       '@zag-js/dom-query': 1.47.0
+      '@zag-js/types': 1.47.0
+      '@zag-js/utils': 1.47.0
+
+  '@zag-js/tooltip@1.47.0':
+    dependencies:
+      '@zag-js/anatomy': 1.47.0
+      '@zag-js/core': 1.47.0
+      '@zag-js/dom-query': 1.47.0
+      '@zag-js/focus-visible': 1.47.0
+      '@zag-js/popper': 1.47.0
       '@zag-js/types': 1.47.0
       '@zag-js/utils': 1.47.0
 

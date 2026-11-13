@@ -1,0 +1,72 @@
+---
+import { cn, uid } from "@/lib/eris/utils";
+import type { Placement } from "@/lib/eris/positioning";
+
+interface Props {
+  id?: string;
+  /** The hint. For markup instead of plain text, fill the `content` slot. */
+  text?: string;
+  /** Side of the trigger the hint opens on. It flips when there is no room. */
+  placement?: Placement;
+  /** Gap between the trigger and the hint, in pixels. */
+  gutter?: number;
+  /** Milliseconds the pointer rests on the trigger before the hint opens. */
+  openDelay?: number;
+  /** Milliseconds the hint stays after the pointer leaves. */
+  closeDelay?: number;
+  /** Keep the hint open while the pointer is over it, so its text can be selected. */
+  interactive?: boolean;
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  id = uid("tooltip"),
+  text,
+  placement = "top",
+  gutter = 6,
+  openDelay = 400,
+  closeDelay = 150,
+  interactive = false,
+  disabled = false,
+  class: className,
+} = Astro.props;
+---
+
+<span
+  data-eris="tooltip"
+  data-eris-wrapper
+  data-eris-id={id}
+  data-placement={placement}
+  data-gutter={gutter}
+  data-open-delay={openDelay}
+  data-close-delay={closeDelay}
+  data-interactive={String(interactive)}
+  data-disabled-tip={String(disabled)}
+  class="contents"
+>
+  <slot />
+  <span data-tooltip-part="positioner">
+    <span
+      data-tooltip-part="content"
+      data-state="closed"
+      hidden
+      role="tooltip"
+      class={cn(
+        "z-50 block w-max max-w-64 origin-(--transform-origin) rounded-[8px] border border-border-strong bg-raised px-2.5 py-1.5 text-[13px] leading-snug font-normal text-foreground",
+        "shadow-[0_8px_24px_-8px_rgb(0_0_0/0.7)]",
+        "data-[state=open]:animate-[eris-fade-in_var(--eris-duration-state)_var(--eris-ease)]",
+        !interactive && "pointer-events-none",
+        className,
+      )}
+    >
+      <slot name="content">{text}</slot>
+    </span>
+  </span>
+</span>
+
+<script>
+  import { mountAll } from "@/lib/eris/mount";
+  import { createTooltip } from "./tooltip";
+  mountAll("tooltip", createTooltip);
+</script>
