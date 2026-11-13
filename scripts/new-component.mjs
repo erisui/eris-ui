@@ -342,9 +342,15 @@ edit("packages/components/src/registry.ts", (text) => {
   const list = /(export const registry: RegistryMeta\[\] = \[[^\]]*?)(\];)/;
   must(text, lastImport, path);
   must(text, list, path);
+  // Prettier breaks the list over several lines once it is long, with a trailing comma.
+  const entry = (_, items, close) => {
+    const multiline = items.includes("\n");
+    const kept = items.replace(/,?\s*$/, "");
+    return multiline ? `${kept},\n  ${camel},\n${close}` : `${kept}, ${camel}${close}`;
+  };
   return text
     .replace(lastImport, `$1import ${camel} from "./components/${name}/meta";\n`)
-    .replace(list, `$1, ${camel}$2`);
+    .replace(list, entry);
 });
 
 edit("apps/www/src/nav.ts", (text) => {
