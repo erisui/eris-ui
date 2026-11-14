@@ -27,11 +27,66 @@ import { THEME_STORAGE_KEY } from "../const";
   }
 </style>
 
+<!-- The view-transition pseudo-elements hang off <html>, so these rules cannot be scoped to the component. -->
+<style is:global>
+  /* The old theme stays still underneath; the new one is clipped to a circle that grows from the toggle. */
+  html[data-theme-reveal]::view-transition-old(root),
+  html[data-theme-reveal]::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  html[data-theme-reveal]::view-transition-new(root) {
+    animation: theme-reveal 500ms var(--eris-ease);
+  }
+  /* The new theme is drawn live inside the circle. Anything with a colour transition (buttons, links) would
+     still be fading out of the old theme in there, so colours snap for the length of the reveal. */
+  html[data-theme-reveal] *,
+  html[data-theme-reveal] *::before,
+  html[data-theme-reveal] *::after {
+    transition: none !important;
+  }
+  @keyframes theme-reveal {
+    from {
+      clip-path: circle(0 at var(--theme-reveal-x) var(--theme-reveal-y));
+    }
+    to {
+      clip-path: circle(var(--theme-reveal-radius) at var(--theme-reveal-x) var(--theme-reveal-y));
+    }
+  }
+</style>
+
 <script>
   // The theme itself is applied by the inline script in Base.astro, which answers the "eris:theme" event.
   const isLight = () => document.documentElement.dataset.theme === "light";
   const label = (button: HTMLButtonElement) =>
     button.setAttribute("aria-label", isLight() ? "Switch to dark theme" : "Switch to light theme");
+
+  // Circular reveal: the new theme grows out of the toggle as a circle, over a snapshot of the old one.
+  // Without view transitions, or with reduced motion, the theme just changes.
+  let running: ViewTransition | undefined;
+  function reveal(button: HTMLButtonElement, apply: () => void) {
+    if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) return apply();
+    const root = document.documentElement;
+    const rect = button.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    // Far enough to reach the corner of the viewport furthest from the toggle.
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    root.style.setProperty("--theme-reveal-x", `${x}px`);
+    root.style.setProperty("--theme-reveal-y", `${y}px`);
+    root.style.setProperty("--theme-reveal-radius", `${radius}px`);
+    // Marks this as a theme change, so page navigation keeps its own transition.
+    root.dataset.themeReveal = "";
+    const transition = document.startViewTransition(apply);
+    running = transition;
+    transition.finished.finally(() => {
+      // A second click skips the first transition; only the latest one cleans up.
+      if (running !== transition) return;
+      running = undefined;
+      delete root.dataset.themeReveal;
+      for (const name of ["x", "y", "radius"]) root.style.removeProperty(`--theme-reveal-${name}`);
+    });
+  }
 
   function wire() {
     document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((button) => {
@@ -40,13 +95,17 @@ import { THEME_STORAGE_KEY } from "../const";
       if ("wired" in button.dataset) return;
       button.dataset.wired = "";
       button.addEventListener("click", () => {
+        const next = isLight() ? "dark" : "light";
         try {
-          localStorage.setItem(button.dataset.storageKey!, isLight() ? "dark" : "light");
+          localStorage.setItem(button.dataset.storageKey!, next);
         } catch {
           // Storage can be blocked; the theme then lasts until the next page.
         }
-        document.dispatchEvent(new CustomEvent("eris:theme", { detail: isLight() ? "dark" : "light" }));
-        label(button);
+        const apply = () => {
+          document.dispatchEvent(new CustomEvent("eris:theme", { detail: next }));
+          label(button);
+        };
+        reveal(button, apply);
       });
     });
   }
