@@ -31,6 +31,18 @@ test("serves the registry as JSON", async ({ request }) => {
   expect(dialog.files.every((f: { content: string }) => f.content.length > 0)).toBe(true);
 });
 
+test("the sitemap lists every page and robots.txt points to it", async ({ request }) => {
+  const robots = await (await request.get("/robots.txt")).text();
+  expect(robots).toContain("Sitemap: https://erisui.dev/sitemap-index.xml");
+  const index = await request.get("/sitemap-index.xml");
+  expect(index.ok()).toBe(true);
+  expect(await index.text()).toContain("https://erisui.dev/sitemap-0.xml");
+  const urls = await (await request.get("/sitemap-0.xml")).text();
+  // Sitemap entries match the canonical URLs, which end in a slash.
+  for (const path of pages) expect(urls).toContain(`<loc>https://erisui.dev${path.replace(/\/?$/, "/")}</loc>`);
+  expect(urls).not.toContain("404");
+});
+
 test("returns the 404 page for unknown paths", async ({ page }) => {
   const res = await page.goto("/nope");
   expect(res?.status()).toBe(404);
