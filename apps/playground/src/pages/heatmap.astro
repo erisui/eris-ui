@@ -1,0 +1,93 @@
+---
+import Base from "../layouts/Base.astro";
+import Heatmap from "@eris/components/heatmap/Heatmap.astro";
+import HeatmapLegend from "@eris/components/heatmap/HeatmapLegend.astro";
+
+// The same numbers on every build: a slow wave with quieter weekends.
+const activity = Array.from({ length: 26 * 7 }, (_, i) => {
+  const weekend = i % 7 === 0 || i % 7 === 6;
+  const wave = Math.sin(i / 9) + Math.sin(i / 2.3) * 0.6 + 1.1;
+  return Math.max(0, Math.round(wave * (weekend ? 2 : 6) - 1));
+});
+// A year rarely starts on the first row, so the first column is short.
+const offset = [null, null, null, ...activity.slice(0, 7 * 12 - 3)];
+const steps = [0, 1, 2, 3, 4];
+---
+
+<Base title="Heatmap">
+  <section class="flex flex-col gap-4">
+    <h1 class="text-[28px] font-semibold tracking-[-0.025em]">Heatmap</h1>
+    <p class="text-muted">
+      A grid of squares shaded by value. Hover, drag or use the arrow keys on the interactive one.
+    </p>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Basic</h2>
+    <Heatmap id="basic" label="Commits per day over 26 weeks" values={activity}>
+      <HeatmapLegend slot="legend" id="legend" />
+    </Heatmap>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Interactive</h2>
+    <Heatmap
+      id="scrub"
+      interactive
+      label="Commits per day over 26 weeks"
+      values={[
+        null,
+        null,
+        ...activity.slice(2).map((value, i) => ({ value, label: `${value} commits on day ${i + 3}` })),
+      ]}
+    >
+      <HeatmapLegend slot="legend" />
+    </Heatmap>
+    <Heatmap id="plain-values" interactive label="Builds per hour" rows={2} values={[3, 0, 8, 5, 1, 9]} />
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">A full year</h2>
+    <Heatmap id="year" label="Commits per day over a year" values={[...activity, ...activity]} />
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Steps</h2>
+    <Heatmap id="steps" label="One cell at each step" rows={1} max={4} values={steps} />
+    <Heatmap
+      id="labelled"
+      label="Deploys this week"
+      rows={1}
+      values={[
+        { value: 2, label: "2 deploys on Monday" },
+        { value: 0, label: "No deploys on Tuesday" },
+        { value: 9, label: "9 deploys on Wednesday" },
+      ]}
+    />
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Gaps</h2>
+    <Heatmap id="offset" label="Commits per day, starting on a Wednesday" values={offset} />
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Sizes</h2>
+    <div class="flex flex-col items-start gap-4">
+      <Heatmap id="small" size="sm" label="Small cells" values={activity.slice(0, 70)} />
+      <Heatmap id="large" size="lg" label="Large cells" values={activity.slice(0, 70)} />
+    </div>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Another colour</h2>
+    <Heatmap
+      id="danger"
+      label="Errors per hour"
+      rows={4}
+      levels={6}
+      class="[--eris-heatmap:var(--eris-danger)]"
+      values={activity.slice(0, 96)}
+    />
+  </section>
+</Base>

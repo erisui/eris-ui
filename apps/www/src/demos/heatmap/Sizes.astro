@@ -1,0 +1,12 @@
+---
+import Heatmap from "@/components/ui/heatmap/Heatmap.astro";
+import { activity } from "./data";
+
+const values = activity.slice(0, 12 * 7);
+---
+
+<div class="flex flex-col items-center gap-5">
+  <Heatmap size="sm" label="Commits per day, small" values={values} />
+  <Heatmap label="Commits per day, medium" values={values} />
+  <Heatmap size="lg" label="Commits per day, large" values={values} />
+</div>

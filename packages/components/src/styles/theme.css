@@ -39,6 +39,10 @@
   --eris-raised-highlight: rgb(255 255 255 / 0.06); /* secondary and danger button top edge */
   --eris-button-shadow: rgb(0 0 0 / 0.4); /* drop shadow under filled buttons */
 
+  /* Data: a heatmap cell fades from empty to full */
+  --eris-heatmap: #7ca0f8; /* a heatmap cell at its highest value */
+  --eris-heatmap-empty: #1f1f1f; /* a heatmap cell with no value */
+
   /* Controls */
   --eris-track: #1c1c1c; /* the tabs list and a switch that is off */
   --eris-switch-thumb: #8c8c8c; /* the thumb of a switch that is off */
@@ -97,6 +101,9 @@
   --eris-primary-hover: #2e2e2e;
   --eris-raised-highlight: #ffffff;
   --eris-button-shadow: rgb(0 0 0 / 0.12);
+
+  --eris-heatmap: #3a65df;
+  --eris-heatmap-empty: #ececec;
 
   --eris-track: #e8e8e8;
   --eris-switch-thumb: #ffffff;

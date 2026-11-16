@@ -11,6 +11,7 @@ import popover from "./components/popover/meta";
 import tooltip from "./components/tooltip/meta";
 import menu from "./components/menu/meta";
 import select from "./components/select/meta";
+import heatmap from "./components/heatmap/meta";
 
 /** Every free registry item. Input to packages/registry-build. */
 export const core: RegistryMeta = {
@@ -37,4 +38,5 @@ export const registry: RegistryMeta[] = [
   tooltip,
   menu,
   select,
+  heatmap,
 ];
