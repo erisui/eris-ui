@@ -1,0 +1,35 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "@/lib/eris/utils";
+import { heatmapCell, heatmapHeat, heatmapLegendSize, type HeatmapSize } from "./variants";
+
+type Props = HTMLAttributes<"div"> & {
+  /** Match the heatmap's `levels`. */
+  levels?: number;
+  size?: HeatmapSize;
+  /** Text at the empty end. */
+  less?: string;
+  /** Text at the full end. */
+  more?: string;
+};
+
+const { levels = 4, size, less = "Less", more = "More", class: className, ...rest } = Astro.props;
+const steps = Array.from({ length: levels + 1 }, (_, level) => level);
+---
+
+<div
+  data-part="legend"
+  class={cn("inline-flex items-center text-xs text-muted", heatmapLegendSize(size), className)}
+  {...rest}
+>
+  <span class="me-1">{less}</span>
+  {steps.map((level) => (
+    <span
+      aria-hidden="true"
+      data-level={level}
+      class={heatmapCell("m-0 w-(--heatmap-cell) shrink-0")}
+      style={`--heat:${heatmapHeat(level, levels)}`}
+    />
+  ))}
+  <span class="ms-1">{more}</span>
+</div>

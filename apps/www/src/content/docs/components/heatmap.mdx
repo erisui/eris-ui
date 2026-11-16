@@ -1,0 +1,119 @@
+---
+title: Heatmap
+description: A grid of small squares, each shaded by its value, such as activity per day.
+status: beta
+---
+
+import Demo from "../../../components/Demo.astro";
+import Install from "../../../components/Install.astro";
+import Basic from "../../../demos/heatmap/Basic.astro";
+import basicSrc from "../../../demos/heatmap/Basic.astro?raw";
+import Static from "../../../demos/heatmap/Static.astro";
+import staticSrc from "../../../demos/heatmap/Static.astro?raw";
+import Labels from "../../../demos/heatmap/Labels.astro";
+import labelsSrc from "../../../demos/heatmap/Labels.astro?raw";
+import Sizes from "../../../demos/heatmap/Sizes.astro";
+import sizesSrc from "../../../demos/heatmap/Sizes.astro?raw";
+import Colour from "../../../demos/heatmap/Colour.astro";
+import colourSrc from "../../../demos/heatmap/Colour.astro?raw";
+
+<Demo id="heatmap-basic" source={basicSrc}>
+  <Basic />
+</Demo>
+
+## Installation
+
+<Install name="heatmap" />
+
+## Usage
+
+Pass one number per cell as `values`. Cells fill each column from the top, seven to a column unless you set `rows`. The largest value is drawn at full strength and the rest fall into four steps below it. Set `max` to fix the top of the scale, so two heatmaps can be compared, and `levels` for more or fewer steps.
+
+<Demo id="heatmap-static" source={staticSrc}>
+  <Static />
+</Demo>
+
+## Reading a cell
+
+Add `interactive` and the heatmap shows one cell at a time in a readout: the cell's `label`, or its value when it has none. Hover with a mouse, drag a finger across the grid, or focus it and use the arrow keys. Dragging up or down still scrolls the page.
+
+The readout fades in once and then jumps from cell to cell with no motion, so it never trails the pointer. The active cell gets an outline and does not change size.
+
+| Key                              | Does                                      |
+| -------------------------------- | ----------------------------------------- |
+| <kbd>Tab</kbd>                   | Focuses the grid and reads the first cell |
+| <kbd>↑</kbd> / <kbd>↓</kbd>      | Moves within the column                   |
+| <kbd>←</kbd> / <kbd>→</kbd>      | Moves to the same row in the next column  |
+| <kbd>Home</kbd> / <kbd>End</kbd> | Moves to the first or last cell           |
+| <kbd>Esc</kbd>                   | Closes the readout                        |
+
+## Legend
+
+Put a `HeatmapLegend` in the `legend` slot and give it the same `levels` as the heatmap. Point at one of its steps and every cell at another step dims, which shows where the busiest or the empty cells are. Click or tap a step to keep it, and again to let go. The legend's steps are not keyboard stops.
+
+## Accessibility
+
+A heatmap needs a `label`. Say what the chart shows and what stands out, such as "Commits per day over the last 26 weeks, busiest midweek". If readers need the exact numbers, put them in a table as well.
+
+Without `interactive`, a screen reader meets the heatmap as one image with that label. With it, the grid is one tab stop that takes the arrow keys, and each cell is announced as it becomes active.
+
+## Labels and gaps
+
+An entry can be an object with a `value` and a `label`. An interactive heatmap shows the label in its readout. A static one sets it as the cell's `title`, a hint for mouse users only.
+
+A `null` entry leaves a gap. Use it when the first column starts partway down, such as a month that begins on a Wednesday.
+
+<Demo id="heatmap-labels" source={labelsSrc}>
+  <Labels />
+</Demo>
+
+## Sizes
+
+`md` is the default, with 12px cells. `sm` has 10px cells and `lg` has 16px cells.
+
+A heatmap is never wider than the space it has. When its columns do not fit, the cells and the gaps between them shrink together and stay square, so a year of weeks fits a phone with cells about 4px wide.
+
+<Demo id="heatmap-sizes" source={sizesSrc}>
+  <Sizes />
+</Demo>
+
+## Colour
+
+Cells mix from `--eris-heatmap-empty` to `--eris-heatmap`. Both are theme tokens with a light and a dark value. To change the colour of one heatmap, set `--eris-heatmap` on it. Its legend follows.
+
+<Demo id="heatmap-colour" source={colourSrc}>
+  <Colour />
+</Demo>
+
+Each cell is a squircle, drawn with `corner-shape`. Browsers without it show a small rounded square.
+
+## Parts
+
+| Component       | Renders                                      |
+| --------------- | -------------------------------------------- |
+| `Heatmap`       | The grid, as one image                       |
+| `HeatmapLegend` | One cell per step, between "Less" and "More" |
+
+## Props
+
+### Heatmap
+
+| Prop     | Type                                                              | Default           |
+| -------- | ----------------------------------------------------------------- | ----------------- |
+| `values` | `(number \| null \| { value: number \| null; label?: string })[]` | required          |
+| `label`  | `string`                                                          | required          |
+| `rows`   | `number`                                                          | `7`               |
+| `max`    | `number`                                                          | the largest value |
+| `levels` | `number`                                                          | `4`               |
+| `size`   | `"sm" \| "md" \| "lg"`                                            | `"md"`            |
+
+### HeatmapLegend
+
+| Prop     | Type                   | Default  |
+| -------- | ---------------------- | -------- |
+| `levels` | `number`               | `4`      |
+| `size`   | `"sm" \| "md" \| "lg"` | `"md"`   |
+| `less`   | `string`               | `"Less"` |
+| `more`   | `string`               | `"More"` |
+
+Other attributes on both go straight to the root `<div>`.

@@ -1,0 +1,14 @@
+---
+import Heatmap from "@/components/ui/heatmap/Heatmap.astro";
+
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const deploys = [4, 7, 12, 9, 3, 0, 1];
+// The month starts on a Wednesday, so two cells stay empty.
+const values = [
+  null,
+  null,
+  ...deploys.map((value, i) => ({ value, label: `${value} deploys on ${days[i]}` })),
+];
+---
+
+<Heatmap label="Deploys per day this week, most on Wednesday" size="lg" rows={3} values={values} />

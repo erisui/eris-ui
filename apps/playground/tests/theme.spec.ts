@@ -18,6 +18,18 @@ const STATES: Record<string, Record<string, (page: Page) => Promise<unknown>>> =
   "/tabs": {},
   "/snippet": {},
   "/kbd": {},
+  "/heatmap": {
+    readout: async (page) => {
+      const cell = page.locator('#scrub [data-part="cell"]').nth(40);
+      await cell.scrollIntoViewIfNeeded();
+      await cell.hover();
+      await expect(page.locator('#scrub [data-part="readout"]')).toHaveAttribute("data-state", "open");
+    },
+    filtered: async (page) => {
+      await page.locator('#legend [data-level="4"]').hover();
+      await expect(page.locator("#basic [data-dim]").first()).toBeAttached();
+    },
+  },
   "/accordion": {},
   "/switch": {},
   "/checkbox": {},

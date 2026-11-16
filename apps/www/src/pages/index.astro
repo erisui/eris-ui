@@ -24,8 +24,8 @@ import Accordion from "@/components/ui/accordion/Accordion.astro";
 import AccordionItem from "@/components/ui/accordion/AccordionItem.astro";
 import AccordionTrigger from "@/components/ui/accordion/AccordionTrigger.astro";
 import AccordionContent from "@/components/ui/accordion/AccordionContent.astro";
-import Switch from "@/components/ui/switch/Switch.astro";
-import Checkbox from "@/components/ui/checkbox/Checkbox.astro";
+import Heatmap from "@/components/ui/heatmap/Heatmap.astro";
+import HeatmapLegend from "@/components/ui/heatmap/HeatmapLegend.astro";
 import Popover from "@/components/ui/popover/Popover.astro";
 import PopoverTrigger from "@/components/ui/popover/PopoverTrigger.astro";
 import PopoverContent from "@/components/ui/popover/PopoverContent.astro";
@@ -35,9 +35,17 @@ import PopoverClose from "@/components/ui/popover/PopoverClose.astro";
 import Tooltip from "@/components/ui/tooltip/Tooltip.astro";
 import Snippet from "@/components/ui/snippet/Snippet.astro";
 import FactIcon, { type FactIconName } from "../components/FactIcon.astro";
+import { sampleActivity } from "../demos/heatmap/data";
 
 /** Documented components, so the hero badge count follows the docs nav. */
 const componentCount = docsNav.find((s) => s.title === "Components")?.items.length ?? 0;
+
+// 40 weeks: as many full-size columns as the two-column tile holds on a laptop.
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const commits = sampleActivity(40 * 7).map((value, i) => ({
+  value,
+  label: `${value} ${value === 1 ? "commit" : "commits"} · ${days[i % 7]}, week ${Math.floor(i / 7) + 1}`,
+}));
 
 const facts: { title: string; body: string; icon: FactIconName }[] = [
   {
@@ -74,8 +82,8 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
         Accessible UI components you can drop into any Astro project.
       </h1>
       <p class="max-w-xl text-lg leading-relaxed text-muted">
-        Plain <code class="font-mono text-[0.9em] text-ghost">.astro</code> files styled with Tailwind v4.
-        Zag handles keyboard, focus and ARIA without a framework island.
+        Plain <code class="font-mono text-[0.9em] text-ghost">.astro</code> files styled with Tailwind v4. Zag
+        handles keyboard, focus and ARIA without a framework island.
       </p>
       <div class="flex flex-wrap gap-3">
         <Button href="/docs/installation" size="lg">
@@ -117,15 +125,24 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
 
         <ShowcaseTile name="Kbd" href="/docs/components/kbd" class="lg:col-span-2">
           <dl class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-5 gap-y-3 text-sm">
-            <dt><Kbd>Tab</Kbd></dt>
+            <dt>
+              <Kbd>Tab</Kbd>
+            </dt>
             <dd class="text-muted">Moves focus</dd>
             <dt>
-              <KbdGroup><Kbd>Shift</Kbd><Kbd>Tab</Kbd></KbdGroup>
+              <KbdGroup>
+                <Kbd>Shift</Kbd>
+                <Kbd>Tab</Kbd>
+              </KbdGroup>
             </dt>
             <dd class="text-muted">Moves focus back</dd>
-            <dt class="text-muted"><Kbd label="Right arrow">→</Kbd> / <Kbd label="Left arrow">←</Kbd></dt>
+            <dt class="text-muted">
+              <Kbd label="Right arrow">→</Kbd> / <Kbd label="Left arrow">←</Kbd>
+            </dt>
             <dd class="text-muted">Next or previous tab</dd>
-            <dt><Kbd>Esc</Kbd></dt>
+            <dt>
+              <Kbd>Esc</Kbd>
+            </dt>
             <dd class="text-muted">Closes the dialog</dd>
           </dl>
         </ShowcaseTile>
@@ -146,30 +163,41 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
           </Dialog>
         </ShowcaseTile>
 
+        <ShowcaseTile name="Heatmap" href="/docs/components/heatmap" class="md:col-span-2">
+          <Heatmap
+            id="home-heatmap"
+            interactive
+            label="Commits per day over 40 weeks, busiest midweek"
+            values={commits}
+          >
+            <HeatmapLegend slot="legend" class="self-end" />
+          </Heatmap>
+        </ShowcaseTile>
+
+        <ShowcaseTile name="Snippet" href="/docs/components/snippet" class="px-4 md:col-span-2 lg:col-span-1">
+          <Snippet id="home-snippet" code={cliCommand("init")} />
+        </ShowcaseTile>
+
         <!-- Two rows tall on wide screens, so opening an item never changes the tile's height. -->
         <ShowcaseTile name="Accordion" href="/docs/components/accordion" class="md:col-span-2 lg:row-span-2">
           <Accordion id="home-accordion" class="max-w-md">
             <AccordionItem value="framework" open>
               <AccordionTrigger>Does it work without a framework?</AccordionTrigger>
-              <AccordionContent>Yes. Every component is a plain .astro file with a small script.</AccordionContent>
+              <AccordionContent>
+                Yes. Every component is a plain .astro file with a small script.
+              </AccordionContent>
             </AccordionItem>
             <AccordionItem value="styles">
               <AccordionTrigger>Can I change the styles?</AccordionTrigger>
-              <AccordionContent>The code is copied into your project, so edit the classes freely.</AccordionContent>
+              <AccordionContent>
+                The code is copied into your project, so edit the classes freely.
+              </AccordionContent>
             </AccordionItem>
             <AccordionItem value="license">
               <AccordionTrigger>What is the license?</AccordionTrigger>
               <AccordionContent>MIT. Use it in personal and commercial projects.</AccordionContent>
             </AccordionItem>
           </Accordion>
-        </ShowcaseTile>
-
-        <ShowcaseTile name="Switch" href="/docs/components/switch">
-          <Switch id="home-switch" checked>Email notifications</Switch>
-        </ShowcaseTile>
-
-        <ShowcaseTile name="Checkbox" href="/docs/components/checkbox">
-          <Checkbox id="home-checkbox" checked>Remember me on this device</Checkbox>
         </ShowcaseTile>
 
         <ShowcaseTile name="Popover" href="/docs/components/popover">
@@ -190,10 +218,6 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
           <Tooltip id="home-tooltip" text="Copy the link to this page">
             <Button variant="secondary">Copy link</Button>
           </Tooltip>
-        </ShowcaseTile>
-
-        <ShowcaseTile name="Snippet" href="/docs/components/snippet" class="px-4 md:col-span-2 lg:col-span-1">
-          <Snippet id="home-snippet" code={cliCommand("init")} />
         </ShowcaseTile>
       </div>
     </section>
@@ -218,7 +242,10 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
 
         <div class="mx-auto flex max-w-xl flex-col items-center gap-5">
           <p class="text-[13px] font-medium text-(--site-pro-label)">Eris Pro · Coming later</p>
-          <h2 id="pro-heading" class="text-3xl leading-[1.1] font-semibold tracking-[-0.03em] text-balance md:text-4xl">
+          <h2
+            id="pro-heading"
+            class="text-3xl leading-[1.1] font-semibold tracking-[-0.03em] text-balance md:text-4xl"
+          >
             Ready made page sections built from the same components.
           </h2>
           <p class="text-[15px] leading-relaxed text-pretty text-muted">

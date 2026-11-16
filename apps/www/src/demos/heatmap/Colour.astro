@@ -1,0 +1,15 @@
+---
+import Heatmap from "@/components/ui/heatmap/Heatmap.astro";
+import HeatmapLegend from "@/components/ui/heatmap/HeatmapLegend.astro";
+import { activity } from "./data";
+---
+
+<Heatmap
+  label="Errors per hour over four days"
+  rows={4}
+  levels={6}
+  class="[--eris-heatmap:var(--eris-danger)]"
+  values={activity.slice(0, 96)}
+>
+  <HeatmapLegend slot="legend" levels={6} less="Quiet" more="Failing" class="self-end" />
+</Heatmap>

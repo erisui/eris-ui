@@ -1,0 +1,126 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn, uid } from "@/lib/eris/utils";
+import {
+  heatmapCell,
+  heatmapHeat,
+  heatmapLevel,
+  heatmapSize,
+  type HeatmapSize,
+  type HeatmapValue,
+} from "./variants";
+
+type Props = Omit<HTMLAttributes<"div">, "role" | "aria-label"> & {
+  id?: string;
+  /** One entry per cell, filling each column from the top. `null` leaves a gap. */
+  values: HeatmapValue[];
+  /** What the chart shows and its headline, such as "Deploys per day, busiest in March". */
+  label: string;
+  /** Cells in each column. */
+  rows?: number;
+  /** The value drawn at full strength. Defaults to the largest value. */
+  max?: number;
+  /** Colour steps above empty. */
+  levels?: number;
+  size?: HeatmapSize;
+  /** Read one cell at a time: hover, drag a finger across, or focus the grid and use the arrow keys. */
+  interactive?: boolean;
+};
+
+const {
+  id = uid("heatmap"),
+  values,
+  label,
+  rows = 7,
+  max,
+  levels = 4,
+  size,
+  interactive = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const cells = values.map((entry) => (typeof entry === "number" || entry === null ? { value: entry } : entry));
+const top = max ?? Math.max(0, ...cells.map((c) => c.value ?? 0));
+const cols = Math.ceil(cells.length / rows);
+// The width is set, not left to the content, so the negative margin cannot squeeze the columns.
+// It may run half a gap past each side of the root, which is where the outer cells' margins sit.
+const grid = cn(
+  "-m-[calc(var(--heatmap-gap)/2)] grid max-w-[calc(100%+var(--heatmap-gap))] auto-cols-[minmax(0,1fr)] grid-flow-col self-start",
+  heatmapSize(size),
+  // A finger dragged sideways reads cells; dragged up or down, it still scrolls the page.
+  interactive &&
+    "touch-pan-y rounded-[4px] outline-offset-4 outline-ring select-none focus-visible:outline-2",
+);
+const gridStyle = `width:calc(${cols} * var(--heatmap-track));grid-template-rows:repeat(${rows},auto)`;
+---
+
+<div
+  id={id}
+  data-eris="heatmap"
+  data-eris-id={id}
+  data-rows={rows}
+  data-interactive={interactive ? "" : undefined}
+  class={cn("relative inline-flex max-w-full flex-col gap-3 align-top", className)}
+  {...rest}
+>
+  {interactive ? (
+    // The grid takes the arrow keys itself, and each cell is read out as it becomes active.
+    <div data-part="grid" role="application" aria-label={label} tabindex="0" class={grid} style={gridStyle}>
+      {cells.map((c) => {
+        if (c.value === null) return <span data-part="gap" />;
+        const level = heatmapLevel(c.value, top, levels);
+        return (
+          <span
+            data-part="cell"
+            data-level={level}
+            data-value={c.value}
+            data-label={"label" in c ? c.label : undefined}
+            class={heatmapCell()}
+            style={`--heat:${heatmapHeat(level, levels)}`}
+          />
+        );
+      })}
+    </div>
+  ) : (
+    // One image to a screen reader: the cells carry no text, so `label` has to say what they show.
+    <div data-part="grid" role="img" aria-label={label} class={grid} style={gridStyle}>
+      {cells.map((c) => {
+        if (c.value === null) return <span data-part="gap" />;
+        const level = heatmapLevel(c.value, top, levels);
+        return (
+          <span
+            data-part="cell"
+            data-level={level}
+            title={"label" in c ? c.label : undefined}
+            class={heatmapCell()}
+            style={`--heat:${heatmapHeat(level, levels)}`}
+          />
+        );
+      })}
+    </div>
+  )}
+  <slot name="legend" />
+  {interactive && (
+    <>
+      <!-- Fades in once, then jumps from cell to cell: a readout that glided would trail the pointer. -->
+      <span
+        data-part="readout"
+        data-state="closed"
+        aria-hidden="true"
+        class={cn(
+          "pointer-events-none absolute top-0 left-0 z-50 w-max max-w-64 rounded-[8px] border border-(--eris-tooltip-border) bg-(--eris-tooltip) px-2 py-1 text-xs leading-snug font-normal text-(--eris-tooltip-foreground) tabular-nums",
+          "shadow-[0_8px_24px_-8px_var(--eris-overlay-shadow)]",
+          "opacity-0 transition-opacity duration-(--eris-duration-state) ease-eris data-[state=open]:opacity-100",
+        )}
+      />
+      <span data-part="announce" aria-live="polite" class="sr-only" />
+    </>
+  )}
+</div>
+
+<script>
+  import { mountAll } from "@/lib/eris/mount";
+  import { createHeatmap } from "./heatmap";
+  mountAll("heatmap", createHeatmap);
+</script>
