@@ -1,0 +1,47 @@
+name: Release
+
+# When changesets land on main, this opens (or updates) a "Version Packages" pull request.
+# Merging that pull request publishes the CLI to npm.
+#
+# Publishing uses npm trusted publishing: npm checks this workflow's OIDC identity, so there is
+# no npm token, and every release gets a provenance statement. The trusted publisher on
+# npmjs.com must name this repository and this file (release.yml).
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # version commit, git tags, GitHub releases
+      pull-requests: write # the "Version Packages" pull request
+      id-token: write # OIDC token for npm trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      # No dependency cache in the release job, so a poisoned cache can't reach a publish.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or later; Node 22 ships npm 10.
+      # pnpm 10 hands `pnpm publish` to this npm.
+      - run: npm install --global npm@^11.5.1
+      - run: pnpm install --frozen-lockfile
+      - uses: changesets/action@v2
+        with:
+          publish-script: pnpm run release
+          commit-message: Version Packages
+          pr-title: Version Packages
+          # Pull requests opened with the default token don't trigger CI, and main requires the
+          # ci check. Set a RELEASE_TOKEN secret (fine-grained token: contents and pull requests,
+          # read and write, on this repo) so CI runs on the Version Packages pull request.
+          github-token: ${{ secrets.RELEASE_TOKEN || github.token }}
