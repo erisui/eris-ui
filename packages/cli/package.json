@@ -1,6 +1,6 @@
 {
   "name": "eris-ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Add Eris UI components to an Astro project.",
   "type": "module",
   "license": "MIT",
