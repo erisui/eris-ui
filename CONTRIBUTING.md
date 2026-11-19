@@ -58,3 +58,5 @@ Each component is `.astro` markup with `data-part` attributes, plus one `.ts` fi
 ## Pull requests
 
 CI runs `check:components`, `check`, `build`, `test` and `test:e2e`. Run them locally before you open a pull request.
+
+If your change affects the `eris-ui` CLI, run `pnpm changeset` and commit the file it creates. See [`.changeset/README.md`](./.changeset/README.md) for how releases work.
