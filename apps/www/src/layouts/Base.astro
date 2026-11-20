@@ -59,6 +59,19 @@ const ogImage = new URL("/og-image.png", Astro.site);
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <!-- Cloudflare Web Analytics: cookieless page views and Core Web Vitals. Loaded only on
+         erisui.dev, so local dev, tests and previews never report. Loaded once; it counts
+         later ClientRouter navigations itself, through the History API. -->
+    <script is:inline>
+      if (location.hostname === "erisui.dev" && !window.__erisAnalytics) {
+        window.__erisAnalytics = true;
+        const beacon = document.createElement("script");
+        beacon.type = "module";
+        beacon.src = "https://static.cloudflareinsights.com/beacon.min.js";
+        beacon.dataset.cfBeacon = JSON.stringify({ token: "8bf59b656b974cc686150bb93468d50b" });
+        document.head.append(beacon);
+      }
+    </script>
     <ClientRouter />
   </head>
   <body class="min-h-screen">
