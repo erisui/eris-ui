@@ -59,6 +59,14 @@ const ogImage = new URL("/og-image.png", Astro.site);
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <!-- Cloudflare Web Analytics: cookieless page views and Core Web Vitals. It also counts
+         ClientRouter navigations, because it listens to the History API. -->
+    <script
+      is:inline
+      type="module"
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "8bf59b656b974cc686150bb93468d50b"}'
+    ></script>
     <ClientRouter />
   </head>
   <body class="min-h-screen">
