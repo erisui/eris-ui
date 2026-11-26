@@ -1,0 +1,23 @@
+name: Component request
+description: Ask for a component Eris UI doesn't have yet.
+labels: ["enhancement"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Component
+      placeholder: Combobox
+    validations:
+      required: true
+  - type: textarea
+    id: use
+    attributes:
+      label: What would you use it for?
+      description: The page or feature you're building. This decides which component comes next.
+    validations:
+      required: true
+  - type: input
+    id: pattern
+    attributes:
+      label: WAI-ARIA pattern or example, if you know one
+      placeholder: https://www.w3.org/WAI/ARIA/apg/patterns/combobox/

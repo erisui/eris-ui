@@ -1,0 +1,60 @@
+name: Bug report
+description: A component, the CLI or the docs doesn't work as it should.
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where is the problem?
+      options:
+        - Accordion
+        - Button
+        - Checkbox
+        - Dialog
+        - Heatmap
+        - Kbd
+        - Menu
+        - Popover
+        - Select
+        - Snippet
+        - Switch
+        - Tabs
+        - Tooltip
+        - CLI (init, add, diff)
+        - Docs or erisui.dev
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: A link to a repo or StackBlitz helps most.
+      placeholder: |
+        1. npx eris-ui@latest add dialog
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS
+      placeholder: Safari 26 on macOS 27
+  - type: input
+    id: assistive-tech
+    attributes:
+      label: Assistive technology, if any
+      description: Screen reader, voice control, keyboard only, high contrast mode…
+      placeholder: VoiceOver, NVDA 2026.1, keyboard only
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: "`eris-ui` CLI, Astro, and your package manager."
+      placeholder: eris-ui 0.1.1, Astro 7.4, pnpm 11
