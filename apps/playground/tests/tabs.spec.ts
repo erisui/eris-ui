@@ -1,8 +1,18 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const group = (page: Page, id: string) => page.locator(`[data-eris-id="${id}"]`);
 const tab = (page: Page, id: string, name: string) => group(page, id).getByRole("tab", { name, exact: true });
+
+/** Whether a tab and the 4px its focus ring takes (2px ring, 2px gap) are inside the list's scrollport. */
+const ringInside = (target: Locator) =>
+  target.evaluate((el) => {
+    const list = el.closest('[role="tablist"]')!;
+    const port = list.getBoundingClientRect();
+    const left = port.left + list.clientLeft;
+    const box = el.getBoundingClientRect();
+    return box.left - 4 >= left - 0.5 && box.right + 4 <= left + list.clientWidth + 0.5;
+  });
 
 test.describe("Tabs", () => {
   test.beforeEach(async ({ page }) => {
@@ -84,6 +94,78 @@ test.describe("Tabs", () => {
     expect(after.x).toBeGreaterThan(before.x);
     expect(Math.abs(after.x - target.x)).toBeLessThan(2);
     expect(Math.abs(after.width - target.width)).toBeLessThan(2);
+  });
+
+  test("tabs that do not fit scroll inside the list, not the page", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    const list = group(page, "many").getByRole("tablist");
+    const sizes = await list.evaluate((el) => ({
+      list: el.getBoundingClientRect().right,
+      scroll: el.scrollWidth - el.clientWidth,
+      page: document.documentElement.scrollWidth - window.innerWidth,
+    }));
+    expect(sizes.page).toBeLessThanOrEqual(0);
+    expect(sizes.list).toBeLessThanOrEqual(375);
+    expect(sizes.scroll).toBeGreaterThan(0);
+
+    // Each arrow press keeps the focused tab, ring and all, inside the list.
+    await tab(page, "many", "January").click();
+    for (const month of ["February", "March", "April", "May", "June", "July", "August"]) {
+      await page.keyboard.press("ArrowRight");
+      await expect(tab(page, "many", month)).toBeFocused();
+      expect(await ringInside(tab(page, "many", month)), month).toBe(true);
+    }
+    const august = tab(page, "many", "August");
+    await expect(august).toHaveAttribute("aria-selected", "true");
+    const indicator = group(page, "many").locator('[data-part="indicator"]');
+    await expect
+      .poll(async () => Math.abs((await indicator.boundingBox())!.x - (await august.boundingBox())!.x))
+      .toBeLessThan(2);
+  });
+
+  test("an overflowing list beside a sidebar shows its selected tab on load", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto("/tabs");
+    await expect(group(page, "many-late")).toHaveAttribute("data-ready", "");
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth),
+    ).toBeLessThanOrEqual(0);
+    const august = tab(page, "many-late", "August");
+    await expect(august).toHaveAttribute("aria-selected", "true");
+    expect(await ringInside(august)).toBe(true);
+  });
+
+  test("a list hidden on load shows the start of its selected tab when it opens", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto("/tabs");
+    await expect(group(page, "hidden-late")).toHaveAttribute("data-ready", "");
+    await page.getByText("Show reports").click();
+    const august = group(page, "hidden-late").getByRole("tab", { name: /^August/ });
+    await expect(august).toHaveAttribute("aria-selected", "true");
+    await expect
+      .poll(() =>
+        august.evaluate((el) => {
+          const list = el.closest('[role="tablist"]')!;
+          return Math.abs(
+            el.getBoundingClientRect().left - 4 - (list.getBoundingClientRect().left + list.clientLeft),
+          );
+        }),
+      )
+      .toBeLessThan(1);
+  });
+
+  test("a tab focused as a hidden list opens stays in view", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto("/tabs");
+    await expect(group(page, "hidden-late")).toHaveAttribute("data-ready", "");
+    await group(page, "hidden-late").evaluate((root) => {
+      root.closest("details")!.open = true;
+      root.querySelector<HTMLElement>('[data-value="january"]')!.focus();
+    });
+    const january = tab(page, "hidden-late", "January");
+    await expect(january).toBeFocused();
+    await page.waitForTimeout(100);
+    expect(await ringInside(january)).toBe(true);
   });
 
   test("still works after a view transition", async ({ page }) => {

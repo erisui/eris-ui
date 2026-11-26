@@ -7,7 +7,10 @@ const { class: className } = Astro.props as { class?: string };
   data-part="list"
   role="tablist"
   class={cn(
-    "eris-curve relative isolate inline-flex w-fit gap-1 rounded-pill border border-border bg-(--eris-track) p-1",
+    "eris-curve relative isolate inline-flex w-fit max-w-full gap-1 rounded-pill border border-border bg-(--eris-track) p-1",
+    // Tabs that do not fit scroll inside the list instead of widening the page. The 4px padding
+    // holds the focus ring, which the scroll box would otherwise clip.
+    "overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
     "data-[orientation=vertical]:flex-col data-[orientation=vertical]:rounded-[20px]",
     className,
   )}
@@ -15,7 +18,7 @@ const { class: className } = Astro.props as { class?: string };
   <div
     data-part="indicator"
     aria-hidden="true"
-    class="eris-curve absolute -z-10 h-(--height) w-(--width) rounded-pill bg-raised shadow-[0_0_0_1px_var(--eris-border-strong)] [--transition-duration:var(--eris-duration-open)] [--transition-timing-function:var(--eris-ease)] data-[orientation=horizontal]:top-(--top) data-[orientation=vertical]:left-(--left)"
+    class="eris-curve absolute -z-10 h-(--height) w-(--width) rounded-pill bg-raised shadow-[0_0_0_1px_var(--eris-border-strong)] [--transition-duration:var(--eris-duration-open)] [--transition-timing-function:var(--eris-ease)] motion-reduce:[--transition-duration:0ms] data-[orientation=horizontal]:top-(--top) data-[orientation=vertical]:left-(--left)"
   ></div>
   <slot />
 </div>

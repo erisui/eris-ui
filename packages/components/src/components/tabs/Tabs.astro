@@ -29,7 +29,7 @@ const {
   data-orientation={orientation}
   data-activation-mode={activationMode}
   data-loop-focus={String(loopFocus)}
-  class={cn("flex gap-5 data-[orientation=horizontal]:flex-col", className)}
+  class={cn("flex min-w-0 gap-5 data-[orientation=horizontal]:flex-col", className)}
 >
   <slot />
 </div>

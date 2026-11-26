@@ -14,8 +14,9 @@ const base =
 const variants: Record<ButtonVariant, string> = {
   primary:
     "border-(--eris-primary-border) bg-foreground text-background shadow-[inset_0_1px_0_var(--eris-primary-highlight),0_1px_2px_var(--eris-button-shadow)] hover:bg-(--eris-primary-hover)",
-  // Gradient, border, highlight and shadow live in the .eris-accent class in theme.css.
-  accent: "eris-accent hover:brightness-110",
+  // Gradient, border, highlight and shadow live in the .eris-accent class in theme.css. Hover
+  // deepens the gradient instead of filtering it, so the white text keeps its 4.5:1.
+  accent: "eris-accent hover:[--eris-accent-top:var(--eris-accent-bottom)]",
   secondary:
     "border-border bg-raised text-foreground shadow-[inset_0_1px_0_var(--eris-raised-highlight),0_1px_2px_var(--eris-button-shadow)] hover:bg-(--eris-raised-hover)",
   ghost: "text-ghost hover:bg-(--eris-raised-hover) hover:text-foreground",

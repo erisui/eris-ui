@@ -9,6 +9,8 @@ import DialogTrigger from "@eris/components/dialog/DialogTrigger.astro";
 import DialogContent from "@eris/components/dialog/DialogContent.astro";
 import DialogTitle from "@eris/components/dialog/DialogTitle.astro";
 import DialogClose from "@eris/components/dialog/DialogClose.astro";
+
+const months = ["January", "February", "March", "April", "May", "June", "July", "August"];
 ---
 
 <Base title="Tabs">
@@ -69,6 +71,56 @@ import DialogClose from "@eris/components/dialog/DialogClose.astro";
       <TabsContent value="members">Invite and remove people.</TabsContent>
       <TabsContent value="danger">Delete this workspace.</TabsContent>
     </Tabs>
+  </section>
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">More tabs than fit</h2>
+    <Tabs id="many">
+      <TabsList aria-label="Reports">
+        {months.map((month) => (
+          <TabsTrigger value={month.toLowerCase()}>{month}</TabsTrigger>
+        ))}
+      </TabsList>
+      {months.map((month) => (
+        <TabsContent value={month.toLowerCase()}>{month} report.</TabsContent>
+      ))}
+    </Tabs>
+  </section>
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+      More tabs than fit, last one open, beside a sidebar
+    </h2>
+    <div class="flex gap-4">
+      <div class="w-20 shrink-0 text-sm text-muted">Sidebar</div>
+      <Tabs id="many-late" defaultValue="august">
+        <TabsList aria-label="Reports, last month open">
+          {months.map((month) => (
+            <TabsTrigger value={month.toLowerCase()}>{month}</TabsTrigger>
+          ))}
+        </TabsList>
+        {months.map((month) => (
+          <TabsContent value={month.toLowerCase()}>{month} report.</TabsContent>
+        ))}
+      </Tabs>
+    </div>
+  </section>
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+      Hidden on load, with a tab wider than the list
+    </h2>
+    <details>
+      <summary class="cursor-pointer text-sm text-muted">Show reports</summary>
+      <Tabs id="hidden-late" defaultValue="august" class="mt-4">
+        <TabsList aria-label="Hidden reports">
+          {months.slice(0, -1).map((month) => (
+            <TabsTrigger value={month.toLowerCase()}>{month}</TabsTrigger>
+          ))}
+          <TabsTrigger value="august">August consolidated revenue and operating expenses</TabsTrigger>
+        </TabsList>
+        {months.map((month) => (
+          <TabsContent value={month.toLowerCase()}>{month} report.</TabsContent>
+        ))}
+      </Tabs>
+    </details>
   </section>
   <section class="flex flex-col gap-4">
     <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Dialog inside a tab panel</h2>
