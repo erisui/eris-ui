@@ -55,7 +55,9 @@ export function createTabs(root: HTMLElement): Cleanup {
   const firstLayout = new ResizeObserver(() => {
     if (!list?.clientWidth) return;
     firstLayout.disconnect();
-    reveal(triggers.find((el) => el.getAttribute("aria-selected") === "true") ?? null);
+    // A tab focused in the meantime wins over the selected one.
+    const focused = triggers.find((el) => el === document.activeElement);
+    reveal(focused ?? triggers.find((el) => el.getAttribute("aria-selected") === "true") ?? null);
   });
   if (list) firstLayout.observe(list);
 

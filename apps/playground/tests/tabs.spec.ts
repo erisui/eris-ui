@@ -154,6 +154,20 @@ test.describe("Tabs", () => {
       .toBeLessThan(1);
   });
 
+  test("a tab focused as a hidden list opens stays in view", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto("/tabs");
+    await expect(group(page, "hidden-late")).toHaveAttribute("data-ready", "");
+    await group(page, "hidden-late").evaluate((root) => {
+      root.closest("details")!.open = true;
+      root.querySelector<HTMLElement>('[data-value="january"]')!.focus();
+    });
+    const january = tab(page, "hidden-late", "January");
+    await expect(january).toBeFocused();
+    await page.waitForTimeout(100);
+    expect(await ringInside(january)).toBe(true);
+  });
+
   test("still works after a view transition", async ({ page }) => {
     await page.getByRole("link", { name: "Second page" }).click();
     await expect(page).toHaveURL(/\/second/);

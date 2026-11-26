@@ -21,12 +21,12 @@ const popoverKeyframes = async (page: Page) => {
   await expect(page.getByRole("dialog", { name: "Share this page", exact: true })).toBeVisible();
   const seen = () => page.evaluate(() => (window as unknown as { seen: Keyframe[][] }).seen);
   await expect.poll(async () => (await seen()).length).toBeGreaterThan(0);
-  const frames = (await seen()).flat();
-  // Changes from one keyframe to the next, not just a property that is present.
+  // Each animation's own keyframes must change, not just a property be present.
   const changes = (values: unknown[]) => new Set(values).size > 1;
+  const animations = await seen();
   return {
-    fades: changes(frames.map((frame) => frame.opacity)),
-    moves: changes(frames.map((frame) => frame.transform ?? "none")),
+    fades: animations.some((frames) => changes(frames.map((frame) => frame.opacity))),
+    moves: animations.some((frames) => changes(frames.map((frame) => frame.transform ?? "none"))),
   };
 };
 
