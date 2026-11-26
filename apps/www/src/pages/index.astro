@@ -60,7 +60,7 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
 <Base>
   <Header />
   <main id="main">
-    <section class="home-hero site-container flex flex-col items-center pt-18 pb-24 text-center sm:pt-32 sm:pb-36">
+    <section class="site-container flex flex-col items-center pt-18 pb-24 text-center sm:pt-32 sm:pb-36">
       <h1 class="max-w-5xl text-[clamp(2.25rem,5.2vw,3.75rem)] leading-[1.14] font-semibold tracking-[-0.03em] text-balance">
         Accessible UI components for Astro
       </h1>
@@ -211,46 +211,3 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
   </main>
   <Footer />
 </Base>
-
-<style>
-  @keyframes home-hero-title {
-    from {
-      opacity: 0.6;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .home-hero > h1 {
-      animation: home-hero-title var(--eris-duration-state) var(--eris-ease) backwards;
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .home-hero > * {
-      animation: home-hero-enter 300ms var(--eris-ease) backwards;
-    }
-
-    .home-hero > h1 {
-      animation-name: home-hero-enter, home-hero-title;
-    }
-
-    .home-hero > p {
-      animation-delay: 100ms;
-    }
-
-    .home-hero > div {
-      animation-delay: 200ms;
-    }
-
-    /* Keep the focus ring at its resting position if focus arrives during the entrance. */
-    .home-hero > :focus-within {
-      --hero-start-offset: 0px;
-    }
-
-    @keyframes home-hero-enter {
-      from {
-        translate: 0 var(--hero-start-offset, 12px);
-      }
-    }
-  }
-</style>

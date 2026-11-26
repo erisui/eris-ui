@@ -244,5 +244,67 @@ import Button from "@/components/ui/button/Button.astro";
     border-radius: 0.25rem 0.25rem 0 0;
     background: linear-gradient(var(--eris-ring), var(--site-pro-guide));
     opacity: 0.55;
+    transform-origin: center bottom;
+  }
+
+  [data-preview="pending"] :is(.plan, .settings-rows > div, .dashboard-chart i) {
+    opacity: 0;
+  }
+
+  [data-preview="shown"] :is(.plan, .settings-rows > div, .dashboard-chart i) {
+    transition: opacity var(--eris-duration-open) var(--eris-ease);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-preview="pending"] .plan {
+      transform: translateY(8px);
+    }
+
+    [data-preview="pending"] .dashboard-chart i {
+      transform: scaleY(0.15);
+    }
+
+    [data-preview="shown"] :is(.plan, .dashboard-chart i) {
+      transition-property: opacity, transform;
+    }
+
+    [data-preview="shown"] :is(.plan, .settings-rows > div):nth-child(2),
+    [data-preview="shown"] .dashboard-chart i:nth-child(n + 5) {
+      transition-delay: 50ms;
+    }
+
+    [data-preview="shown"] :is(.plan, .settings-rows > div):nth-child(3),
+    [data-preview="shown"] .dashboard-chart i:nth-child(n + 9) {
+      transition-delay: 100ms;
+    }
   }
 </style>
+
+<script>
+  function observePreviews() {
+    if (!("IntersectionObserver" in window)) return;
+
+    // Leave previews that are already visible (for example after a scroll restore) in place.
+    const previews = Array.from(document.querySelectorAll<HTMLElement>(".pro-example:not([data-preview])"))
+      .filter((preview) => preview.getBoundingClientRect().top >= window.innerHeight);
+    if (!previews.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      for (const { target, intersectionRatio } of entries) {
+        if (intersectionRatio < 0.15) continue;
+        target.setAttribute("data-preview", "shown");
+        observer.unobserve(target);
+      }
+    }, { threshold: 0.15 });
+
+    for (const preview of previews) {
+      preview.dataset.preview = "pending";
+      observer.observe(preview);
+    }
+
+    document.addEventListener("astro:before-swap", () => observer.disconnect(), { once: true });
+  }
+
+  document.addEventListener("astro:page-load", observePreviews);
+  observePreviews();
+</script>
