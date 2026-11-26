@@ -39,7 +39,7 @@ import { kbdVariants } from "@/components/ui/kbd/variants";
   </span>
   <DialogContent class="max-w-xl gap-0 self-start overflow-hidden p-0 sm:mt-[12vh]">
     <DialogTitle class="sr-only">Search docs</DialogTitle>
-    <div class="flex items-center gap-3 border-b border-border px-5">
+    <div class="flex items-center gap-3 border-b border-border px-5 focus-within:border-ring">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -63,7 +63,7 @@ import { kbdVariants } from "@/components/ui/kbd/variants";
         autocomplete="off"
         spellcheck="false"
         placeholder="Search docs"
-        class="h-14 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-placeholder [&::-webkit-search-cancel-button]:hidden"
+        class="h-14 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted [&::-webkit-search-cancel-button]:hidden"
       />
       <span data-search-close class="contents">
         <DialogClose size="sm" class={kbdVariants({ size: "sm", class: "px-1.5 text-muted" })}>

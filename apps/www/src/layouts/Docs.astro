@@ -32,7 +32,7 @@ const next = index >= 0 && index < flat.length - 1 ? flat[index + 1] : undefined
                   <a
                     href={item.href}
                     aria-current={item.href === path ? "page" : undefined}
-                    class="eris-curve block rounded-pill px-3 py-1.5 text-sm text-muted transition-colors hover:text-foreground aria-[current=page]:bg-raised aria-[current=page]:text-foreground"
+                    class="eris-curve block rounded-pill px-3 py-1.5 text-sm text-muted transition-[color,background-color] hover:text-foreground focus-visible:outline-offset-[-2px] aria-[current=page]:bg-raised aria-[current=page]:text-foreground"
                   >
                     {item.label}
                   </a>
