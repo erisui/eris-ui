@@ -28,10 +28,10 @@
   --site-page: #111;
   --site-tile: var(--eris-background);
   --site-code: #0f0f0f; /* code blocks */
-  --site-pro-label: #a9c0fa; /* the small label on the Pro card */
-  --site-pro-blueprint: rgb(255 255 255 / 0.11); /* wireframe block outlines behind the Pro teaser */
-  --site-pro-guide: rgb(98 138 247 / 0.24); /* subtle blueprint alignment guides */
-  --site-pro-frame-bg: rgb(98 138 247 / 0.1); /* selection wash inside the teaser frame */
+  --site-pro-label: #a9c0fa; /* Pro heading accent and status */
+  --site-pro-blueprint: rgb(255 255 255 / 0.11); /* neutral details in the block previews */
+  --site-pro-guide: rgb(98 138 247 / 0.24); /* accent details in the block previews */
+  --site-pro-frame-bg: rgb(98 138 247 / 0.1); /* featured pricing plan */
   --site-gutter: clamp(1rem, 4vw, 1.5rem);
   --site-width: 72rem;
   --site-sticky-top: 5.5rem;
