@@ -7,14 +7,14 @@ import PopoverContent from "@/components/ui/popover/PopoverContent.astro";
 <div class="flex flex-wrap justify-center gap-3">
   <Popover placement="top">
     <PopoverTrigger>Top</PopoverTrigger>
-    <PopoverContent class="w-44">Opens above the trigger.</PopoverContent>
+    <PopoverContent aria-label="Top" class="w-44">Opens above the trigger.</PopoverContent>
   </Popover>
   <Popover placement="right">
     <PopoverTrigger>Right</PopoverTrigger>
-    <PopoverContent class="w-44">Opens beside the trigger.</PopoverContent>
+    <PopoverContent aria-label="Right" class="w-44">Opens beside the trigger.</PopoverContent>
   </Popover>
   <Popover placement="bottom-start" gutter={16}>
     <PopoverTrigger>Bottom start</PopoverTrigger>
-    <PopoverContent class="w-44">Lined up with the left edge, 16px away.</PopoverContent>
+    <PopoverContent aria-label="Bottom start" class="w-44">Lined up with the left edge, 16px away.</PopoverContent>
   </Popover>
 </div>
