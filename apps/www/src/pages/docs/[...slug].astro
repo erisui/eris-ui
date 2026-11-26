@@ -13,22 +13,22 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 const { title, description, status } = entry.data;
 ---
 
-<Docs title={title} description={description}>
-  <div class="not-prose mb-8 flex flex-col gap-3">
-    <div class="flex items-center gap-3">
-      <h1 class="text-[32px] leading-tight font-semibold tracking-[-0.03em] text-foreground">{title}</h1>
+<Docs title={title} description={description} headings={headings}>
+  <header slot="intro" class="not-prose mb-5 flex flex-col gap-2 md:mb-7">
+    <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+      <h1 class="text-4xl leading-tight font-semibold tracking-[-0.04em] text-foreground md:text-5xl">{title}</h1>
       {status === "beta" && (
         <span class="eris-curve rounded-pill border border-border px-2.5 py-0.5 text-xs text-muted">
           Beta
         </span>
       )}
     </div>
-    <p class="text-[17px] leading-relaxed text-muted">{description}</p>
-  </div>
+    <p class="max-w-[60ch] text-base leading-relaxed text-ghost md:text-lg">{description}</p>
+  </header>
   {/* Every <kbd> in the docs renders as the Kbd component, so the docs show the real keycap. */}
   <Content components={{ td: TableCell, kbd: Kbd }} />
 </Docs>

@@ -28,39 +28,41 @@
   --site-page: #111;
   --site-tile: var(--eris-background);
   --site-code: #0f0f0f; /* code blocks */
-  --site-hairline: #1f1f1f; /* table rows, the footer and pagination rules */
-  --site-pro-label: #a9c0fa; /* the small label on the Pro card */
-  --site-pro-blueprint: rgb(255 255 255 / 0.11); /* wireframe block outlines behind the Pro teaser */
-  --site-pro-guide: rgb(98 138 247 / 0.24); /* subtle blueprint alignment guides */
-  --site-pro-frame-bg: rgb(98 138 247 / 0.1); /* selection wash inside the teaser frame */
-  --site-grain: 0.07;
+  --site-pro-label: #a9c0fa; /* Pro heading accent and status */
+  --site-pro-blueprint: rgb(255 255 255 / 0.11); /* neutral details in the block previews */
+  --site-pro-guide: rgb(98 138 247 / 0.24); /* accent details in the block previews */
+  --site-pro-frame-bg: rgb(98 138 247 / 0.1); /* featured pricing plan */
+  --site-gutter: clamp(1rem, 4vw, 1.5rem);
+  --site-width: 72rem;
+  --site-sticky-top: 5.5rem;
 }
 
 /* Light: the page sits a step below white, so tiles and code blocks still read as lifted panels. */
 [data-theme="light"] {
   --site-page: #f6f6f6;
   --site-code: #ffffff;
-  --site-hairline: #e9e9e9;
   --site-pro-label: #2f56c8;
   --site-pro-blueprint: rgb(20 20 20 / 0.1);
   --site-pro-guide: rgb(58 101 223 / 0.22);
   --site-pro-frame-bg: rgb(58 101 223 / 0.07);
-  --site-grain: 0.05;
+}
+
+@utility site-container {
+  width: 100%;
+  max-width: var(--site-width);
+  margin-inline: auto;
+  padding-inline: var(--site-gutter);
 }
 
 @theme inline {
   --color-page: var(--site-page);
   --color-tile: var(--site-tile);
-}
-
-@theme inline {
   --font-mono: var(--eris-font-mono);
 }
 
 @layer base {
   html {
-    /* The sticky header is 68px tall; anchored headings land below it with room to spare. */
-    scroll-padding-block-start: 5.5rem;
+    scroll-padding-block-start: var(--site-sticky-top);
     background: var(--site-page);
     color: var(--eris-foreground);
     font-family: var(--eris-font-sans);
@@ -78,19 +80,27 @@
     outline: 2px solid var(--eris-ring);
     outline-offset: 2px;
   }
+}
 
-  /* Film grain over the page background. Fixed and behind content (z -1 sits above the html background but below
-     everything in flow), so text, cards and focus rings stay clean and it never intercepts input. Tiled
-     feTurbulence noise, desaturated, so there is no image to download. */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: var(--site-grain);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 200px 200px;
+@layer components {
+  .site-demo-link {
+    display: inline-flex;
+    min-block-size: 2rem;
+    align-items: center;
+    border-radius: var(--eris-radius-field);
+    color: var(--eris-ghost);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+  .site-demo-link:hover {
+    color: var(--eris-foreground);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  @media (pointer: coarse) {
+    .site-demo-link {
+      min-block-size: 2.75rem;
+    }
   }
 }
 
@@ -102,6 +112,16 @@
 }
 .prose > * + * {
   margin-top: 1em;
+}
+.prose > :where(p, ul, ol) {
+  max-inline-size: 72ch;
+}
+.prose blockquote:not(:where(.not-prose *)) {
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--eris-border);
+  border-radius: var(--eris-radius-field);
+  background: var(--site-tile);
+  text-wrap: pretty;
 }
 .prose h1:not(:where(.not-prose *)) {
   font-size: 32px;
@@ -185,12 +205,10 @@
   color: var(--eris-muted);
   padding-block: 8px;
   padding-inline: 0 12px;
-  border-bottom: 1px solid var(--eris-border);
 }
 .prose td:not(:where(.not-prose *)) {
   padding-block: 10px;
   padding-inline: 0 12px;
-  border-bottom: 1px solid var(--site-hairline);
   vertical-align: top;
 }
 /* Table code can wrap at camelCase humps (see components/TableCell.astro); each line keeps its pill. */

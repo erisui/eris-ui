@@ -39,7 +39,7 @@ import { kbdVariants } from "@/components/ui/kbd/variants";
   </span>
   <DialogContent class="max-w-xl gap-0 self-start overflow-hidden p-0 sm:mt-[12vh]">
     <DialogTitle class="sr-only">Search docs</DialogTitle>
-    <div class="flex items-center gap-3 border-b border-border px-5 focus-within:border-ring">
+    <div class="flex min-h-14 items-center gap-3 px-5">
       <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -63,7 +63,7 @@ import { kbdVariants } from "@/components/ui/kbd/variants";
         autocomplete="off"
         spellcheck="false"
         placeholder="Search docs"
-        class="h-14 min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted [&::-webkit-search-cancel-button]:hidden"
+        class="h-10 min-w-0 flex-1 rounded-md bg-transparent px-2 text-[15px] text-foreground placeholder:text-muted [&::-webkit-search-cancel-button]:hidden"
       />
       <span data-search-close class="contents">
         <DialogClose size="sm" class={kbdVariants({ size: "sm", class: "px-1.5 text-muted" })}>
@@ -79,9 +79,9 @@ import { kbdVariants } from "@/components/ui/kbd/variants";
       aria-label="Results"
       class="flex max-h-[min(60vh,420px)] flex-col gap-0.5 overflow-y-auto overscroll-contain p-2"
     ></div>
-    <p data-search-empty hidden class="px-5 pt-6 pb-8 text-center text-sm text-muted"></p>
+    <p data-search-empty hidden class="px-5 pt-6 pb-8 text-center text-sm wrap-anywhere text-muted"></p>
     <p data-search-status role="status" class="sr-only"></p>
-    <div class="hidden items-center gap-4 border-t border-border px-5 py-2.5 text-xs text-muted sm:flex">
+    <div class="hidden items-center gap-4 px-5 py-2.5 text-xs text-muted sm:flex">
       <span class="flex items-center gap-1.5">
         <Kbd size="sm" class="text-muted">↑</Kbd>
         <Kbd size="sm" class="text-muted">↓</Kbd> to move
@@ -255,7 +255,7 @@ import { kbdVariants } from "@/components/ui/kbd/variants";
         a.setAttribute("role", "option");
         a.setAttribute("aria-selected", "false");
         a.className =
-          "group eris-curve flex items-center gap-3 rounded-field px-3 py-2 text-sm text-foreground no-underline outline-none aria-selected:bg-(--eris-highlight)";
+          "group eris-curve flex min-h-10 items-center gap-3 rounded-field px-3 py-2 text-sm text-foreground no-underline outline-none aria-selected:bg-(--eris-highlight) pointer-coarse:min-h-11";
 
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("viewBox", "0 0 24 24");
@@ -286,7 +286,7 @@ import { kbdVariants } from "@/components/ui/kbd/variants";
         // Grouped under nav headings when browsing, so the page's section is only shown for matches.
         if (words.length) {
           const p = document.createElement("span");
-          p.className = "shrink-0 text-xs text-muted";
+          p.className = "max-w-[35%] shrink-0 truncate text-xs text-muted";
           p.textContent = r.parent;
           a.append(p);
         }

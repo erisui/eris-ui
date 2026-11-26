@@ -11,23 +11,27 @@ interface Props {
 const { name, href, class: className } = Astro.props;
 ---
 
-<!-- A bento tile: the live component sits centred in the whole tile. The caption is pinned to the bottom corner,
-     and the equal block padding keeps the component clear of it without moving it off centre. -->
 <div
   class={cn(
-    "eris-curve relative flex min-h-64 min-w-0 rounded-card border border-border bg-tile px-6 py-14",
+    "showcase-tile eris-curve grid min-h-44 min-w-0 grid-rows-[1fr_auto] rounded-card border border-border bg-tile sm:min-h-48",
     className,
   )}
 >
-  <div class="flex min-w-0 flex-1 flex-wrap items-center justify-center gap-3">
+  <div class="flex min-w-0 flex-wrap items-center justify-center gap-3 px-4 py-8 sm:px-6">
     <slot />
   </div>
-  <p class="absolute start-6 bottom-6 text-xs">
-    <a
-      href={href}
-      class="font-medium text-ghost no-underline transition-[color,background-color] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-    >
+  <p class="mx-4 flex py-1 sm:mx-5">
+    <a href={href} class="site-demo-link py-1">
       {name}
     </a>
   </p>
 </div>
+
+<style>
+  @media (hover: hover) {
+    .showcase-tile:not(:hover) .site-demo-link:not(:focus-visible) {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+</style>

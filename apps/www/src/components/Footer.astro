@@ -1,11 +1,16 @@
 ---
 import { LINKS, SITE } from "../const";
+import Mark from "../assets/eris-mark-currentcolor.svg";
 ---
 
-<footer class="border-t border-(--site-hairline)">
-  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-8 text-sm text-muted">
-    <p>
-      {SITE.name}. Made with <span aria-hidden="true">♥</span><span class="sr-only">love</span> for Astro.
+<footer>
+  <div class="site-container flex flex-col items-start gap-x-8 gap-y-3 py-6 text-sm text-muted sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+    <p class="flex flex-wrap items-center gap-x-2">
+      <a href="/" class="me-1 inline-flex min-h-11 items-center gap-1.5 font-medium text-foreground">
+        <Mark width={22} height={22} aria-hidden="true" />
+        {SITE.name}
+      </a>
+      <span>Made for Astro.</span>
     </p>
     <p>
       <a href={`mailto:${SITE.email}`} class="text-ghost hover:text-foreground">

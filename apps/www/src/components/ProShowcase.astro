@@ -1,321 +1,310 @@
 ---
 import { LINKS } from "../const";
 import Button from "@/components/ui/button/Button.astro";
-
-// Subtle geometric cell grid inside the upper-right wireframe block (purely abstract strokes).
-const miniCells = Array.from({ length: 4 }, (_, row) =>
-  Array.from({ length: 12 }, (_, col) => ({
-    x: 846 + col * 16,
-    y: 132 + row * 16,
-    accent: (row * 7 + col * 3) % 5 === 0 || (row === 1 && col >= 5 && col <= 7),
-  })),
-).flat();
 ---
 
-<section aria-labelledby="pro-heading" class="mx-auto max-w-6xl px-6 pb-28">
-  <div class="eris-curve pro-teaser relative isolate overflow-hidden rounded-card border border-border bg-surface">
-    <!-- Atmospheric architectural block blueprint -->
-    <div class="pro-ambient" aria-hidden="true"></div>
-    <svg
-      class="pro-blueprint"
-      viewBox="0 -72 1104 624"
-      fill="none"
-      preserveAspectRatio="xMidYMid slice"
-      aria-hidden="true"
-    >
-      <!-- Faint layout grid columns -->
-      <g class="bp-grid">
-        <line x1="184" y1="-72" x2="184" y2="552" />
-        <line x1="368" y1="-72" x2="368" y2="552" />
-        <line x1="552" y1="-72" x2="552" y2="552" />
-        <line x1="736" y1="-72" x2="736" y2="552" />
-        <line x1="920" y1="-72" x2="920" y2="552" />
-        <line x1="0" y1="120" x2="1104" y2="120" />
-        <line x1="0" y1="360" x2="1104" y2="360" />
-      </g>
-
-      <!-- Subtle dashed blueprint alignment guides -->
-      <g class="bp-guide">
-        <line x1="258" y1="92" x2="368" y2="92" stroke-dasharray="3 4" />
-        <line x1="736" y1="312" x2="796" y2="312" stroke-dasharray="3 4" />
-        <rect x="255" y="89" width="6" height="6" />
-        <rect x="793" y="309" width="6" height="6" />
-      </g>
-
-      <!-- Left wing: abstract modular section wireframes -->
-      <g class="bp-stroke">
-        <!-- Upper-left: two-column block silhouette -->
-        <rect x="20" y="34" width="238" height="156" rx="16" />
-        <line x1="20" y1="74" x2="258" y2="74" />
-        <rect x="36" y="49" width="68" height="10" rx="5" />
-        <rect x="206" y="47" width="36" height="14" rx="7" />
-        <rect x="36" y="90" width="96" height="84" rx="10" />
-        <rect x="146" y="90" width="96" height="84" rx="10" />
-
-        <!-- Lower-left: sidebar + rows block silhouette -->
-        <rect x="48" y="216" width="256" height="222" rx="16" />
-        <line x1="122" y1="216" x2="122" y2="438" />
-        <rect x="64" y="238" width="42" height="8" rx="4" />
-        <rect x="64" y="258" width="42" height="14" rx="7" class="bp-soft-fill" />
-        <rect x="64" y="284" width="36" height="8" rx="4" />
-        <rect x="64" y="304" width="40" height="8" rx="4" />
-
-        <line x1="142" y1="278" x2="284" y2="278" />
-        <line x1="142" y1="330" x2="284" y2="330" />
-        <line x1="142" y1="382" x2="284" y2="382" />
-        <rect x="254" y="246" width="30" height="16" rx="8" />
-        <rect x="254" y="298" width="30" height="16" rx="8" />
-        <rect x="254" y="350" width="30" height="16" rx="8" />
-      </g>
-
-      <!-- Right wing: abstract data + card section wireframes -->
-      <g class="bp-stroke">
-        <!-- Upper-right: activity block silhouette -->
-        <rect x="826" y="42" width="258" height="172" rx="16" />
-        <rect x="844" y="60" width="68" height="44" rx="10" />
-        <rect x="921" y="60" width="68" height="44" rx="10" />
-        <rect x="998" y="60" width="68" height="44" rx="10" />
-        {miniCells.map((cell) => (
-          <rect
-            x={cell.x}
-            y={cell.y}
-            width="11"
-            height="11"
-            rx="3"
-            class={cell.accent ? "bp-accent-cell" : undefined}
-          />
-        ))}
-
-        <!-- Lower-right: stacked modular block silhouette -->
-        <rect x="796" y="240" width="268" height="196" rx="16" />
-        <line x1="796" y1="286" x2="1064" y2="286" />
-        <rect x="814" y="258" width="96" height="10" rx="5" />
-        <rect x="1016" y="255" width="30" height="16" rx="8" />
-        <rect x="814" y="304" width="232" height="32" rx="10" class="bp-soft-fill" />
-        <rect x="814" y="346" width="232" height="32" rx="10" />
-        <rect x="814" y="388" width="232" height="32" rx="10" />
-      </g>
-    </svg>
-
-    <div class="pro-vignette" aria-hidden="true"></div>
-    <div class="pro-edge" aria-hidden="true"></div>
-
-    <!-- Subtle corner registration marks -->
-    <span class="pro-cross pro-cross-tl" aria-hidden="true">
-      +
-    </span>
-    <span class="pro-cross pro-cross-tr" aria-hidden="true">
-      +
-    </span>
-    <span class="pro-cross pro-cross-bl" aria-hidden="true">
-      +
-    </span>
-    <span class="pro-cross pro-cross-br" aria-hidden="true">
-      +
-    </span>
-
-    <!-- Centered editorial teaser -->
-    <div class="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 py-20 text-center md:py-28">
-      <span class="eris-curve inline-flex items-center gap-2 rounded-pill border border-border bg-page px-3 py-1 text-xs font-medium text-(--site-pro-label)">
-        Eris Pro
-        <span class="font-normal text-muted">Coming later</span>
+<section id="pro" aria-labelledby="pro-heading" class="pro-showcase site-container pb-20 lg:pb-32">
+  <div class="text-center">
+    <h2 id="pro-heading" class="pro-heading leading-[1.12] font-semibold tracking-[-0.04em] text-foreground">
+      <span class="block">Unique components</span>
+      <span class="mt-1.5 inline-block">
+        and <span class="text-(--site-pro-label)">page blocks.</span>
       </span>
+    </h2>
+    <p class="mt-4 text-sm font-medium text-(--site-pro-label)">Eris Pro · Coming later</p>
+    <p class="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-pretty text-ghost sm:text-base">
+      Full pricing sections, settings pages, dashboards, and harder interactive primitives you add with the
+      same CLI. Plain <code class="font-mono text-[0.88em] text-ghost">.astro</code> files, still no framework
+      islands.
+    </p>
 
-      <h2
-        id="pro-heading"
-        class="mt-7 text-[32px] leading-[1.12] font-semibold tracking-[-0.04em] text-foreground sm:text-5xl md:text-[56px]"
-      >
-        <span class="block">Unique components</span>
-        <span class="mt-1.5 inline-flex flex-wrap items-baseline justify-center gap-x-[0.26em]">
-          <span>and</span>
-          <span class="pro-frame">
-            <span>page blocks.</span>
-            <span class="pro-handle pro-h-tl" aria-hidden="true"></span>
-            <span class="pro-handle pro-h-tr" aria-hidden="true"></span>
-            <span class="pro-handle pro-h-bl" aria-hidden="true"></span>
-            <span class="pro-handle pro-h-br" aria-hidden="true"></span>
-            <span class="pro-dimension" aria-hidden="true">
-              block.astro
-            </span>
-          </span>
-        </span>
-      </h2>
-
-      <p class="mt-11 max-w-lg text-[15px] leading-relaxed text-pretty text-muted sm:text-base">
-        Full pricing sections, settings pages, dashboards, and harder interactive primitives you add with the
-        same CLI. Plain <code class="font-mono text-[0.88em] text-ghost">.astro</code> files, still no
-        framework islands.
-      </p>
-
-      <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <Button href={LINKS.githubOrg} variant="accent" size="lg" class="whitespace-nowrap">
-          Follow on GitHub
-        </Button>
-        <Button href={`${LINKS.github}/discussions`} variant="secondary" size="lg" class="whitespace-nowrap">
-          Suggest a block
-        </Button>
-      </div>
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+      <Button href={LINKS.githubOrg} variant="accent" size="lg">
+        Follow on GitHub
+      </Button>
+      <Button href={`${LINKS.github}/discussions`} variant="secondary" size="lg">
+        Suggest a block
+      </Button>
     </div>
   </div>
+
+  <ul class="pro-examples" role="list" aria-label="Example page blocks">
+    <li class="pro-example">
+      <span class="example-label">Pricing sections</span>
+      <div class="plan-preview" aria-hidden="true">
+        {[false, true, false].map((featured) => (
+          <div class:list={["plan", { featured }]}>
+            <i class="preview-line"></i>
+            <i class="plan-price"></i>
+            <i class="preview-line"></i>
+          </div>
+        ))}
+      </div>
+    </li>
+    <li class="pro-example">
+      <span class="example-label">Settings pages</span>
+      <div class="settings-preview" aria-hidden="true">
+        <div class="settings-sidebar">
+          <i class="preview-line"></i>
+          <i class="preview-line"></i>
+          <i class="preview-line"></i>
+        </div>
+        <div class="settings-rows">
+          {[true, false, false].map((enabled) => (
+            <div>
+              <i class="preview-line"></i>
+              <i class:list={["preview-toggle", { enabled }]}></i>
+            </div>
+          ))}
+        </div>
+      </div>
+    </li>
+    <li class="pro-example">
+      <span class="example-label">Dashboards</span>
+      <div class="dashboard-preview" aria-hidden="true">
+        <div class="dashboard-metrics">
+          <span>
+            <i class="preview-line"></i>
+          </span>
+          <span>
+            <i class="preview-line"></i>
+          </span>
+          <span>
+            <i class="preview-line"></i>
+          </span>
+        </div>
+        <div class="dashboard-chart">
+          {[31, 45, 38, 58, 49, 70, 62, 82, 75, 93, 84, 100].map((height) => (
+            <i style={`--bar-size: ${height}%`}></i>
+          ))}
+        </div>
+      </div>
+    </li>
+  </ul>
 </section>
 
 <style>
-  .pro-ambient {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 52% 45% at 50% -14%, color-mix(in oklab, var(--eris-accent-top) 16%, transparent), transparent 72%),
-      radial-gradient(ellipse 34% 48% at 92% 88%, color-mix(in oklab, var(--eris-accent-top) 8%, transparent), transparent 70%),
-      radial-gradient(ellipse 30% 42% at 6% 85%, color-mix(in oklab, var(--eris-accent-top) 6%, transparent), transparent 70%);
+  .pro-showcase {
+    container: pro-showcase / inline-size;
   }
 
-  .pro-blueprint {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+  .pro-heading {
+    font-size: clamp(1.75rem, 5.2cqi, 3.5rem);
   }
 
-  .pro-blueprint * {
-    vector-effect: non-scaling-stroke;
+  .pro-examples {
+    display: grid;
+    gap: 0.75rem;
+    margin-block-start: clamp(1.5rem, 4cqi, 2.75rem);
   }
 
-  .bp-grid {
-    stroke: var(--site-pro-blueprint);
-    stroke-width: 1;
-    opacity: 0.35;
+  @container pro-showcase (min-width: 42rem) {
+    .pro-examples {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
-  .bp-stroke {
-    stroke: var(--site-pro-blueprint);
-    stroke-width: 1;
+  .pro-example {
+    min-inline-size: 0;
+    overflow: hidden;
+    border: 1px solid var(--eris-border);
+    border-radius: var(--eris-radius-field);
+    background: var(--eris-background);
   }
 
-  .bp-soft-fill {
-    fill: var(--site-pro-frame-bg);
+  .example-label {
+    display: block;
+    padding: 0.625rem 0.875rem;
+    border-block-end: 1px solid var(--eris-border);
+    color: var(--eris-ghost);
+    font: 0.75rem/1.4 var(--eris-font-mono);
   }
 
-  .bp-accent-cell {
-    stroke: var(--site-pro-guide);
-    fill: var(--site-pro-frame-bg);
+  .plan-preview,
+  .settings-preview,
+  .dashboard-preview {
+    padding: clamp(0.625rem, 2cqi, 1.125rem);
   }
 
-  .bp-guide {
-    stroke: var(--site-pro-guide);
-    stroke-width: 1;
-    fill: var(--eris-surface);
+  .plan-preview,
+  .dashboard-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.375rem;
   }
 
-  /* Soft radial clearance keeps the central copy sharp while revealing the wireframe blocks around it. */
-  .pro-vignette {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background: radial-gradient(
-      ellipse 52% 62% at 50% 50%,
-      color-mix(in oklab, var(--eris-surface) 92%, transparent) 0%,
-      color-mix(in oklab, var(--eris-surface) 58%, transparent) 58%,
-      transparent 100%
+  .plan,
+  .dashboard-metrics span {
+    display: grid;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid var(--eris-border);
+    border-radius: 0.375rem;
+    background: var(--eris-surface);
+  }
+
+  .plan {
+    align-content: center;
+    min-block-size: 5rem;
+  }
+
+  .plan.featured {
+    border-color: var(--site-pro-guide);
+    background: var(--site-pro-frame-bg);
+  }
+
+  .preview-line,
+  .plan-price {
+    display: block;
+    inline-size: 65%;
+    block-size: 0.25rem;
+    border-radius: 0.25rem;
+    background: var(--site-pro-blueprint);
+  }
+
+  .plan-price {
+    inline-size: 85%;
+    block-size: 0.75rem;
+    background: var(--site-pro-guide);
+  }
+
+  .settings-preview {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0.625rem;
+  }
+
+  .settings-sidebar {
+    display: grid;
+    align-content: start;
+    gap: 0.625rem;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    background: var(--eris-surface);
+  }
+
+  .settings-sidebar .preview-line:first-child {
+    background: var(--site-pro-guide);
+  }
+
+  .settings-rows {
+    display: grid;
+    gap: 0.375rem;
+  }
+
+  .settings-rows div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.375rem;
+    border: 1px solid var(--eris-border);
+    border-radius: 0.375rem;
+  }
+
+  .preview-toggle {
+    display: flex;
+    flex: none;
+    inline-size: 1.125rem;
+    padding: 2px;
+    border-radius: 999px;
+    background: var(--site-pro-blueprint);
+  }
+
+  .preview-toggle::before {
+    content: "";
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    border-radius: 50%;
+    background: var(--eris-ghost);
+  }
+
+  .preview-toggle.enabled {
+    justify-content: end;
+    background: var(--site-pro-guide);
+  }
+
+  .dashboard-chart {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: end;
+    gap: clamp(0.125rem, 0.5cqi, 0.375rem);
+    block-size: 2.75rem;
+    margin-block-start: 0.75rem;
+    border-block-end: 1px solid var(--eris-border);
+    background: repeating-linear-gradient(
+      to top,
+      transparent 0 calc(25% - 1px),
+      var(--eris-border) calc(25% - 1px) 25%
     );
   }
 
-  .pro-edge {
-    position: absolute;
-    inset: 0 20% auto;
-    z-index: 2;
-    height: 1px;
-    pointer-events: none;
-    background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--eris-accent-top) 42%, transparent), transparent);
+  .dashboard-chart i {
+    block-size: var(--bar-size);
+    border-radius: 0.25rem 0.25rem 0 0;
+    background: linear-gradient(var(--eris-ring), var(--site-pro-guide));
+    opacity: 0.55;
+    transform-origin: center bottom;
   }
 
-  .pro-cross {
-    position: absolute;
-    z-index: 2;
-    pointer-events: none;
-    user-select: none;
-    font-family: var(--eris-font-mono);
-    font-size: 11px;
-    line-height: 1;
-    color: var(--eris-border-strong);
-  }
-  .pro-cross-tl {
-    top: 16px;
-    left: 18px;
-  }
-  .pro-cross-tr {
-    top: 16px;
-    right: 18px;
-  }
-  .pro-cross-bl {
-    bottom: 16px;
-    left: 18px;
-  }
-  .pro-cross-br {
-    bottom: 16px;
-    right: 18px;
+  [data-preview="pending"] :is(.plan, .settings-rows > div, .dashboard-chart i) {
+    opacity: 0;
   }
 
-  /* Blueprint selection frame around "page blocks." */
-  .pro-frame {
-    position: relative;
-    display: inline-block;
-    padding: 0.04em 0.18em 0.1em;
-    border: 1.5px solid var(--eris-ring);
-    background: var(--site-pro-frame-bg);
-    white-space: nowrap;
+  [data-preview="shown"] :is(.plan, .settings-rows > div, .dashboard-chart i) {
+    transition: opacity var(--eris-duration-open) var(--eris-ease);
   }
 
-  .pro-handle {
-    position: absolute;
-    width: 7px;
-    height: 7px;
-    border: 1.5px solid var(--eris-ring);
-    background: var(--eris-surface);
-  }
-  .pro-h-tl {
-    top: -4px;
-    left: -4px;
-  }
-  .pro-h-tr {
-    top: -4px;
-    right: -4px;
-  }
-  .pro-h-bl {
-    bottom: -4px;
-    left: -4px;
-  }
-  .pro-h-br {
-    bottom: -4px;
-    right: -4px;
-  }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-preview="pending"] .plan {
+      transform: translateY(8px);
+    }
 
-  .pro-dimension {
-    position: absolute;
-    top: calc(100% + 9px);
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 3px 9px;
-    border-radius: 6px;
-    background: var(--eris-accent-border);
-    color: #fff;
-    font-family: var(--eris-font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    line-height: 1.25;
-    letter-spacing: 0;
-    white-space: nowrap;
-    box-shadow: 0 4px 12px var(--eris-button-shadow);
-  }
+    [data-preview="pending"] .dashboard-chart i {
+      transform: scaleY(0.15);
+    }
 
-  /* The wings fit beside the copy only at the card's full 1104px width (viewport 1152px+); narrower, they crop. */
-  @media (max-width: 1151px) {
-    .pro-blueprint {
-      display: none;
+    [data-preview="shown"] :is(.plan, .dashboard-chart i) {
+      transition-property: opacity, transform;
+    }
+
+    [data-preview="shown"] :is(.plan, .settings-rows > div):nth-child(2),
+    [data-preview="shown"] .dashboard-chart i:nth-child(n + 5) {
+      transition-delay: 50ms;
+    }
+
+    [data-preview="shown"] :is(.plan, .settings-rows > div):nth-child(3),
+    [data-preview="shown"] .dashboard-chart i:nth-child(n + 9) {
+      transition-delay: 100ms;
     }
   }
 </style>
+
+<script>
+  function observePreviews() {
+    if (!("IntersectionObserver" in window)) return;
+
+    // Leave previews that are already visible (for example after a scroll restore) in place.
+    const previews = Array.from(document.querySelectorAll<HTMLElement>(".pro-example:not([data-preview])"))
+      .filter((preview) => preview.getBoundingClientRect().top >= window.innerHeight);
+    if (!previews.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      for (const { target, intersectionRatio } of entries) {
+        if (intersectionRatio < 0.15) continue;
+        target.setAttribute("data-preview", "shown");
+        observer.unobserve(target);
+      }
+    }, { threshold: 0.15 });
+
+    for (const preview of previews) {
+      preview.dataset.preview = "pending";
+      observer.observe(preview);
+    }
+
+    document.addEventListener("astro:before-swap", () => observer.disconnect(), { once: true });
+  }
+
+  document.addEventListener("astro:page-load", observePreviews);
+  observePreviews();
+</script>
