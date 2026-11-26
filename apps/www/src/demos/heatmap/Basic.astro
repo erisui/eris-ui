@@ -3,7 +3,7 @@ import Heatmap from "@/components/ui/heatmap/Heatmap.astro";
 import HeatmapLegend from "@/components/ui/heatmap/HeatmapLegend.astro";
 import { activity } from "./data";
 
-const values = activity.map((value, i) => ({ value, label: `${value} commits on day ${i + 1}` }));
+const values = activity.map((value, i) => ({ value, label: `${value} ${value === 1 ? "commit" : "commits"} on day ${i + 1}` }));
 ---
 
 <Heatmap interactive label="Commits per day over the last 26 weeks, busiest midweek" values={values}>

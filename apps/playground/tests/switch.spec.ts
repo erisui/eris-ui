@@ -68,6 +68,7 @@ test.describe("Switch", () => {
     await expect(toggle(page, "Disabled and on")).toBeChecked();
 
     const readOnly = toggle(page, "Read only");
+    await expect(readOnly).toHaveAttribute("aria-readonly", "true");
     await erisRoot(page, "read-only").click();
     await expect(readOnly).toBeChecked();
     await readOnly.focus();

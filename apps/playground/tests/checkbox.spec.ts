@@ -93,6 +93,7 @@ test.describe("Checkbox", () => {
 
     await erisRoot(page, "read-only").click();
     await expect(box(page, "Read only")).toBeChecked();
+    await expect(box(page, "Read only")).toHaveAttribute("aria-readonly", "true");
     await box(page, "Read only").focus();
     await page.keyboard.press("Space");
     await expect(box(page, "Read only")).toBeChecked();

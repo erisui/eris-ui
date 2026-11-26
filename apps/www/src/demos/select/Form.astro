@@ -7,7 +7,7 @@ import SelectItem from "@/components/ui/select/SelectItem.astro";
 import Button from "@/components/ui/button/Button.astro";
 ---
 
-<form class="flex w-64 flex-col items-start gap-4">
+<form id="demo-select-form" class="flex w-64 flex-col items-start gap-4">
   <Select name="plan" value="pro" class="w-full">
     <SelectLabel>Plan</SelectLabel>
     <SelectTrigger />
@@ -33,4 +33,20 @@ import Button from "@/components/ui/button/Button.astro";
       Reset
     </Button>
   </div>
+  <output class="text-sm text-muted"></output>
 </form>
+
+<script>
+  // Shows what the form would send, instead of reloading the page.
+  document.addEventListener("astro:page-load", () => {
+    const form = document.querySelector<HTMLFormElement>("#demo-select-form");
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
+      form.querySelector("output")!.textContent = `Sent: ${data.toString() || "(nothing)"}`;
+    });
+    form?.addEventListener("reset", () => {
+      form.querySelector("output")!.textContent = "";
+    });
+  });
+</script>

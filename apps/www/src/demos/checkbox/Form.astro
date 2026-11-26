@@ -3,7 +3,7 @@ import Checkbox from "@/components/ui/checkbox/Checkbox.astro";
 import Button from "@/components/ui/button/Button.astro";
 ---
 
-<form class="flex flex-col items-start gap-4">
+<form id="demo-checkbox-form" class="flex flex-col items-start gap-4">
   <Checkbox name="terms" value="accepted" required>
     I accept the terms
   </Checkbox>
@@ -16,4 +16,20 @@ import Button from "@/components/ui/button/Button.astro";
       Reset
     </Button>
   </div>
+  <output class="text-sm text-muted"></output>
 </form>
+
+<script>
+  // Shows what the form would send, instead of reloading the page.
+  document.addEventListener("astro:page-load", () => {
+    const form = document.querySelector<HTMLFormElement>("#demo-checkbox-form");
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
+      form.querySelector("output")!.textContent = `Sent: ${data.toString() || "(nothing)"}`;
+    });
+    form?.addEventListener("reset", () => {
+      form.querySelector("output")!.textContent = "";
+    });
+  });
+</script>
