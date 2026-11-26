@@ -28,7 +28,6 @@
   --site-page: #111;
   --site-tile: var(--eris-background);
   --site-code: #0f0f0f; /* code blocks */
-  --site-hairline: #1f1f1f; /* table rows */
   --site-pro-label: #a9c0fa; /* the small label on the Pro card */
   --site-pro-blueprint: rgb(255 255 255 / 0.11); /* wireframe block outlines behind the Pro teaser */
   --site-pro-guide: rgb(98 138 247 / 0.24); /* subtle blueprint alignment guides */
@@ -42,7 +41,6 @@
 [data-theme="light"] {
   --site-page: #f6f6f6;
   --site-code: #ffffff;
-  --site-hairline: #e9e9e9;
   --site-pro-label: #2f56c8;
   --site-pro-blueprint: rgb(20 20 20 / 0.1);
   --site-pro-guide: rgb(58 101 223 / 0.22);
@@ -207,12 +205,10 @@
   color: var(--eris-muted);
   padding-block: 8px;
   padding-inline: 0 12px;
-  border-bottom: 1px solid var(--eris-border);
 }
 .prose td:not(:where(.not-prose *)) {
   padding-block: 10px;
   padding-inline: 0 12px;
-  border-bottom: 1px solid var(--site-hairline);
   vertical-align: top;
 }
 /* Table code can wrap at camelCase humps (see components/TableCell.astro); each line keeps its pill. */
