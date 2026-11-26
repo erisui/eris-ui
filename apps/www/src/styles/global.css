@@ -89,7 +89,6 @@
     display: inline-flex;
     min-block-size: 2rem;
     align-items: center;
-    gap: 0.375rem;
     border-radius: var(--eris-radius-field);
     color: var(--eris-ghost);
     font-size: 0.8125rem;
