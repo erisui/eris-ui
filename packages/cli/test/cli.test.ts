@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { defaultConfig } from "../src/config.ts";
 import { addThemeImport, rewrite, targetPath } from "../src/files.ts";
 import { resolveItems } from "../src/registry.ts";
+import { childEnv } from "../src/pm.ts";
 
 const config = defaultConfig();
 const REGISTRY = fileURLToPath(new URL("../../../apps/www/public/r", import.meta.url));
@@ -61,4 +62,17 @@ test("the published eris.json schema matches the config init writes", async () =
   for (const key of ["aliases", "paths"] as const) {
     assert.deepEqual(Object.keys(config[key]).sort(), Object.keys(schema.properties[key].properties).sort());
   }
+});
+
+test("drops the yarn dlx Plug'n'Play loader from NODE_OPTIONS for child commands", () => {
+  const dlx = "/tmp/xfs-1/dlx-2/.pnp.cjs";
+  assert.equal(childEnv({ NODE_OPTIONS: `--require ${dlx}` }).NODE_OPTIONS, undefined);
+  assert.equal(
+    childEnv({ NODE_OPTIONS: `--max-old-space-size=4096 --require ${dlx} --experimental-loader /tmp/dlx/.pnp.loader.mjs` })
+      .NODE_OPTIONS,
+    "--max-old-space-size=4096",
+  );
+  assert.equal(childEnv({ NODE_OPTIONS: `-r=${dlx} --require ./setup.cjs` }).NODE_OPTIONS, "--require ./setup.cjs");
+  const plain = { NODE_OPTIONS: "--max-old-space-size=4096", PATH: "/bin" };
+  assert.equal(childEnv(plain), plain);
 });
