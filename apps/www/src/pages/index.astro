@@ -6,7 +6,6 @@ import CodeBlock from "../components/CodeBlock.astro";
 import ShowcaseTile from "../components/ShowcaseTile.astro";
 import ProShowcase from "../components/ProShowcase.astro";
 import { cliCommand } from "../const";
-import { docsNav } from "../nav";
 import Button from "@/components/ui/button/Button.astro";
 import Dialog from "@/components/ui/dialog/Dialog.astro";
 import DialogTrigger from "@/components/ui/dialog/DialogTrigger.astro";
@@ -33,8 +32,6 @@ import PopoverClose from "@/components/ui/popover/PopoverClose.astro";
 import Tooltip from "@/components/ui/tooltip/Tooltip.astro";
 import Snippet from "@/components/ui/snippet/Snippet.astro";
 import FactIcon, { type FactIconName } from "../components/FactIcon.astro";
-
-const componentCount = docsNav.find((s) => s.title === "Components")?.items.length ?? 0;
 
 const facts: { title: string; body: string; icon: FactIconName }[] = [
   {
@@ -84,12 +81,8 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
       </div>
     </section>
 
-    <section aria-labelledby="examples-heading" class="site-container pb-16 lg:pb-24">
-      <div class="mb-5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t border-border pt-5">
-        <h2 id="examples-heading" class="text-xl font-semibold tracking-[-0.02em] sm:text-2xl">Live examples</h2>
-        <p class="text-sm text-muted">Beta · {componentCount} components</p>
-      </div>
-      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <section aria-label="Component examples" class="site-container pb-16 lg:pb-24">
+      <div class="grid gap-3 border-t border-border pt-5 sm:grid-cols-2 lg:grid-cols-3">
         <ShowcaseTile name="Button" href="/docs/components/button">
           <Button>Button</Button>
         </ShowcaseTile>
