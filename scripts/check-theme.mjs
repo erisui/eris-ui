@@ -94,6 +94,9 @@ for (const file of files(join(src, "components"))) {
 //    each channel of the whole button, the text as well as the gradient.
 const AA = 4.5;
 const rgb = (value) => {
+  if (!/^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(value ?? "")) {
+    throw new Error(`check-theme: the contrast check reads #rgb or #rrggbb, not "${value}"`);
+  }
   const hex = value.replace("#", "");
   const full = hex.length === 3 ? [...hex].map((c) => c + c).join("") : hex;
   return [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16) / 255);

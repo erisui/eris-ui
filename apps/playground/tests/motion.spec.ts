@@ -1,35 +1,43 @@
-import { expect, test, type Locator, type Page } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { erisRoot } from "./helpers";
 
-/** The transform values in the keyframes of the CSS animations running on `el`. */
-const animatedTransforms = (el: Locator) =>
-  el.evaluate((node) =>
-    node
-      .getAnimations()
-      .flatMap((a) => (a.effect as KeyframeEffect).getKeyframes())
-      .map((frame) => frame.transform)
-      .filter((value) => value !== undefined && value !== "none"),
-  );
-
-const openPopover = async (page: Page) => {
+/**
+ * Open the Share popover and return the keyframes of each animation that starts on it,
+ * caught as it starts so a short animation cannot finish before it is read.
+ */
+const popoverKeyframes = async (page: Page) => {
   await page.goto("/popover");
   await expect(erisRoot(page, "basic")).toHaveAttribute("data-ready", "");
+  await page.evaluate(() => {
+    const seen: Keyframe[][] = ((window as unknown as { seen: Keyframe[][] }).seen = []);
+    document.addEventListener("animationstart", (event) => {
+      if (!(event.target as Element).matches('[role="dialog"]')) return;
+      for (const animation of (event.target as Element).getAnimations()) {
+        seen.push((animation.effect as KeyframeEffect).getKeyframes());
+      }
+    });
+  });
   await page.getByRole("button", { name: "Share", exact: true }).click();
-  return page.getByRole("dialog", { name: "Share this page", exact: true });
+  await expect(page.getByRole("dialog", { name: "Share this page", exact: true })).toBeVisible();
+  const seen = () => page.evaluate(() => (window as unknown as { seen: Keyframe[][] }).seen);
+  await expect.poll(async () => (await seen()).length).toBeGreaterThan(0);
+  const frames = (await seen()).flat();
+  return {
+    fades: frames.some((frame) => frame.opacity !== undefined),
+    moves: frames.some((frame) => frame.transform !== undefined && frame.transform !== "none"),
+  };
 };
 
 test.describe("Motion", () => {
   test("a popover pops in with movement by default", async ({ page }) => {
-    expect(await animatedTransforms(await openPopover(page))).not.toEqual([]);
+    expect(await popoverKeyframes(page)).toEqual({ fades: true, moves: true });
   });
 
   test.describe("with prefers-reduced-motion: reduce", () => {
     test.use({ reducedMotion: "reduce" });
 
     test("a popover fades in without moving", async ({ page }) => {
-      const shown = await openPopover(page);
-      await expect(shown).toBeVisible();
-      expect(await animatedTransforms(shown)).toEqual([]);
+      expect(await popoverKeyframes(page)).toEqual({ fades: true, moves: false });
     });
 
     test("the tabs indicator jumps instead of sliding", async ({ page }) => {

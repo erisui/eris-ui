@@ -1,8 +1,18 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const group = (page: Page, id: string) => page.locator(`[data-eris-id="${id}"]`);
 const tab = (page: Page, id: string, name: string) => group(page, id).getByRole("tab", { name, exact: true });
+
+/** Whether a tab and the 4px its focus ring takes (2px ring, 2px gap) are inside the list's scrollport. */
+const ringInside = (target: Locator) =>
+  target.evaluate((el) => {
+    const list = el.closest('[role="tablist"]')!;
+    const port = list.getBoundingClientRect();
+    const left = port.left + list.clientLeft;
+    const box = el.getBoundingClientRect();
+    return box.left - 4 >= left - 0.5 && box.right + 4 <= left + list.clientWidth + 0.5;
+  });
 
 test.describe("Tabs", () => {
   test.beforeEach(async ({ page }) => {
@@ -98,16 +108,31 @@ test.describe("Tabs", () => {
     expect(sizes.list).toBeLessThanOrEqual(375);
     expect(sizes.scroll).toBeGreaterThan(0);
 
-    // The keyboard brings the last tab into view, and the indicator follows it.
+    // Each arrow press keeps the focused tab, ring and all, inside the list.
     await tab(page, "many", "January").click();
-    await page.keyboard.press("End");
+    for (const month of ["February", "March", "April", "May", "June", "July", "August"]) {
+      await page.keyboard.press("ArrowRight");
+      await expect(tab(page, "many", month)).toBeFocused();
+      expect(await ringInside(tab(page, "many", month)), month).toBe(true);
+    }
     const august = tab(page, "many", "August");
     await expect(august).toHaveAttribute("aria-selected", "true");
-    await expect(august).toBeInViewport({ ratio: 1 });
     const indicator = group(page, "many").locator('[data-part="indicator"]');
     await expect
       .poll(async () => Math.abs((await indicator.boundingBox())!.x - (await august.boundingBox())!.x))
       .toBeLessThan(2);
+  });
+
+  test("an overflowing list beside a sidebar shows its selected tab on load", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto("/tabs");
+    await expect(group(page, "many-late")).toHaveAttribute("data-ready", "");
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth),
+    ).toBeLessThanOrEqual(0);
+    const august = tab(page, "many-late", "August");
+    await expect(august).toHaveAttribute("aria-selected", "true");
+    expect(await ringInside(august)).toBe(true);
   });
 
   test("still works after a view transition", async ({ page }) => {

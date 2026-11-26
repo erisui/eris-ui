@@ -31,13 +31,28 @@ export function createTabs(root: HTMLElement): Cleanup {
     if (indicator) spreadProps(indicator, api.getIndicatorProps());
   };
 
+  // When the tabs scroll inside the list, keep the focused or selected tab, with its focus
+  // ring (held by the list's padding), inside the list. Only the list scrolls, not the page.
+  const reveal = (tab: Element | null) => {
+    if (!list || !(tab instanceof HTMLElement) || list.scrollWidth <= list.clientWidth) return;
+    const pad = parseFloat(getComputedStyle(list).paddingLeft) || 0;
+    const start = tab.offsetLeft - pad;
+    const end = tab.offsetLeft + tab.offsetWidth + pad - list.clientWidth;
+    if (list.scrollLeft > start) list.scrollLeft = start;
+    else if (list.scrollLeft < end) list.scrollLeft = end;
+  };
+  const onFocusIn = (event: FocusEvent) => reveal(event.target as Element);
+  list?.addEventListener("focusin", onFocusIn);
+
   // Render once before start so every part has the id Zag looks it up by.
   render();
   const unsubscribe = machine.subscribe(render);
   machine.start();
   root.dataset.ready = "";
+  reveal(triggers.find((el) => el.getAttribute("aria-selected") === "true") ?? null);
 
   return () => {
+    list?.removeEventListener("focusin", onFocusIn);
     unsubscribe();
     machine.stop();
     delete root.dataset.ready;

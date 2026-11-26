@@ -86,6 +86,24 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
     </Tabs>
   </section>
   <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+      More tabs than fit, last one open, beside a sidebar
+    </h2>
+    <div class="flex gap-4">
+      <div class="w-20 shrink-0 text-sm text-muted">Sidebar</div>
+      <Tabs id="many-late" defaultValue="august">
+        <TabsList aria-label="Reports, last month open">
+          {months.map((month) => (
+            <TabsTrigger value={month.toLowerCase()}>{month}</TabsTrigger>
+          ))}
+        </TabsList>
+        {months.map((month) => (
+          <TabsContent value={month.toLowerCase()}>{month} report.</TabsContent>
+        ))}
+      </Tabs>
+    </div>
+  </section>
+  <section class="flex flex-col gap-4">
     <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Dialog inside a tab panel</h2>
     <Tabs id="nested">
       <TabsList aria-label="Nested">
