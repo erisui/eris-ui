@@ -22,7 +22,7 @@ const { placeholder = "Select", "aria-label": ariaLabel, class: className } = As
   data-state="closed"
   class={cn(
     "eris-curve flex h-11 w-full cursor-pointer items-center justify-between gap-3 rounded-field border border-border bg-field px-3.5 text-left text-[15px] text-foreground",
-    "transition-colors duration-(--eris-duration-state) ease-eris hover:border-border-strong data-[state=open]:border-border-strong",
+    "transition-[color,background-color,border-color] duration-(--eris-duration-state) ease-eris hover:border-border-strong data-[state=open]:border-border-strong",
     "outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     "aria-invalid:border-danger disabled:cursor-default disabled:opacity-40 disabled:hover:border-border",
     className,

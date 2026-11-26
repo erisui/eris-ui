@@ -26,10 +26,10 @@
   --eris-code-runner: #e9a25c; /* the runner in a snippet: npx, pnpm */
   --eris-code-args: #a9c8f5; /* the rest of a snippet command */
 
-  /* Accent: rare, one per screen at most */
-  --eris-accent-top: #628af7; /* accent gradient, top */
+  /* Accent: rare, one per screen at most. White text stays at 4.5:1 or more across the gradient. */
+  --eris-accent-top: #496ed8; /* accent gradient, top */
   --eris-accent-bottom: #3a65df; /* accent gradient, bottom */
-  --eris-accent-highlight: #7ca0f8; /* accent top edge */
+  --eris-accent-highlight: #6284d9; /* accent top edge */
   --eris-accent-border: #2f56c8; /* accent border */
 
   /* Buttons: every filled variant gets a border, a 1px top highlight and the same drop shadow */
@@ -169,6 +169,15 @@
 @keyframes eris-fade-in {
   from {
     opacity: 0;
+  }
+}
+
+/* Reduced motion: things still fade, but nothing slides, grows or turns. */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes eris-pop-in {
+    from {
+      opacity: 0;
+    }
   }
 }
 

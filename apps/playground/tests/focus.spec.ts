@@ -19,8 +19,21 @@ async function expectRing(target: Locator) {
   await expect(target).toHaveCSS("outline-style", "solid");
   await expect(target).toHaveCSS("outline-width", "2px");
   await expect(target).toHaveCSS("outline-offset", "2px");
-  // toHaveCSS retries, so this waits out the trigger's colour transition.
   await expect(target).toHaveCSS("outline-color", RING);
+}
+
+/**
+ * The ring is the ring colour from the first frame. A control that transitions outline-color
+ * (Tailwind's transition-colors does) fades it in from the text colour instead.
+ */
+async function expectRingAtOnce(page: Page, focused: Locator, ring: Locator = focused) {
+  await tabTo(page, focused);
+  const style = await ring.evaluate((el) => {
+    const css = getComputedStyle(el);
+    return { color: css.outlineColor, transitions: css.transitionProperty };
+  });
+  expect(style.transitions).not.toMatch(/\b(all|outline-color|outline)\b/);
+  expect(style.color).toBe(RING);
 }
 
 test.describe("Focus ring", () => {
@@ -43,6 +56,20 @@ test.describe("Focus ring", () => {
     const panel = settings.getByRole("tabpanel");
     await tabTo(page, panel);
     await expectRing(panel);
+  });
+
+  test("library controls draw the ring at once, without fading it in", async ({ page }) => {
+    await page.goto("/tabs");
+    await expectRingAtOnce(page, page.getByRole("tab", { name: "Account", exact: true }));
+    await page.goto("/accordion");
+    await expectRingAtOnce(page, page.locator('[data-eris-id="faq"]').getByRole("button").first());
+    await page.goto("/select");
+    await expectRingAtOnce(page, page.locator('[data-eris-id="framework"]').getByRole("combobox"));
+    for (const name of ["checkbox", "switch"]) {
+      await page.goto(`/${name}`);
+      const root = page.locator('[data-eris-id="basic"]');
+      await expectRingAtOnce(page, root.locator("input"), root.locator('[data-part="control"]'));
+    }
   });
 
   test("a mouse click does not show the ring", async ({ page }) => {

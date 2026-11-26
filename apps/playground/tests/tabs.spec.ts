@@ -86,6 +86,30 @@ test.describe("Tabs", () => {
     expect(Math.abs(after.width - target.width)).toBeLessThan(2);
   });
 
+  test("tabs that do not fit scroll inside the list, not the page", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    const list = group(page, "many").getByRole("tablist");
+    const sizes = await list.evaluate((el) => ({
+      list: el.getBoundingClientRect().right,
+      scroll: el.scrollWidth - el.clientWidth,
+      page: document.documentElement.scrollWidth - window.innerWidth,
+    }));
+    expect(sizes.page).toBeLessThanOrEqual(0);
+    expect(sizes.list).toBeLessThanOrEqual(375);
+    expect(sizes.scroll).toBeGreaterThan(0);
+
+    // The keyboard brings the last tab into view, and the indicator follows it.
+    await tab(page, "many", "January").click();
+    await page.keyboard.press("End");
+    const august = tab(page, "many", "August");
+    await expect(august).toHaveAttribute("aria-selected", "true");
+    await expect(august).toBeInViewport({ ratio: 1 });
+    const indicator = group(page, "many").locator('[data-part="indicator"]');
+    await expect
+      .poll(async () => Math.abs((await indicator.boundingBox())!.x - (await august.boundingBox())!.x))
+      .toBeLessThan(2);
+  });
+
   test("still works after a view transition", async ({ page }) => {
     await page.getByRole("link", { name: "Second page" }).click();
     await expect(page).toHaveURL(/\/second/);

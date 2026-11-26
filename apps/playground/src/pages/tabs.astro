@@ -9,6 +9,8 @@ import DialogTrigger from "@eris/components/dialog/DialogTrigger.astro";
 import DialogContent from "@eris/components/dialog/DialogContent.astro";
 import DialogTitle from "@eris/components/dialog/DialogTitle.astro";
 import DialogClose from "@eris/components/dialog/DialogClose.astro";
+
+const months = ["January", "February", "March", "April", "May", "June", "July", "August"];
 ---
 
 <Base title="Tabs">
@@ -68,6 +70,19 @@ import DialogClose from "@eris/components/dialog/DialogClose.astro";
       <TabsContent value="general">Workspace name and URL.</TabsContent>
       <TabsContent value="members">Invite and remove people.</TabsContent>
       <TabsContent value="danger">Delete this workspace.</TabsContent>
+    </Tabs>
+  </section>
+  <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">More tabs than fit</h2>
+    <Tabs id="many">
+      <TabsList aria-label="Reports">
+        {months.map((month) => (
+          <TabsTrigger value={month.toLowerCase()}>{month}</TabsTrigger>
+        ))}
+      </TabsList>
+      {months.map((month) => (
+        <TabsContent value={month.toLowerCase()}>{month} report.</TabsContent>
+      ))}
     </Tabs>
   </section>
   <section class="flex flex-col gap-4">

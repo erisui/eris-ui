@@ -16,7 +16,7 @@ const { as: Heading = "h3", class: className } = Astro.props;
     data-part="trigger"
     class={cn(
       "flex flex-1 cursor-pointer items-center justify-between gap-4 rounded-[6px] py-4 text-left text-[15px] font-medium text-foreground",
-      "transition-colors duration-(--eris-duration-state) ease-eris",
+      "transition-[color,background-color,border-color] duration-(--eris-duration-state) ease-eris",
       "outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
       "disabled:cursor-default disabled:text-(--eris-disabled)",
       className,
@@ -32,7 +32,7 @@ const { as: Heading = "h3", class: className } = Astro.props;
       stroke-width="1.5"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="size-4 shrink-0 text-muted transition-transform duration-(--eris-duration-open) ease-eris data-[state=open]:rotate-180"
+      class="size-4 shrink-0 text-muted transition-transform duration-(--eris-duration-open) ease-eris motion-reduce:transition-none data-[state=open]:rotate-180"
     >
       <path d="m4 6 4 4 4-4"></path>
     </svg>
