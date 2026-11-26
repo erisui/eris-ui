@@ -37,12 +37,11 @@ import Snippet from "@/components/ui/snippet/Snippet.astro";
 import FactIcon, { type FactIconName } from "../components/FactIcon.astro";
 import { sampleActivity } from "../demos/heatmap/data";
 
-/** Documented components, so the hero badge count follows the docs nav. */
 const componentCount = docsNav.find((s) => s.title === "Components")?.items.length ?? 0;
 
-// 40 weeks: as many full-size columns as the two-column tile holds on a laptop.
+const weeks = 26;
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const commits = sampleActivity(40 * 7).map((value, i) => ({
+const commits = sampleActivity(weeks * 7).map((value, i) => ({
   value,
   label: `${value} ${value === 1 ? "commit" : "commits"} · ${days[i % 7]}, week ${Math.floor(i / 7) + 1}`,
 }));
@@ -74,32 +73,60 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
 <Base>
   <Header />
   <main id="main">
-    <section class="mx-auto flex max-w-6xl flex-col items-start gap-8 px-6 pt-24 pb-20">
-      <span class="eris-curve rounded-pill border border-border px-3 py-1 text-xs text-muted">
-        Beta · {componentCount} components
-      </span>
-      <h1 class="max-w-3xl text-5xl leading-[1.05] font-semibold tracking-[-0.04em] text-balance md:text-6xl">
-        Accessible UI components you can drop into any Astro project.
-      </h1>
-      <p class="max-w-xl text-lg leading-relaxed text-muted">
-        Plain <code class="font-mono text-[0.9em] text-ghost">.astro</code> files styled with Tailwind v4. Zag
-        handles keyboard, focus and ARIA without a framework island.
-      </p>
-      <div class="flex flex-wrap gap-3">
-        <Button href="/docs/installation" size="lg">
-          Get started
-        </Button>
-        <Button href="/docs/components/button" size="lg" variant="secondary">
-          Browse components
-        </Button>
+    <section class="site-container grid items-center gap-8 pt-12 pb-14 sm:gap-10 sm:pt-20 sm:pb-20 lg:grid-cols-[1.1fr_1fr]">
+      <div class="min-w-0">
+        <h1 class="max-w-[18ch] text-[clamp(2.25rem,5.2vw,3.75rem)] leading-[1.06] font-semibold tracking-[-0.04em] text-balance">
+          Accessible UI components you can drop into any Astro project.
+        </h1>
+        <p class="mt-5 max-w-[46ch] text-base leading-relaxed text-ghost sm:mt-6 sm:text-lg">
+          Plain <code class="font-mono text-[0.88em] text-foreground">.astro</code> files styled with Tailwind v4. Zag
+          handles keyboard, focus and ARIA without a framework island.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-2.5 sm:mt-7">
+          <Button href="/docs/installation" size="lg" class="max-sm:px-4">
+            Get started
+          </Button>
+          <Button href="/docs/components/button" size="lg" variant="secondary" class="max-sm:px-4">
+            Browse components
+          </Button>
+        </div>
+        <div class="mt-4 max-w-[24rem]">
+          <CodeBlock lang="sh" code={cliCommand("init")} />
+        </div>
       </div>
-      <div class="w-full max-w-md">
-        <CodeBlock lang="sh" code={cliCommand("init")} />
-      </div>
+
+      <figure class="eris-curve min-w-0 max-w-xl rounded-card border border-border bg-tile lg:justify-self-stretch">
+        <figcaption class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-border px-4 py-4 sm:px-6">
+          <div>
+            <p class="text-sm font-medium text-foreground">Commit activity</p>
+            <p class="mt-0.5 text-xs text-muted">Sample data · {weeks} weeks</p>
+          </div>
+          <a href="/docs/components/heatmap" class="site-demo-link">
+            Heatmap
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-3.5"><path d="M3 8h9m-3.5-3.5L12 8l-3.5 3.5" /></svg>
+          </a>
+        </figcaption>
+        <div class="px-4 py-6 sm:px-6 sm:py-8">
+          <Heatmap
+            id="home-heatmap"
+            interactive
+            size="lg"
+            label={`Sample commits per day over ${weeks} weeks, busiest midweek. Use the arrow keys to read each day.`}
+            values={commits}
+            class="w-full gap-5"
+          >
+            <HeatmapLegend slot="legend" class="self-end" />
+          </Heatmap>
+        </div>
+      </figure>
     </section>
 
-    <section aria-label="Live examples" class="mx-auto max-w-6xl px-6 pb-24">
-      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <section aria-labelledby="examples-heading" class="site-container pb-16 lg:pb-24">
+      <div class="mb-5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t border-border pt-5">
+        <h2 id="examples-heading" class="text-xl font-semibold tracking-[-0.02em] sm:text-2xl">Live examples</h2>
+        <p class="text-sm text-muted">Beta · {componentCount} components</p>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <ShowcaseTile name="Button" href="/docs/components/button">
           <Button>Button</Button>
         </ShowcaseTile>
@@ -163,24 +190,8 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
           </Dialog>
         </ShowcaseTile>
 
-        <ShowcaseTile name="Heatmap" href="/docs/components/heatmap" class="md:col-span-2">
-          <Heatmap
-            id="home-heatmap"
-            interactive
-            label="Commits per day over 40 weeks, busiest midweek"
-            values={commits}
-          >
-            <HeatmapLegend slot="legend" class="self-end" />
-          </Heatmap>
-        </ShowcaseTile>
-
-        <ShowcaseTile name="Snippet" href="/docs/components/snippet" class="px-4 md:col-span-2 lg:col-span-1">
-          <Snippet id="home-snippet" code={cliCommand("init")} />
-        </ShowcaseTile>
-
-        <!-- Two rows tall on wide screens, so opening an item never changes the tile's height. -->
-        <ShowcaseTile name="Accordion" href="/docs/components/accordion" class="md:col-span-2 lg:row-span-2">
-          <Accordion id="home-accordion" class="max-w-md">
+        <ShowcaseTile name="Accordion" href="/docs/components/accordion" class="sm:col-span-2 lg:col-span-1 lg:row-span-2">
+          <Accordion id="home-accordion" class="w-full max-w-md">
             <AccordionItem value="framework" open>
               <AccordionTrigger>Does it work without a framework?</AccordionTrigger>
               <AccordionContent>
@@ -198,6 +209,10 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
               <AccordionContent>MIT. Use it in personal and commercial projects.</AccordionContent>
             </AccordionItem>
           </Accordion>
+        </ShowcaseTile>
+
+        <ShowcaseTile name="Snippet" href="/docs/components/snippet" class="sm:col-span-2">
+          <Snippet id="home-snippet" code={cliCommand("init")} />
         </ShowcaseTile>
 
         <ShowcaseTile name="Popover" href="/docs/components/popover">
@@ -222,11 +237,11 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
       </div>
     </section>
 
-    <section class="mx-auto max-w-6xl px-6 pb-24">
-      <div class="grid gap-x-12 gap-y-12 md:grid-cols-2">
+    <section class="site-container pb-16 lg:pb-24">
+      <div class="grid gap-x-12 gap-y-8 border-t border-border pt-8 md:grid-cols-2 md:gap-y-10 md:pt-10">
         {facts.map((f) => (
           <div class="flex flex-col items-start">
-            <span class="eris-curve mb-5 grid size-10 place-items-center rounded-field border border-border bg-raised text-foreground shadow-[inset_0_1px_0_var(--eris-raised-highlight)]">
+            <span class="eris-curve mb-3 grid size-9 place-items-center rounded-field border border-border bg-raised text-foreground">
               <FactIcon name={f.icon} class="size-[18px]" />
             </span>
             <h2 class="text-base font-semibold tracking-[-0.01em]">{f.title}</h2>

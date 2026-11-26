@@ -12,7 +12,7 @@ const miniCells = Array.from({ length: 4 }, (_, row) =>
 ).flat();
 ---
 
-<section aria-labelledby="pro-heading" class="mx-auto max-w-6xl px-6 pb-28">
+<section aria-labelledby="pro-heading" class="site-container pb-16 lg:pb-24">
   <div class="eris-curve pro-teaser relative isolate overflow-hidden rounded-card border border-border bg-surface">
     <!-- Atmospheric architectural block blueprint -->
     <div class="pro-ambient" aria-hidden="true"></div>
@@ -115,15 +115,10 @@ const miniCells = Array.from({ length: 4 }, (_, row) =>
     </span>
 
     <!-- Centered editorial teaser -->
-    <div class="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-6 py-20 text-center md:py-28">
-      <span class="eris-curve inline-flex items-center gap-2 rounded-pill border border-border bg-page px-3 py-1 text-xs font-medium text-(--site-pro-label)">
-        Eris Pro
-        <span class="font-normal text-muted">Coming later</span>
-      </span>
-
+    <div class="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-5 py-14 text-center sm:px-6 md:py-20">
       <h2
         id="pro-heading"
-        class="mt-7 text-[32px] leading-[1.12] font-semibold tracking-[-0.04em] text-foreground sm:text-5xl md:text-[56px]"
+        class="text-[28px] leading-[1.12] font-semibold tracking-[-0.04em] text-foreground sm:text-5xl md:text-[56px]"
       >
         <span class="block">Unique components</span>
         <span class="mt-1.5 inline-flex flex-wrap items-baseline justify-center gap-x-[0.26em]">
@@ -141,7 +136,8 @@ const miniCells = Array.from({ length: 4 }, (_, row) =>
         </span>
       </h2>
 
-      <p class="mt-11 max-w-lg text-[15px] leading-relaxed text-pretty text-muted sm:text-base">
+      <p class="mt-11 text-sm font-medium text-(--site-pro-label)">Eris Pro · Coming later</p>
+      <p class="mt-3 max-w-lg text-[15px] leading-relaxed text-pretty text-ghost sm:text-base">
         Full pricing sections, settings pages, dashboards, and harder interactive primitives you add with the
         same CLI. Plain <code class="font-mono text-[0.88em] text-ghost">.astro</code> files, still no
         framework islands.

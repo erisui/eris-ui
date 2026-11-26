@@ -1,0 +1,21 @@
+---
+import type { render } from "astro:content";
+
+interface Props {
+  headings: Awaited<ReturnType<typeof render>>["headings"];
+}
+
+const { headings } = Astro.props;
+---
+
+<nav aria-label="On this page">
+  <ul>
+    {headings.map(({ depth, slug, text }) => (
+      <li class:list={[depth === 3 && "ps-3"]}>
+        <a href={`#${slug}`} class="block rounded-md py-1.5 text-sm text-muted hover:text-foreground hover:underline focus-visible:outline-offset-[-2px]">
+          {text}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

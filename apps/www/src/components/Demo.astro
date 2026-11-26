@@ -16,12 +16,13 @@ interface Props {
 const { source, id, hideCode = false } = Astro.props;
 // Show the demo the way a user writes it: drop the leading frontmatter fence if empty.
 const code = source.replace(/^---\s*---\s*/, "");
+const previewClass = "eris-curve flex min-h-40 items-center justify-center rounded-card border border-border bg-tile p-4 sm:min-h-52 sm:p-8";
 ---
 
 <div class="not-prose my-6">
   {hideCode ? (
     <div
-      class="eris-curve flex min-h-56 items-center justify-center rounded-card border border-border bg-tile p-4 sm:p-10"
+      class={previewClass}
       data-demo-preview
     >
       <slot />
@@ -34,7 +35,7 @@ const code = source.replace(/^---\s*---\s*/, "");
       </TabsList>
       <TabsContent value="preview">
         <div
-          class="eris-curve flex min-h-56 flex-wrap items-center justify-center gap-3 rounded-card border border-border bg-tile p-4 sm:p-10"
+          class:list={[previewClass, "flex-wrap content-center gap-3"]}
           data-demo-preview
         >
           <slot />

@@ -12,16 +12,16 @@ const { code, lang = "astro", title } = Astro.props;
 ---
 
 <!-- Code reads left to right on an RTL page too, so the block opts out of mirroring. -->
-<div class="eris-code not-prose relative" data-copy-root data-lang={lang} dir="ltr">
+<div class="eris-code not-prose min-w-0" data-copy-root data-lang={lang} dir="ltr">
   {title && <div class="mb-2 font-mono text-xs text-muted">{title}</div>}
-  <div class="relative">
+  <div class="eris-curve grid grid-cols-[minmax(0,1fr)_auto] items-start rounded-menu border border-border bg-(--site-code)">
     <Code code={code.trim()} lang={lang} themes={CODE_THEMES} defaultColor="dark" class="eris-pre" />
     <!-- Lucide "copy" and "check" icons, inlined so the docs site needs no icon package. -->
     <button
       type="button"
       data-copy
       aria-label="Copy code"
-      class="group eris-curve absolute end-2.5 top-[calc(1px+16px+(13px*1.65-2rem)/2)] grid size-8 place-items-center rounded-pill text-muted transition-[color,background-color] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-[copied]:text-foreground"
+      class="group eris-curve m-1.5 grid size-10 place-items-center rounded-field text-muted hover:bg-raised hover:text-foreground focus-visible:outline-offset-[-2px] data-[copied]:text-foreground pointer-coarse:size-11"
     >
       <svg
         class="size-4 group-data-[copied]:hidden"
@@ -51,8 +51,8 @@ const { code, lang = "astro", title } = Astro.props;
         <path d="M20 6 9 17l-5-5"></path>
       </svg>
     </button>
-    <span data-copy-status role="status" class="sr-only"></span>
   </div>
+  <p data-copy-status role="status" class="sr-only mt-2 text-xs text-muted"></p>
 </div>
 
 <style is:global>
@@ -60,10 +60,9 @@ const { code, lang = "astro", title } = Astro.props;
     font-family: var(--eris-font-mono);
     font-size: 13px;
     line-height: 1.65;
-    padding: 16px 18px;
-    padding-inline-end: 56px;
-    border-radius: 16px;
-    border: 1px solid var(--eris-border);
+    padding: 15px 1rem;
+    padding-inline-end: 0.5rem;
+    border-radius: var(--eris-radius-menu);
     background: var(--site-code) !important;
     overflow-x: auto;
   }
@@ -86,23 +85,27 @@ const { code, lang = "astro", title } = Astro.props;
     document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
       if (btn.dataset.wired) return;
       btn.dataset.wired = "";
-      const status = btn.parentElement?.querySelector<HTMLElement>("[data-copy-status]");
+      const root = btn.closest("[data-copy-root]");
+      const status = root?.querySelector<HTMLElement>("[data-copy-status]");
       let timer: ReturnType<typeof setTimeout> | undefined;
-      const show = (copied: boolean, message = "") => {
+      const show = (copied: boolean, message = "", visible = false) => {
         btn.toggleAttribute("data-copied", copied);
         btn.setAttribute("aria-label", copied ? "Copied" : "Copy code");
-        if (status) status.textContent = message;
+        if (status) {
+          status.classList.toggle("sr-only", !visible);
+          status.textContent = message;
+        }
       };
       btn.addEventListener("click", async () => {
-        const code = btn.closest("[data-copy-root]")?.querySelector("pre")?.innerText ?? "";
+        const code = root?.querySelector("pre")?.innerText ?? "";
         clearTimeout(timer);
         try {
           await navigator.clipboard.writeText(code);
           show(true, "Copied");
+          timer = setTimeout(() => show(false), 1500);
         } catch {
-          show(false, "Copy failed. Press Ctrl+C to copy.");
+          show(false, "Couldn’t copy. Select the code to copy it manually.", true);
         }
-        timer = setTimeout(() => show(false), 1500);
       });
     });
   }

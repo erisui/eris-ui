@@ -1,16 +1,20 @@
 ---
+import type { render } from "astro:content";
 import Base from "./Base.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { docsNav } from "../nav";
 import DocsNavigation from "../components/DocsNavigation.astro";
+import DocsContents from "../components/DocsContents.astro";
 
 interface Props {
   title: string;
   description?: string;
+  headings: Awaited<ReturnType<typeof render>>["headings"];
 }
 
-const { title, description } = Astro.props;
+const { title, description, headings } = Astro.props;
+const sections = headings.filter(({ depth }) => depth === 2 || depth === 3);
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 const flat = docsNav.flatMap((s) => s.items);
 const index = flat.findIndex((i) => i.href === path);
@@ -20,19 +24,19 @@ const next = index >= 0 && index < flat.length - 1 ? flat[index + 1] : undefined
 
 <Base title={title} description={description}>
   <Header />
-  <div class="mx-auto flex max-w-6xl gap-12 px-6">
-    <aside class="sticky top-16 hidden h-[calc(100vh-4rem)] w-52 shrink-0 overflow-y-auto py-10 md:block">
-      <nav aria-label="Docs" class="flex flex-col gap-8">
+  <div class="site-container grid items-start gap-x-8 pt-6 pb-16 md:grid-cols-[10rem_minmax(0,1fr)] md:pt-10 md:pb-24 lg:gap-x-10 xl:grid-cols-[10.5rem_minmax(0,1fr)_10rem]">
+    <aside class="docs-rail hidden md:block">
+      <nav aria-label="Docs" class="flex flex-col gap-6">
         {docsNav.map((section) => (
           <div class="flex flex-col gap-2">
-            <p class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">{section.title}</p>
+            <p class="px-3 text-xs font-semibold text-foreground">{section.title}</p>
             <ul class="flex flex-col gap-0.5">
               {section.items.map((item) => (
                 <li>
                   <a
                     href={item.href}
                     aria-current={item.href === path ? "page" : undefined}
-                    class="eris-curve block rounded-pill px-3 py-1.5 text-sm text-muted transition-[color,background-color] hover:text-foreground focus-visible:outline-offset-[-2px] aria-[current=page]:bg-raised aria-[current=page]:text-foreground"
+                    class="eris-curve block rounded-field border border-transparent px-3 py-1.5 text-sm text-muted hover:bg-(--eris-highlight) hover:text-foreground focus-visible:outline-offset-[-2px] aria-[current=page]:border-border aria-[current=page]:bg-tile aria-[current=page]:font-medium aria-[current=page]:text-foreground"
                   >
                     {item.label}
                   </a>
@@ -43,29 +47,80 @@ const next = index >= 0 && index < flat.length - 1 ? flat[index + 1] : undefined
         ))}
       </nav>
     </aside>
-    <main id="main" class="min-w-0 flex-1 py-10 pb-24">
+    <main id="main" class="min-w-0">
       <DocsNavigation />
       <article class="prose max-w-3xl">
+        <slot name="intro" />
+        {sections.length > 0 && (
+          <details class="not-prose group rounded-field border border-border bg-tile xl:hidden">
+            <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-field px-3 text-sm font-medium text-foreground [&::-webkit-details-marker]:hidden">
+              On this page
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-3.5 text-muted group-open:rotate-180"><path d="m4 6 4 4 4-4" /></svg>
+            </summary>
+            <div class="px-3 pb-2">
+              <DocsContents headings={sections} />
+            </div>
+          </details>
+        )}
         <slot />
       </article>
       <nav
         aria-label="Pagination"
-        class="mt-16 flex max-w-3xl justify-between gap-4 border-t border-(--site-hairline) pt-6 text-sm"
+        class="mt-12 grid max-w-3xl grid-cols-2 gap-3 border-t border-border pt-5 text-sm"
       >
-        {prev ? (
-          <a href={prev.href} class="text-muted hover:text-foreground">
-            ← {prev.label}
+        {prev && (
+          <a href={prev.href} rel="prev" class="pagination-link col-start-1">
+            <span>Previous</span>
+            {prev.label}
           </a>
-        ) : (
-          <span />
         )}
         {next && (
-          <a href={next.href} class="text-muted hover:text-foreground">
-            {next.label} →
+          <a href={next.href} rel="next" class="pagination-link col-start-2 row-start-1 text-end">
+            <span>Next</span>
+            {next.label}
           </a>
         )}
       </nav>
     </main>
+    {sections.length > 0 && (
+      <aside class="docs-rail hidden xl:block">
+        <p class="mb-2 text-xs font-semibold text-foreground">On this page</p>
+        <DocsContents headings={sections} />
+      </aside>
+    )}
   </div>
   <Footer />
 </Base>
+
+<style>
+  .docs-rail {
+    position: sticky;
+    top: var(--site-sticky-top);
+    max-block-size: calc(100dvh - var(--site-sticky-top) - 1rem);
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+
+  .pagination-link {
+    display: block;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--eris-border);
+    border-radius: var(--eris-radius-field);
+    background: var(--site-tile);
+    color: var(--eris-foreground);
+    font-weight: 500;
+  }
+
+  .pagination-link:hover {
+    border-color: var(--eris-border-strong);
+    background: var(--eris-highlight);
+  }
+
+  .pagination-link span {
+    display: block;
+    margin-block-end: 0.25rem;
+    color: var(--eris-muted);
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+</style>
