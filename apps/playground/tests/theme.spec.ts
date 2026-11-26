@@ -78,8 +78,19 @@ for (const theme of ["dark", "light"] as const) {
         test(`${path} ${state}`, async ({ page }) => {
           await page.goto(path);
           await open(page);
-          // Let open animations finish, so colours and opacity are final.
-          await expect.poll(() => page.evaluate(() => document.getAnimations().length)).toBe(0);
+          // Chromium can retain finished transitions inside closed details elements.
+          await expect
+            .poll(() =>
+              page.evaluate(
+                () =>
+                  document
+                    .getAnimations()
+                    .filter(
+                      (animation) => animation.playState !== "finished" && animation.playState !== "idle",
+                    ).length,
+              ),
+            )
+            .toBe(0);
           if (theme === "light") {
             await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
           }

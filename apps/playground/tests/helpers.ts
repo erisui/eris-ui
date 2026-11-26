@@ -27,6 +27,16 @@ export async function leaveAndReturn(page: Page, navLabel: string, path: string)
 /** Wait for an element's open or close animation to finish, so its box and colours are final. */
 export async function settled(target: Locator) {
   await expect(target).toBeVisible();
-  await expect.poll(() => target.evaluate((el) => el.getAnimations({ subtree: true }).length)).toBe(0);
+  await expect
+    .poll(() =>
+      target.evaluate(
+        (el) =>
+          el
+            .getAnimations({ subtree: true })
+            .filter((animation) => animation.playState !== "finished" && animation.playState !== "idle")
+            .length,
+      ),
+    )
+    .toBe(0);
   return (await target.boundingBox())!;
 }
