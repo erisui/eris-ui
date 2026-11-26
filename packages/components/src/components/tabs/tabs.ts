@@ -38,7 +38,8 @@ export function createTabs(root: HTMLElement): Cleanup {
     const pad = parseFloat(getComputedStyle(list).paddingLeft) || 0;
     const start = tab.offsetLeft - pad;
     const end = tab.offsetLeft + tab.offsetWidth + pad - list.clientWidth;
-    if (list.scrollLeft > start) list.scrollLeft = start;
+    // A tab wider than the list shows the start of its label.
+    if (list.scrollLeft > start || end > start) list.scrollLeft = start;
     else if (list.scrollLeft < end) list.scrollLeft = end;
   };
   const onFocusIn = (event: FocusEvent) => reveal(event.target as Element);
@@ -49,9 +50,17 @@ export function createTabs(root: HTMLElement): Cleanup {
   const unsubscribe = machine.subscribe(render);
   machine.start();
   root.dataset.ready = "";
-  reveal(triggers.find((el) => el.getAttribute("aria-selected") === "true") ?? null);
+
+  // Show the selected tab once the list has a size: now, or when a hidden parent opens.
+  const firstLayout = new ResizeObserver(() => {
+    if (!list?.clientWidth) return;
+    firstLayout.disconnect();
+    reveal(triggers.find((el) => el.getAttribute("aria-selected") === "true") ?? null);
+  });
+  if (list) firstLayout.observe(list);
 
   return () => {
+    firstLayout.disconnect();
     list?.removeEventListener("focusin", onFocusIn);
     unsubscribe();
     machine.stop();

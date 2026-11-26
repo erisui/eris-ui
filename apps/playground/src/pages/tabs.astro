@@ -104,6 +104,25 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
     </div>
   </section>
   <section class="flex flex-col gap-4">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.08em] text-muted">
+      Hidden on load, with a tab wider than the list
+    </h2>
+    <details>
+      <summary class="cursor-pointer text-sm text-muted">Show reports</summary>
+      <Tabs id="hidden-late" defaultValue="august" class="mt-4">
+        <TabsList aria-label="Hidden reports">
+          {months.slice(0, -1).map((month) => (
+            <TabsTrigger value={month.toLowerCase()}>{month}</TabsTrigger>
+          ))}
+          <TabsTrigger value="august">August consolidated revenue and operating expenses</TabsTrigger>
+        </TabsList>
+        {months.map((month) => (
+          <TabsContent value={month.toLowerCase()}>{month} report.</TabsContent>
+        ))}
+      </Tabs>
+    </details>
+  </section>
+  <section class="flex flex-col gap-4">
     <h2 class="text-xs font-semibold tracking-[0.08em] text-muted uppercase">Dialog inside a tab panel</h2>
     <Tabs id="nested">
       <TabsList aria-label="Nested">

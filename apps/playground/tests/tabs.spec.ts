@@ -135,6 +135,25 @@ test.describe("Tabs", () => {
     expect(await ringInside(august)).toBe(true);
   });
 
+  test("a list hidden on load shows the start of its selected tab when it opens", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto("/tabs");
+    await expect(group(page, "hidden-late")).toHaveAttribute("data-ready", "");
+    await page.getByText("Show reports").click();
+    const august = group(page, "hidden-late").getByRole("tab", { name: /^August/ });
+    await expect(august).toHaveAttribute("aria-selected", "true");
+    await expect
+      .poll(() =>
+        august.evaluate((el) => {
+          const list = el.closest('[role="tablist"]')!;
+          return Math.abs(
+            el.getBoundingClientRect().left - 4 - (list.getBoundingClientRect().left + list.clientLeft),
+          );
+        }),
+      )
+      .toBeLessThan(1);
+  });
+
   test("still works after a view transition", async ({ page }) => {
     await page.getByRole("link", { name: "Second page" }).click();
     await expect(page).toHaveURL(/\/second/);

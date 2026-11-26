@@ -22,9 +22,11 @@ const popoverKeyframes = async (page: Page) => {
   const seen = () => page.evaluate(() => (window as unknown as { seen: Keyframe[][] }).seen);
   await expect.poll(async () => (await seen()).length).toBeGreaterThan(0);
   const frames = (await seen()).flat();
+  // Changes from one keyframe to the next, not just a property that is present.
+  const changes = (values: unknown[]) => new Set(values).size > 1;
   return {
-    fades: frames.some((frame) => frame.opacity !== undefined),
-    moves: frames.some((frame) => frame.transform !== undefined && frame.transform !== "none"),
+    fades: changes(frames.map((frame) => frame.opacity)),
+    moves: changes(frames.map((frame) => frame.transform ?? "none")),
   };
 };
 
