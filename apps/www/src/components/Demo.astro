@@ -20,7 +20,10 @@ const code = source.replace(/^---\s*---\s*/, "");
 
 <div class="not-prose my-6">
   {hideCode ? (
-    <div class="eris-curve flex min-h-56 items-center justify-center rounded-card border border-border bg-tile p-10">
+    <div
+      class="eris-curve flex min-h-56 items-center justify-center rounded-card border border-border bg-tile p-4 sm:p-10"
+      data-demo-preview
+    >
       <slot />
     </div>
   ) : (
@@ -30,7 +33,10 @@ const code = source.replace(/^---\s*---\s*/, "");
         <TabsTrigger value="code">Code</TabsTrigger>
       </TabsList>
       <TabsContent value="preview">
-        <div class="eris-curve flex min-h-56 flex-wrap items-center justify-center gap-3 rounded-card border border-border bg-tile p-10">
+        <div
+          class="eris-curve flex min-h-56 flex-wrap items-center justify-center gap-3 rounded-card border border-border bg-tile p-4 sm:p-10"
+          data-demo-preview
+        >
           <slot />
         </div>
       </TabsContent>
@@ -40,3 +46,26 @@ const code = source.replace(/^---\s*---\s*/, "");
     </Tabs>
   )}
 </div>
+
+<script>
+  // Some demos scroll sideways on narrow screens (e.g. a long tab list). Roving focus moves without scrolling,
+  // so bring the focused control into view inside that scroller only, never the page. Site-only: the demo
+  // source users copy stays unchanged.
+  const RING_ROOM = 4; // keep the 2px focus ring and its 2px offset visible
+  document.addEventListener("focusin", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element) || !target.closest("[data-demo-preview]")) return;
+    let scroller = target.parentElement;
+    while (scroller && !scroller.hasAttribute("data-demo-preview")) {
+      const { overflowX } = getComputedStyle(scroller);
+      if ((overflowX === "auto" || overflowX === "scroll") && scroller.scrollWidth > scroller.clientWidth)
+        break;
+      scroller = scroller.parentElement;
+    }
+    if (!scroller || scroller.hasAttribute("data-demo-preview")) return;
+    const t = target.getBoundingClientRect();
+    const s = scroller.getBoundingClientRect();
+    if (t.left - RING_ROOM < s.left) scroller.scrollLeft -= s.left - t.left + RING_ROOM;
+    else if (t.right + RING_ROOM > s.right) scroller.scrollLeft += t.right - s.right + RING_ROOM;
+  });
+</script>
