@@ -21,10 +21,10 @@ const { code, lang = "astro", title } = Astro.props;
       type="button"
       data-copy
       aria-label="Copy code"
-      class="group eris-curve m-1.5 grid size-10 place-items-center rounded-field text-muted hover:bg-raised hover:text-foreground focus-visible:outline-offset-[-2px] data-[copied]:text-foreground pointer-coarse:size-11"
+      class="eris-curve m-1.5 grid size-10 place-items-center rounded-field text-muted hover:bg-raised hover:text-foreground focus-visible:outline-offset-[-2px] data-[copied]:text-foreground pointer-coarse:size-11"
     >
       <svg
-        class="size-4 group-data-[copied]:hidden"
+        class="copy-icon size-4"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="none"
@@ -38,7 +38,7 @@ const { code, lang = "astro", title } = Astro.props;
         <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
       </svg>
       <svg
-        class="hidden size-4 group-data-[copied]:block"
+        class="copied-icon size-4"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="none"
@@ -54,6 +54,32 @@ const { code, lang = "astro", title } = Astro.props;
   </div>
   <p data-copy-status role="status" class="sr-only mt-2 text-xs text-muted"></p>
 </div>
+
+<style>
+  .copy-icon,
+  .copied-icon {
+    grid-area: 1 / 1;
+    transition: opacity 300ms var(--eris-ease);
+  }
+
+  [data-copied] .copy-icon,
+  :not([data-copied]) > .copied-icon {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .copy-icon,
+    .copied-icon {
+      transition-property: opacity, scale, filter;
+    }
+
+    [data-copied] .copy-icon,
+    :not([data-copied]) > .copied-icon {
+      scale: 0.25;
+      filter: blur(4px);
+    }
+  }
+</style>
 
 <style is:global>
   .eris-pre {

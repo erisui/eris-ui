@@ -28,7 +28,11 @@ const { name, href, class: className } = Astro.props;
 </div>
 
 <style>
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
+    .site-demo-link:not(:focus-visible) {
+      transition: opacity 120ms var(--eris-ease);
+    }
+
     .showcase-tile:not(:hover) .site-demo-link:not(:focus-visible) {
       opacity: 0;
       pointer-events: none;
