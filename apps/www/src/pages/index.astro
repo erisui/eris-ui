@@ -60,7 +60,7 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
 <Base>
   <Header />
   <main id="main">
-    <section class="site-container flex flex-col items-center pt-18 pb-20 text-center sm:pt-32 sm:pb-28">
+    <section class="site-container flex flex-col items-center pt-18 pb-24 text-center sm:pt-32 sm:pb-36">
       <h1 class="max-w-5xl text-[clamp(2.25rem,5.2vw,3.75rem)] leading-[1.14] font-semibold tracking-[-0.03em] text-balance">
         Accessible UI components for Astro
       </h1>
@@ -81,7 +81,7 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
       </div>
     </section>
 
-    <section aria-label="Component examples" class="site-container pb-16 lg:pb-24">
+    <section aria-label="Component examples" class="site-container pb-20 lg:pb-32">
       <div class="grid gap-3 pt-5 sm:grid-cols-2 lg:grid-cols-3">
         <ShowcaseTile name="Button" href="/docs/components/button">
           <Button>Button</Button>
@@ -193,7 +193,7 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
       </div>
     </section>
 
-    <section class="site-container pb-16 lg:pb-24">
+    <section class="site-container pb-20 lg:pb-32">
       <div class="grid gap-x-12 gap-y-8 pt-8 md:grid-cols-2 md:gap-y-10 md:pt-10">
         {facts.map((f) => (
           <div class="flex flex-col items-start">
