@@ -78,6 +78,31 @@ test("the Code tab shows the demo source", async ({ page }) => {
   );
 });
 
+test("the Select demo stays clickable over the install tabs after hovering an option", async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 950 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/docs/components/select");
+
+  const trigger = page.getByRole("combobox", { name: "Framework" });
+  await trigger.click();
+  const list = page.getByRole("listbox", { name: "Framework" });
+  await list.getByRole("option", { name: "Astro", exact: true }).hover();
+
+  const option = await list.getByRole("option", { name: "SvelteKit" }).boundingBox();
+  const tab = await page.getByRole("tab", { name: "yarn" }).boundingBox();
+  if (!option || !tab) throw new Error("Expected the SvelteKit option and yarn tab to be visible");
+
+  const left = Math.max(option.x, tab.x);
+  const right = Math.min(option.x + option.width, tab.x + tab.width);
+  const top = Math.max(option.y, tab.y);
+  const bottom = Math.min(option.y + option.height, tab.y + tab.height);
+  expect(right).toBeGreaterThan(left);
+  expect(bottom).toBeGreaterThan(top);
+
+  await page.mouse.click((left + right) / 2, (top + bottom) / 2);
+  await expect(trigger).toHaveText("SvelteKit");
+});
+
 test("install commands come from the registry", async ({ page }) => {
   await page.goto("/docs/components/tabs");
   await expect(page.locator('[data-eris-id="install-tabs"]').locator("pre").first()).toContainText(

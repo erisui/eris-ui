@@ -8,7 +8,8 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<div data-part="positioner">
+<!-- Keep Zag's stacking order on the positioner when a Select update clears its inline z-index. -->
+<div data-part="positioner" class="z-(--z-index)">
   <div
     data-part="content"
     data-state="closed"
