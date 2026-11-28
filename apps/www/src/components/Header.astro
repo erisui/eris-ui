@@ -30,7 +30,7 @@ const links = [
     </a>
     <div class="header-theme"><ThemeToggle /></div>
     <details class="header-menu">
-      <summary aria-label="Navigation"><svg class="menu-open-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg><svg class="menu-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6" /></svg></summary>
+      <summary aria-label="Navigation"><svg class="menu-open-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg><svg class="menu-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6" /></svg></summary>
       <nav aria-label="Main menu">
         {links.map((l) => <a href={l.href} aria-current={l.active ? "page" : undefined}>{l.label}</a>)}
       </nav>
@@ -46,7 +46,7 @@ const links = [
   .header-link:hover { background: var(--eris-highlight); color: var(--eris-foreground); }
   .header-link.is-active { background: var(--eris-raised); color: var(--eris-foreground); }
   .header-search { margin-inline-start: auto; }
-  .header-github { display: inline-flex; align-items: center; gap: 8px; margin-inline-start: -12px; border-radius: 999px; background: var(--eris-raised); padding: 6px 14px; font-size: 14px; }
+  .header-github { display: inline-flex; align-items: center; gap: 8px; margin-inline-start: -12px; border-radius: 999px; padding: 6px 12px; font-size: 14px; }
   .header-theme { display: flex; margin-inline-start: -12px; }
   .header-menu { display: none; }
   .header-bar a:focus-visible, .header-menu summary:focus-visible { outline: 2px solid var(--eris-ring); outline-offset: 2px; }

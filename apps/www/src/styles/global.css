@@ -28,10 +28,8 @@
   --site-page: #111;
   --site-tile: var(--eris-background);
   --site-code: #0f0f0f; /* code blocks */
-  --site-pro-label: #a9c0fa; /* Pro heading accent and status */
-  --site-pro-blueprint: rgb(255 255 255 / 0.11); /* neutral details in the block previews */
-  --site-pro-guide: rgb(98 138 247 / 0.24); /* accent details in the block previews */
-  --site-pro-frame-bg: rgb(98 138 247 / 0.1); /* featured pricing plan */
+  --site-pro-accent: var(--eris-accent-bottom); /* the one highlight per Pro preview */
+  --site-pro-track: rgb(255 255 255 / 0.14); /* neutral bars and toggle tracks in the Pro previews */
   --site-gutter: clamp(1rem, 4vw, 1.5rem);
   --site-width: 72rem;
   --site-sticky-top: 5.5rem;
@@ -41,10 +39,7 @@
 [data-theme="light"] {
   --site-page: #f6f6f6;
   --site-code: #ffffff;
-  --site-pro-label: #2f56c8;
-  --site-pro-blueprint: rgb(20 20 20 / 0.1);
-  --site-pro-guide: rgb(58 101 223 / 0.22);
-  --site-pro-frame-bg: rgb(58 101 223 / 0.07);
+  --site-pro-track: rgb(20 20 20 / 0.12);
 }
 
 @utility site-container {
