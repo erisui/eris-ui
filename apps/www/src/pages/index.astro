@@ -60,8 +60,8 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
 <Base>
   <Header />
   <main id="main">
-    <section class="site-container flex flex-col items-center pt-18 pb-24 text-center sm:pt-32 sm:pb-36">
-      <h1 class="max-w-5xl text-[clamp(2.25rem,5.2vw,3.75rem)] leading-[1.14] font-semibold tracking-[-0.03em] text-balance">
+    <section class="site-container flex flex-col items-center pt-16 pb-16 text-center sm:pt-32 sm:pb-20">
+      <h1 class="max-w-5xl text-[clamp(2.25rem,5.2vw,3.75rem)] leading-[1.08] font-medium tracking-[-0.03em] text-balance">
         Accessible UI components for Astro
       </h1>
       <p class="mt-5 max-w-[38rem] text-base leading-relaxed text-balance text-ghost sm:mt-6 sm:text-lg">
@@ -82,12 +82,17 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
     </section>
 
     <section aria-label="Component examples" class="site-container pb-20 lg:pb-32">
-      <div class="grid gap-3 pt-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <ShowcaseTile name="Button" href="/docs/components/button">
           <Button>Button</Button>
         </ShowcaseTile>
 
-        <ShowcaseTile name="Tabs" href="/docs/components/tabs" class="lg:col-span-2">
+        <ShowcaseTile
+          name="Tabs"
+          href="/docs/components/tabs"
+          state={{ selector: '[data-part="trigger"][aria-selected="true"]', attr: "data-value", label: "value" }}
+          class="lg:col-span-2"
+        >
           <Tabs id="home-tabs" class="items-center text-center">
             <TabsList aria-label="Example">
               <TabsTrigger value="preview">Preview</TabsTrigger>
@@ -130,7 +135,7 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
           </dl>
         </ShowcaseTile>
 
-        <ShowcaseTile name="Dialog" href="/docs/components/dialog">
+        <ShowcaseTile name="Dialog" href="/docs/components/dialog" state={{ selector: '[data-part="trigger"]', attr: "data-state" }}>
           <Dialog id="home-dialog">
             <DialogTrigger>Open dialog</DialogTrigger>
             <DialogContent>
@@ -146,7 +151,12 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
           </Dialog>
         </ShowcaseTile>
 
-        <ShowcaseTile name="Accordion" href="/docs/components/accordion" class="sm:col-span-2 lg:col-span-1 lg:row-span-2">
+        <ShowcaseTile
+          name="Accordion"
+          href="/docs/components/accordion"
+          state={{ selector: '[data-part="item"][data-state="open"]', attr: "data-value", label: "value", many: true }}
+          class="sm:col-span-2 lg:col-span-1 lg:row-span-2"
+        >
           <Accordion id="home-accordion" class="w-full max-w-md">
             <AccordionItem value="framework" open>
               <AccordionTrigger>Does it work without a framework?</AccordionTrigger>
@@ -167,11 +177,16 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
           </Accordion>
         </ShowcaseTile>
 
-        <ShowcaseTile name="Snippet" href="/docs/components/snippet" class="sm:col-span-2">
-          <Snippet id="home-snippet" code={cliCommand("init")} />
+        <ShowcaseTile
+          name="Snippet"
+          href="/docs/components/snippet"
+          state={{ selector: '[data-part="trigger"]', attr: "data-copied", label: "copied" }}
+          class="sm:col-span-2"
+        >
+          <Snippet id="home-snippet" code={cliCommand("add dialog")} />
         </ShowcaseTile>
 
-        <ShowcaseTile name="Popover" href="/docs/components/popover">
+        <ShowcaseTile name="Popover" href="/docs/components/popover" state={{ selector: '[data-part="trigger"]', attr: "data-state" }}>
           <Popover id="home-popover">
             <PopoverTrigger>Share</PopoverTrigger>
             <PopoverContent>
@@ -185,7 +200,7 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
           </Popover>
         </ShowcaseTile>
 
-        <ShowcaseTile name="Tooltip" href="/docs/components/tooltip">
+        <ShowcaseTile name="Tooltip" href="/docs/components/tooltip" state={{ selector: "[data-state]", attr: "data-state" }}>
           <Tooltip id="home-tooltip" text="Copy the link to this page">
             <Button variant="secondary">Copy link</Button>
           </Tooltip>
@@ -197,10 +212,8 @@ const facts: { title: string; body: string; icon: FactIconName }[] = [
       <div class="grid gap-x-12 gap-y-8 pt-8 md:grid-cols-2 md:gap-y-10 md:pt-10">
         {facts.map((f) => (
           <div class="flex flex-col items-start">
-            <span class="eris-curve mb-3 grid size-9 place-items-center rounded-field border border-border bg-raised text-foreground">
-              <FactIcon name={f.icon} class="size-[18px]" />
-            </span>
-            <h2 class="text-base font-semibold tracking-[-0.01em]">{f.title}</h2>
+            <FactIcon name={f.icon} class="mb-3 size-[18px] text-muted" />
+            <h2 class="text-base font-medium">{f.title}</h2>
             <p class="mt-2 text-[15px] leading-relaxed text-muted">{f.body}</p>
           </div>
         ))}

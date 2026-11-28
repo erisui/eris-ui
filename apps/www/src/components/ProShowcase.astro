@@ -1,17 +1,34 @@
 ---
 import { LINKS } from "../const";
 import Button from "@/components/ui/button/Button.astro";
+
+// Plausible sample content for the previews. They are pictures of blocks, hidden from assistive tech.
+const plans = [
+  { name: "Hobby", price: "$0", featured: false },
+  { name: "Pro", price: "$19", featured: true },
+  { name: "Team", price: "$49", featured: false },
+];
+const sections = ["General", "Billing", "Members"];
+const settings = [
+  { label: "Email digests", enabled: true },
+  { label: "Two-factor", enabled: true },
+  { label: "Public profile", enabled: false },
+];
+const metrics = [
+  { label: "Visits", value: "12,480" },
+  { label: "Signups", value: "342" },
+  { label: "Orders", value: "96" },
+];
+const months = [31, 45, 38, 58, 49, 70, 62, 82, 75, 93, 84, 100];
 ---
 
 <section id="pro" aria-labelledby="pro-heading" class="pro-showcase site-container pb-20 lg:pb-32">
   <div class="text-center">
-    <h2 id="pro-heading" class="pro-heading leading-[1.12] font-semibold tracking-[-0.04em] text-foreground">
+    <h2 id="pro-heading" class="pro-heading leading-[1.1] font-medium tracking-[-0.03em] text-foreground">
       <span class="block">Unique components</span>
-      <span class="mt-1.5 inline-block">
-        and <span class="text-(--site-pro-label)">page blocks.</span>
-      </span>
+      <span class="block">and page blocks</span>
     </h2>
-    <p class="mt-4 text-sm font-medium text-(--site-pro-label)">Eris Pro · Coming later</p>
+    <p class="mt-4 text-sm text-muted">Eris Pro · Coming later</p>
     <p class="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-pretty text-ghost sm:text-base">
       Full pricing sections, settings pages, dashboards, and harder interactive primitives you add with the
       same CLI. Plain <code class="font-mono text-[0.88em] text-ghost">.astro</code> files, still no framework
@@ -32,11 +49,11 @@ import Button from "@/components/ui/button/Button.astro";
     <li class="pro-example">
       <span class="example-label">Pricing sections</span>
       <div class="plan-preview" aria-hidden="true">
-        {[false, true, false].map((featured) => (
-          <div class:list={["plan", { featured }]}>
-            <i class="preview-line"></i>
-            <i class="plan-price"></i>
-            <i class="preview-line"></i>
+        {plans.map((plan) => (
+          <div class:list={["plan", { featured: plan.featured }]}>
+            <span class="preview-meta">{plan.name}</span>
+            <span class="preview-figure">{plan.price}<span class="preview-meta">/mo</span></span>
+            <i class="plan-cta"></i>
           </div>
         ))}
       </div>
@@ -45,14 +62,14 @@ import Button from "@/components/ui/button/Button.astro";
       <span class="example-label">Settings pages</span>
       <div class="settings-preview" aria-hidden="true">
         <div class="settings-sidebar">
-          <i class="preview-line"></i>
-          <i class="preview-line"></i>
-          <i class="preview-line"></i>
+          {sections.map((section, i) => (
+            <span class:list={["preview-meta", { current: i === 0 }]}>{section}</span>
+          ))}
         </div>
         <div class="settings-rows">
-          {[true, false, false].map((enabled) => (
+          {settings.map(({ label, enabled }) => (
             <div>
-              <i class="preview-line"></i>
+              <span class="preview-meta">{label}</span>
               <i class:list={["preview-toggle", { enabled }]}></i>
             </div>
           ))}
@@ -63,18 +80,15 @@ import Button from "@/components/ui/button/Button.astro";
       <span class="example-label">Dashboards</span>
       <div class="dashboard-preview" aria-hidden="true">
         <div class="dashboard-metrics">
-          <span>
-            <i class="preview-line"></i>
-          </span>
-          <span>
-            <i class="preview-line"></i>
-          </span>
-          <span>
-            <i class="preview-line"></i>
-          </span>
+          {metrics.map(({ label, value }) => (
+            <span>
+              <span class="preview-meta">{label}</span>
+              <span class="preview-figure">{value}</span>
+            </span>
+          ))}
         </div>
         <div class="dashboard-chart">
-          {[31, 45, 38, 58, 49, 70, 62, 82, 75, 93, 84, 100].map((height) => (
+          {months.map((height) => (
             <i style={`--bar-size: ${height}%`}></i>
           ))}
         </div>
@@ -123,7 +137,26 @@ import Button from "@/components/ui/button/Button.astro";
   .plan-preview,
   .settings-preview,
   .dashboard-preview {
-    padding: clamp(0.625rem, 2cqi, 1.125rem);
+    padding: clamp(0.625rem, 2cqi, 1rem);
+  }
+
+  /* Sample text inside the previews: small, muted, never below 11px. */
+  .preview-meta {
+    color: var(--eris-muted);
+    font-size: 0.6875rem;
+    line-height: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .preview-figure {
+    color: var(--eris-foreground);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 
   .plan-preview,
@@ -134,9 +167,9 @@ import Button from "@/components/ui/button/Button.astro";
   }
 
   .plan,
-  .dashboard-metrics span {
+  .dashboard-metrics > span {
     display: grid;
-    gap: 0.5rem;
+    min-inline-size: 0;
     padding: 0.5rem;
     border: 1px solid var(--eris-border);
     border-radius: 0.375rem;
@@ -144,47 +177,50 @@ import Button from "@/components/ui/button/Button.astro";
   }
 
   .plan {
-    align-content: center;
-    min-block-size: 5rem;
+    gap: 0.25rem;
   }
 
   .plan.featured {
-    border-color: var(--site-pro-guide);
-    background: var(--site-pro-frame-bg);
+    border-color: var(--site-pro-accent);
   }
 
-  .preview-line,
-  .plan-price {
+  .plan-cta {
     display: block;
-    inline-size: 65%;
-    block-size: 0.25rem;
+    block-size: 0.75rem;
+    margin-block-start: 0.25rem;
     border-radius: 0.25rem;
-    background: var(--site-pro-blueprint);
+    background: var(--eris-raised);
+    box-shadow: inset 0 0 0 1px var(--eris-border);
   }
 
-  .plan-price {
-    inline-size: 85%;
-    block-size: 0.75rem;
-    background: var(--site-pro-guide);
+  .plan.featured .plan-cta {
+    background: var(--site-pro-accent);
+    box-shadow: none;
   }
 
   .settings-preview {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 0.625rem;
+    gap: 0.5rem;
   }
 
   .settings-sidebar {
     display: grid;
     align-content: start;
-    gap: 0.625rem;
-    padding: 0.5rem;
+    gap: 0.125rem;
+    padding: 0.25rem;
     border-radius: 0.375rem;
     background: var(--eris-surface);
   }
 
-  .settings-sidebar .preview-line:first-child {
-    background: var(--site-pro-guide);
+  .settings-sidebar .preview-meta {
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+  }
+
+  .settings-sidebar .current {
+    background: var(--eris-raised);
+    color: var(--eris-foreground);
   }
 
   .settings-rows {
@@ -197,7 +233,8 @@ import Button from "@/components/ui/button/Button.astro";
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    padding: 0.375rem;
+    min-inline-size: 0;
+    padding: 0.25rem 0.375rem;
     border: 1px solid var(--eris-border);
     border-radius: 0.375rem;
   }
@@ -205,25 +242,34 @@ import Button from "@/components/ui/button/Button.astro";
   .preview-toggle {
     display: flex;
     flex: none;
-    inline-size: 1.125rem;
+    inline-size: 1.25rem;
     padding: 2px;
     border-radius: 999px;
-    background: var(--site-pro-blueprint);
+    background: var(--site-pro-track);
   }
 
   .preview-toggle::before {
     content: "";
-    inline-size: 0.375rem;
-    block-size: 0.375rem;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
     border-radius: 50%;
     background: var(--eris-ghost);
   }
 
   .preview-toggle.enabled {
     justify-content: end;
-    background: var(--site-pro-guide);
+    background: var(--site-pro-accent);
   }
 
+  .preview-toggle.enabled::before {
+    background: #fff;
+  }
+
+  .dashboard-metrics > span {
+    gap: 0.125rem;
+  }
+
+  /* Twelve months, neutral; the current month carries the accent. */
   .dashboard-chart {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -241,10 +287,13 @@ import Button from "@/components/ui/button/Button.astro";
 
   .dashboard-chart i {
     block-size: var(--bar-size);
-    border-radius: 0.25rem 0.25rem 0 0;
-    background: linear-gradient(var(--eris-ring), var(--site-pro-guide));
-    opacity: 0.55;
+    border-radius: 2px 2px 0 0;
+    background: var(--site-pro-track);
     transform-origin: center bottom;
+  }
+
+  .dashboard-chart i:last-child {
+    background: var(--site-pro-accent);
   }
 
   [data-preview="pending"] :is(.plan, .settings-rows > div, .dashboard-chart i) {
